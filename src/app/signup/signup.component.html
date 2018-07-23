@@ -1,0 +1,116 @@
+<div class="auth-page">
+  <div class="container page">
+    <div class="row">
+
+
+      <div class="col-md-6 offset-md-3 col-xs-12">
+        <div class="signin-form create-account">
+          <h1 class="text-xs-center">{{ title }}</h1>
+          <!-- <a href="#" class="close">
+            <img src="../assets/images/close-icon.png" />
+          </a> -->
+          <p class="text-xs-center">
+            <a [routerLink]="['/']" *ngIf="authType == 'signup'">Have an account?</a>
+            <!-- <a [routerLink]="['/register']" *ngIf="authType == 'login'">Need an account?</a> -->
+          </p>
+
+          <div *ngFor="let alert of alerts">
+            <alert [type]="alert.type" [dismissOnTimeout]="alert.timeout" (onClosed)="onClosed(alert)">{{ alert.msg }}</alert>
+          </div>
+          <form [formGroup]="authForm" (ngSubmit)="submitForm()">
+            <fieldset [disabled]="isSubmitting">
+
+              <div class="row">
+                <div class="col-lg-6 col-md-6 col-sm-6 col-12">
+                  <fieldset class="form-group">
+
+                    <input formControlName="name" placeholder="Full Name" class="form-control form-control-lg" type="text" [ngClass]="{ 'is-invalid': !f.name.valid && f.name.touched && f.name.errors,'is-valid': !f.name.errors }"
+                      required/>
+                    <span class="signup-user"></span>
+                    <div *ngIf="f.name.touched && f.name.errors" class="invalid-feedback">
+                      <div *ngIf="f.name.errors.required"> *Name is required</div>
+                    </div>
+                  </fieldset>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-6 col-12">
+                  <fieldset class="form-group">
+                    <input formControlName="email" placeholder="Email" class="form-control form-control-lg" type="text" [ngClass]="{ 'is-invalid': f.email.touched && f.email.errors,'is-valid': !f.email.errors}"
+                      required/>
+                    <span class="envelope"></span>
+                    <div *ngIf="f.email.touched && f.email.errors" class="invalid-feedback">
+                      <div *ngIf="f.email.errors.required">*Email is required</div>
+                      <div *ngIf="f.email.errors.email"> *Must be an email address</div>
+
+                    </div>
+                  </fieldset>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-6 col-12">
+                  <fieldset class="form-group">
+                    <span class="lock"></span>
+                    <input formControlName="password" placeholder="Password" class="form-control form-control-lg" type="password" [ngClass]="{ 'is-invalid': f.password.touched && f.password.errors,'is-valid': !f.password.errors }"
+                    />
+                    <div *ngIf="f.password.touched && f.password.errors" class="invalid-feedback">
+                      <div *ngIf="f.password.errors.required">*Password is required</div>
+                    </div>
+                  </fieldset>
+                </div>
+
+                <div class="col-lg-6 col-md-6 col-sm-6 col-12">
+                  <fieldset class="form-group">
+                    <span class="lock"></span>
+                    <input formControlName="confirmPassword" placeholder="Confirm Password" class="form-control form-control-lg" type="password"
+                      [ngClass]="{ 'is-invalid': f.confirmPassword.touched && f.confirmPassword.errors ,'is-valid': !f.confirmPassword.errors }"
+                    />
+                    <div *ngIf="f.confirmPassword.touched && f.confirmPassword.errors" class="invalid-feedback">
+                      <div *ngIf="f.confirmPassword.errors.required"> *Please confirm password</div>
+                      <div *ngIf="f.confirmPassword.errors.passwordsNotMatch">*Password Does not match</div>
+
+                    </div>
+                  </fieldset>
+                </div>
+                <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+                  <fieldset class="form-group">
+
+                    <input formControlName="company" placeholder="Company Name" class="form-control form-control-lg" type="text" [ngClass]="{ 'is-invalid': f.company.touched && f.company.errors,'is-valid': !f.company.errors }"
+                    />
+                    <span class="signup-company"></span>
+                    <div *ngIf="f.company.touched && f.company.errors" class="invalid-feedback">
+                      <div *ngIf="f.company.errors.required">*Company name is required</div>
+                    </div>
+                  </fieldset>
+                </div>
+
+                <div class="col-lg-12 col-md-12 col-sm-6 col-12">
+                  <div class="form-group">
+                    <button class="btn btn-success" [disabled]="!authForm.valid">Register</button>
+                  </div>
+                </div>
+
+
+              </div>
+
+
+
+              <!-- <button class="btn btn-lg btn-primary pull-xs-right" [disabled]="!authForm.valid" type="submit">
+        {{ title }}
+      </button> -->
+            </fieldset>
+          </form>
+        </div>
+
+      </div>
+
+
+
+
+    </div>
+  </div>
+</div>
+
+<ngx-spinner
+  bdColor="rgba(51,51,51,0.8)"
+  size="large"
+  color="#fff"
+  loadingText="Loading..."
+  type="ball-scale-multiple">
+</ngx-spinner>

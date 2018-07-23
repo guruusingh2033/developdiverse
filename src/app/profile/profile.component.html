@@ -1,0 +1,421 @@
+<div class="home-page">
+
+  <!-- <div class="banner" *appShowAuthed="false">
+    <div class="container">
+      <h1 class="logo-font">conduit</h1>
+      <p>A place to share your <i>Angular 2</i> knowledge.</p>
+    </div>
+  </div> -->
+  <div id="content">
+    <div class="sidebar">
+      <div class="top-dashboard-link">
+        <ul>
+          <li>
+            <a>
+              <img src="../assets/images/file-icon.png" />
+              <div class="drop-dwnmenu">
+                <ul>
+                  <li>
+                    <a>New
+                      <span>Upload</span>
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </a>
+
+          </li>
+          <li>
+            <a>
+              <img src="../assets/images/download-icon.png" />
+              <div class="drop-dwnmenu">
+                <ul>
+                  <li>
+                    <a>Copy
+                      <span>Download</span>
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </a>
+
+          </li>
+          <li>
+            <a>
+              <img src="../assets/images/list-icon.png" />
+              <div class="drop-dwnmenu">
+                <ul>
+                  <li>
+                    <a>Job Listing
+
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </a>
+          </li>
+        </ul>
+      </div>
+      <div class="bottom-dashboard-link">
+        <ul>
+          <li>
+            <a>
+              <img src="../assets/images/user-dashboard.png" />
+            </a>
+          </li>
+          <li>
+            <a>
+              <img src="../assets/images/info-icon.png" />
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="right-side">
+      <div class="job-form">
+        <!-- <div class="row">
+          <div class="col-lg-10 col-md-8 col-sm-12 col-xs-12">
+            <div class="form-group">
+              <input type="text" class="form-control department" placeholder="Job  Title">
+            </div>
+            <div class="row">
+              <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12 right-padding-none">
+                <div class="form-group">
+                  <input type="text" class="form-control" placeholder="Department">
+                </div>
+              </div>
+              <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12 right-padding-none small-padding">
+                <div class="form-group">
+                  <input type="text" class="form-control" placeholder="Company">
+                </div>
+              </div>
+              <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12 right-padding-none small-padding">
+                <div class="form-group">
+                  <input type="text" class="form-control" placeholder="City">
+                </div>
+              </div>
+              <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                <div class="form-group">
+                  <input type="text" class="form-control" placeholder="Country">
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-2 col-md-3 col-sm-12 col-xs-12">
+            <div class="form-group small-width">
+              <a class="btn btn-primary" (click)="openModal(template)">Share</a>
+            </div>
+            <div class="form-group small-width1">
+              <a class="btn btn-success">Approval</a>
+            </div>
+          </div>
+        </div> -->
+      </div>
+      <div class="content-all">
+        <!-- profile conten heree -->
+      <div class="profile">
+        <div class="col-md-10 offset-md-1 col-xs-12">
+          <h2>Profile Details</h2>
+
+        <form [formGroup]="profileForm" >
+          <fieldset [disabled]="isSubmitting">
+
+            <div class="row">
+              <div class="col-lg-3 col-md-3 col-sm-3 col-12">
+                <fieldset class="form-group">
+
+                  <input formControlName="username" placeholder="Username" class="form-control form-control-lg" type="text" [ngClass]="{ 'is-invalid': !f.username.valid && f.username.touched && f.username.errors,'is-valid':  f.username.touched  && !f.username.errors }"
+                    />
+                  <span class="signup-user"></span>
+                  <div *ngIf="f.username.touched && f.username.errors" class="invalid-feedback">
+                    <div *ngIf="f.username.errors.required"> *Name is required</div>
+                  </div>
+                </fieldset>
+              </div>
+              <!-- <div class="col-lg-3 col-md-3 col-sm-3 col-12">
+                <fieldset class="form-group">
+                  <input formControlName="surname" placeholder="Sirname" class="form-control form-control-lg" type="text" [ngClass]="{ 'is-invalid': f.surname.touched && f.surname.errors,'is-valid':  f.surname.touched  && !f.surname.errors}"
+                    />
+                  <span class="envelope"></span>
+                  <div *ngIf="f.surname.touched && f.email.errors" class="invalid-feedback">
+                    <div *ngIf="f.surname.errors.required">*Email is required</div>
+                    <div *ngIf="f.surname.errors.email"> *Must be an email address</div>
+
+                  </div>
+                </fieldset>
+              </div> -->
+              <div class="col-lg-3 col-md-3 col-sm-3 col-12">
+                <fieldset class="form-group">
+                  <span class="lock"></span>
+                  <input formControlName="email" placeholder="user@user.com" class="form-control form-control-lg" type="text" [ngClass]="{ 'is-invalid': f.email.touched && f.email.errors,'is-valid': f.email.touched  &&  !f.email.errors }"
+                  />
+                  <div *ngIf="f.email.touched && f.email.errors" class="invalid-feedback">
+                      <div *ngIf="f.email.errors.required">*Email is required</div>
+
+                  </div>
+                </fieldset>
+              </div>
+
+              <div class="col-lg-3 col-md-3 col-sm-3 col-12">
+                <fieldset class="form-group">
+
+                  <input formControlName="company" placeholder="Company" class="form-control form-control-lg" type="text" [ngClass]="{ 'is-invalid': f.company.touched && f.company.errors,'is-valid':f.company.touched && !f.company.errors }"
+                  />
+                  <span class="signup-company"></span>
+                  <div *ngIf="f.company.touched && f.company.errors" class="invalid-feedback">
+                    <div *ngIf="f.company.errors.required">*Company name is required</div>
+                  </div>
+                </fieldset>
+              </div>
+
+              <!-- <div class="col-lg-3 col-md-3 col-sm-3 col-12">
+                <fieldset class="form-group">
+                  <span class="lock"></span>
+                  <input formControlName="userPosition" placeholder="User Position" class="form-control form-control-lg" type="text"
+                    [ngClass]="{ 'is-invalid': f.userPosition.touched && f.userPosition.errors ,'is-valid': f.userPosition.touched  && !f.userPosition.errors }"
+                  />
+                  <div *ngIf="f.userPosition.touched && f.userPosition.errors" class="invalid-feedback">
+                    <div *ngIf="f.userPosition.errors.required"> *User Position is required</div>
+
+                  </div>
+                </fieldset>
+              </div>
+              <div class="col-lg-3 col-md-3 col-sm-3 col-12">
+                <fieldset class="form-group">
+
+                  <input formControlName="company" placeholder="Company" class="form-control form-control-lg" type="text" [ngClass]="{ 'is-invalid': f.company.touched && f.company.errors,'is-valid':f.company.touched && !f.company.errors }"
+                  />
+                  <span class="signup-company"></span>
+                  <div *ngIf="f.company.touched && f.company.errors" class="invalid-feedback">
+                    <div *ngIf="f.company.errors.required">*Company name is required</div>
+                  </div>
+                </fieldset>
+              </div>
+
+              <div class="col-lg-3 col-md-3 col-sm-3 col-12">
+                <fieldset class="form-group">
+
+                  <input formControlName="department" placeholder="Department" class="form-control form-control-lg" type="text" [ngClass]="{ 'is-invalid': f.department.touched && f.department.errors,'is-valid': f.department.touched  && !f.department.errors }"
+                  />
+                  <span class="signup-company"></span>
+                  <div *ngIf="f.department.touched && f.company.errors" class="invalid-feedback">
+                    <div *ngIf="f.department.errors.required">*Department name is required</div>
+                  </div>
+                </fieldset>
+              </div>
+              <div class="col-lg-3 col-md-3 col-sm-3 col-12">
+                <fieldset class="form-group">
+
+                  <input formControlName="group" placeholder="Group(optional)" class="form-control form-control-lg" type="text" [ngClass]="{ 'is-invalid': f.group.touched && f.group.errors,'is-valid': f.group.touched &&  !f.group.errors }"
+                  />
+                  <span class="signup-company"></span>
+                  <div *ngIf="f.group.touched && f.group.errors" class="invalid-feedback">
+                    <div *ngIf="f.group.errors.required">*Group is required</div>
+                  </div>
+                </fieldset>
+              </div>
+              <div class="col-lg-3 col-md-3 col-sm-3 col-12">
+                <fieldset class="form-group">
+
+                  <input formControlName="phone" placeholder="+45 22335566" class="form-control form-control-lg" type="text" [ngClass]="{ 'is-invalid': f.phone.touched && f.phone.errors,'is-valid':  f.phone.touched  && !f.phone.errors }"
+                  />
+                  <span class="signup-company"></span>
+                  <div *ngIf="f.phone.touched && f.phone.errors" class="invalid-feedback">
+                    <div *ngIf="f.phone.errors.required">*Phone is required</div>
+                  </div>
+                </fieldset>
+              </div>
+              <div class="col-lg-3 col-md-3 col-sm-3 col-12">
+                <fieldset class="form-group">
+
+                  <input formControlName="address" placeholder="Address" class="form-control form-control-lg" type="text" [ngClass]="{ 'is-invalid': f.address.touched && f.address.errors,'is-valid': f.address.touched  && !f.address.errors }"
+                  />
+                  <span class="signup-company"></span>
+                  <div *ngIf="f.address.touched && f.address.errors" class="invalid-feedback">
+                    <div *ngIf="f.address.errors.required">*Address is required</div>
+                  </div>
+                </fieldset>
+              </div>
+              <div class="col-lg-3 col-md-3 col-sm-3 col-12">
+                <fieldset class="form-group">
+
+                  <input formControlName="postcode" placeholder="Postcode" class="form-control form-control-lg" type="text" [ngClass]="{ 'is-invalid': f.postcode.touched && f.postcode.errors,'is-valid': f.postcode.touched  &&  !f.postcode.errors }"
+                  />
+                  <span class="signup-company"></span>
+                  <div *ngIf="f.postcode.touched && f.postcode.errors" class="invalid-feedback">
+                    <div *ngIf="f.postcode.errors.required">*Company name is required</div>
+                  </div>
+                </fieldset>
+              </div>
+              <div class="col-lg-3 col-md-3 col-sm-3 col-12">
+                <fieldset class="form-group">
+
+                  <input formControlName="city" placeholder="City" class="form-control form-control-lg" type="text" [ngClass]="{ 'is-invalid': f.city.touched && f.city.errors,'is-valid':  f.city.touched  && !f.city.errors }"
+                  />
+                  <span class="signup-company"></span>
+                  <div *ngIf="f.city.touched && f.city.errors" class="invalid-feedback">
+                    <div *ngIf="f.city.errors.required">*Company name is required</div>
+                  </div>
+                </fieldset>
+              </div>
+              <div class="col-lg-3 col-md-3 col-sm-3 col-12">
+                <fieldset class="form-group">
+
+                  <input formControlName="country" placeholder="Country" class="form-control form-control-lg" type="text" [ngClass]="{ 'is-invalid': f.country.touched && f.country.errors,'is-valid':  f.country.touched  && !f.country.errors }"
+                  />
+                  <span class="signup-company"></span>
+                  <div *ngIf="f.country.touched && f.country.errors" class="invalid-feedback">
+                    <div *ngIf="f.country.errors.required">*Company name is required</div>
+                  </div>
+                </fieldset>
+              </div> -->
+              <div class="col-lg-12 col-md-12 col-sm-3 col-12">
+                <div class="form-group">
+                  <button class="btn btn-success" [disabled]="!profileForm.valid">Save</button>
+                </div>
+              </div>
+
+
+            </div>
+
+
+
+            <!-- <button class="btn btn-lg btn-primary pull-xs-right" [disabled]="!authForm.valid" type="submit">
+      {{ title }}
+    </button> -->
+          </fieldset>
+        </form>
+        </div>
+        <div class="col-md-10 offset-md-1 col-xs-12">
+          <h2>Change My Password</h2>
+
+          <form [formGroup]="profileForm2" >
+            <fieldset [disabled]="isSubmitting">
+  
+              <div class="row">
+                <div class="col-lg-3 col-md-3 col-sm-3 col-12">
+                  <fieldset class="form-group">
+  
+                    <input formControlName="oldPassword" placeholder="Old Password" class="form-control form-control-lg" type="text" [ngClass]="{ 'is-invalid': !f2.oldPassword.valid && f2.oldPassword.touched && f2.oldPassword.errors,'is-valid': f2.oldPassword.touched && !f2.oldPassword.errors }"
+                      />
+                    <span class="signup-user"></span>
+                    <div *ngIf="f2.oldPassword.touched && f2.oldPassword.errors" class="invalid-feedback">
+                      <div *ngIf="f2.oldPassword.errors.required"> *Old Password is required</div>
+                    </div>
+                  </fieldset>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-3 col-12">
+                  <fieldset class="form-group">
+                    <input formControlName="newPassword" placeholder="New Password" class="form-control form-control-lg" type="text" [ngClass]="{ 'is-invalid': f2.newPassword.touched && f2.newPassword.errors,'is-valid': f2.newPassword.touched &&  !f2.newPassword.errors}"
+                      />
+                    <span class="envelope"></span>
+                    <div *ngIf="f2.newPassword.touched && f2.newPassword.errors" class="invalid-feedback">
+                      <div *ngIf="f2.newPassword.errors.required">*New Password is required</div>
+  
+                    </div>
+                  </fieldset>
+                </div>
+         
+                <div class="col-lg-12 col-md-12 col-sm-3 col-12">
+                  <div class="form-group">
+                    <button class="btn btn-success" [disabled]="!profileForm2.valid">Submit</button>
+                  </div>
+                </div>
+  
+  
+              </div>
+  
+              
+  
+              <!-- <button class="btn btn-lg btn-primary pull-xs-right" [disabled]="!authForm.valid" type="submit">
+        {{ title }}
+      </button> -->
+            </fieldset>
+          </form>
+          </div>
+        <!-- end profile content -->
+
+      </div>
+
+
+      </div>
+      <div class="scored-five">
+        <a class="btn btn-success">Draft</a>
+        <h5>Saved 5 Sec ago!</h5>
+      </div>
+    </div>
+  </div>
+
+  <!-- share modal-->
+
+  <ng-template #template>
+    <div class="share-modal-pop">
+      <div class="modal-header">
+        <h3 class="modal-title pull-left">Share with others</h3>
+      </div>
+      <div class="modal-body">
+        <div class="share-input">
+          <input type="text" class="form-control" placeholder="reviewer@reviewer.dk">
+          <select name="" id="">
+            <option value=""></option>
+            <option value=""></option>
+            <option value=""></option>
+          </select>
+        </div>
+        <div class="madal-footer">
+          <button class="btn btn-success" (click)="openModal2(templates)">Done</button>
+          <button class="btn btn-link">Advanced</button>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+
+  <ng-template #templateOnLoad>
+    <div class="share-modal-pop">
+      <div class="modal-header">
+        <h3 class="modal-title pull-left">Share with others</h3>
+      </div>
+      <div class="modal-body">
+        <div class="step-by-step">
+          <h3>Step By Step</h3>
+          <ul>
+            <li>Fill up the top boxes: Job Title, Department, Organization, City Country</li>
+            <li>Type, paste or upload your job ad behind this pop-up window or
+              <img src="../assets/images/file-icon-black.png"
+              />
+            </li>
+            <li>Send your job ad to your colleague by pressing “Share”</li>
+            <li>When the job ad is ready for publishing, press “Approval”</li>
+            <li>Copy or download your job ad
+              <img src="../assets/images/download-icon-black.png" />
+            </li>
+          </ul>
+          <div class="checkbox">
+            <label>
+              <input type="checkbox" value="">Don’t show me again</label>
+          </div>
+          <a class="close">
+            <img src="../assets/images/step-close.png" />
+          </a>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+
+
+
+  <ng-template #templates>
+    <div class="message-modal-pop">
+      <div class="modal-header">
+        <h5>Message</h5>
+
+      </div>
+      <div class="modal-body">
+        <p>A notification has been sent to your Colleague’s email</p>
+      </div>
+    </div>
+  </ng-template>
+
+  <!-- share modal end-->
+
+</div>

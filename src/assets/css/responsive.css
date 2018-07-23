@@ -1,0 +1,80 @@
+@media (max-width:767px) {
+    .navbar-brand {
+        margin-top: 20px !important;
+        width: 56%;
+    }
+    .sidebar ul li .drop-dwnmenu {
+        display: none !important;
+    }
+    .sidebar .top-dashboard-link {
+        position: relative !important;
+        top: 0 !important;
+    }
+    .sidebar .bottom-dashboard-link {
+        position: relative !important;
+    }
+    .sidebar {
+        padding-top: 25px !important;
+        height: 300px;
+    overflow-y: scroll;
+    }
+    .right-padding-none {
+        padding-right: 15px !important;
+    }
+    .small-padding {
+        padding-left: 15px  !important;
+    }
+    .job-form .small-width {
+        width: 49%   !important;
+        float: left;
+    }
+    .job-form .small-width1 {
+        width: 49%   !important;
+        float: right;
+    }
+}
+
+@media (max-width:575px) {
+
+.scored-five .btn-success {
+    position: relative  !important;
+}
+.share-modal-pop .form-control {
+    width: 100%  !important;
+}
+.share-modal-pop .form-control {
+    margin-bottom: 11px;
+}
+.job-form .small-width {
+    width: 100%   !important;
+    float: left;
+}
+.job-form .small-width1 {
+    width: 100%   !important;
+    float: right;
+}
+}
+
+
+@media (max-width:480px) {
+    .navbar-brand {
+        margin-top: 20px !important;
+        width: 100%;
+    }
+    .navbar {
+        height: auto !important;
+        z-index: 999 !important;
+    }
+    #content{
+        padding: 163px 20px 20px !important;
+    }
+    .sidebar {
+        padding-top: 17px !important;
+    }
+    .signin-form {
+        margin-top: 146px !important;
+    }
+    .navbar-brand {
+        margin-right: 0  !important;
+    }
+}

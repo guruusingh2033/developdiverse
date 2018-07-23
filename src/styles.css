@@ -1,0 +1,354 @@
+/* You can add global styles to this file, and also import other style files */
+
+/* Header start here  */
+
+.navbar {
+  background: #cf3e23;
+  border-radius: 0;
+  position: fixed;
+  width: 100%;
+  z-index: 9;
+  top: 0;
+  height: 80px;
+}
+
+.navbar-brand {
+  color: #fff !important;
+  font-weight: 300 !important;
+  font-size: 2.5rem !important;
+  margin-top: 0;
+}
+
+.signin-form {
+  max-width: 540px;
+  width: 100%;
+  border: 2px solid #777777;
+  border-radius: 11px;
+  padding: 60px 33px;
+  margin-top: 95px;
+  position: relative;
+}
+
+.signin-form .close {
+  float: right;
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 1;
+  color: #000;
+  text-shadow: 0 1px 0 #fff;
+  opacity: 1;
+  position: absolute;
+  top: 20px;
+  right: 40px;
+}
+
+.signin-form h1 {
+  font-size: 30px;
+  font-weight: 600;
+}
+
+.signin-form .envelope {
+  width: 27px;
+  height: 22px;
+  background: url("assets/images/envelope-icon.png") no-repeat center top;
+  top: 37px;
+  z-index: 1;
+  left: 16px;
+  position: absolute;
+}
+
+.signin-form .lock {
+  width: 27px;
+  height: 25px;
+  background: url("assets/images/lock-icon.png") no-repeat center top;
+  top: 11px;
+  z-index: 1;
+  left: 16px;
+  position: absolute;
+}
+
+.signin-form .signup-user {
+  width: 27px;
+  height: 27px;
+  background: url("assets/images/user-dashboard-black.png") no-repeat center top;
+  top: 11px;
+  z-index: 1;
+  left: 16px;
+  position: absolute;
+}
+
+.signin-form .signup-company {
+  width: 27px;
+  height: 27px;
+  background: url("assets/images/company-icon.png") no-repeat center top;
+  top: 11px;
+  z-index: 1;
+  left: 16px;
+  position: absolute;
+}
+
+.signin-form .form-group {
+  position: relative;
+}
+
+.signin-form .form-control {
+  border: 2px solid #b8b8b8;
+  height: 47px;
+  padding: .75rem 1.5rem .75rem 4rem;
+}
+
+.signin-form .forget-pwd {
+  text-align: right;
+  margin: 20px 0;
+}
+
+.signin-form .forget-pwd .forget-link {
+  color: #6a6a6a;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.signin-form .btn-success {
+  height: 40px;
+  width: 100%;
+  background: #d03c20;
+  border: none;
+  font-size: 24px;
+  line-height: 24px;
+  text-shadow: 0 2px 2px rgba(0, 0, 0, 0.4);
+  margin-bottom: 25px;
+  transition: all 0.5s;
+}
+
+.signin-form .btn-success:hover {
+  background: #e94829;
+}
+
+.signin-form .dont-have-account {
+  width: 100%;
+}
+
+.signin-form .dont-have-account .dont-account {
+  color: #6a6a6a;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-block;
+  vertical-align: bottom;
+  margin-top: 11px;
+}
+
+.signin-form .btn-primary {
+  float: right;
+  background: none;
+  border: 2px solid #d03c21;
+  height: 35px;
+  line-height: 14px;
+  font-size: 18px;
+  font-weight: 600;
+  padding: .5rem 1.5rem;
+  transition: all 0.5s;
+}
+
+.signin-form .btn-primary:hover {
+  background: #d03c21;
+  color: #fff;
+}
+
+.signin-form .error-messages {
+  color: #b85c5c !important;
+  font-weight: 700;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.signin-form .error-messages li {
+  color: #a94442;
+  background-color: #f2dede;
+  border-color: #ebccd1;
+  padding: 11px 15px;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  display: inline-block;
+  width: 100%;
+}
+
+.signin-form .form-group {
+  margin-bottom: 1.5rem;
+}
+
+.user-login-header {
+  width: auto;
+  padding: 17px 0;
+  position: relative;
+}
+
+.user-login-header a {
+  cursor: pointer;
+  color: #fff;
+  font-size: 18px;
+}
+
+.user-login-header a:hover {
+  color: #fff;
+}
+
+.user-login-header img {
+  margin-right: 10px;
+}
+
+.user-login-header span img {
+  margin-right: 0;
+  margin-left: 10px;
+}
+
+.user-login-header .header-user-dropdown {
+  display: none;
+  position: absolute;
+  width: 114px;
+  background: #fff;
+  top: 61px;
+  right: 0;
+  box-shadow: 0 5px 5px rgba(0, 0, 0, 0.2);
+}
+
+.user-login-header:hover .header-user-dropdown {
+  display: block;
+}
+
+.user-login-header:hover .header-user-dropdown ul {
+  padding: 0;
+  margin: 0;
+  display: block;
+  list-style: none;
+}
+
+.user-login-header:hover .header-user-dropdown ul li a {
+  padding: 6px 25px;
+  display: list-item;
+  color: #000;
+}
+
+.create-account .envelope {
+  top: 14px;
+}
+
+.create-account .form-control {
+  padding: .75rem 1.5rem .75rem 3.5rem;
+  font-size: 1rem !important;
+}
+
+.create-account .btn-success {
+  margin-bottom: 0;
+}
+
+.ngx-toolbar {
+  display: none;
+}
+
+.ngx-editor-textarea {
+  min-height: 250px !important;
+}
+
+.ngx-editor-grippie {
+  display: none;
+}
+
+/* Header end here  */
+.is-invalid{
+  border: 2px solid red !important;
+}
+.is-valid{
+  border: 2px solid green !important;
+}
+
+
+.share-modal-pop {
+  width: auto;
+}
+
+.modal-content {
+  border: none;
+  border-radius: 0;
+}
+
+.share-modal-pop h4 {
+  color: #2c2c2c;
+  font-size: 26px;
+}
+
+.share-modal-pop .modal-header {
+  padding: 15px 15px 6px;
+  border-bottom: 1px solid #e4e4e4;
+}
+
+.share-modal-pop .form-control {
+  width: 87%;
+  height: 45px;
+  border: 2px solid #dedede;
+  float: left;
+  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.1);
+}
+
+.share-modal-pop select {
+  border: 2px solid #dedede;
+  height: 45px;
+  background: url("assets/images/pencil-icon.png") no-repeat 0 0 #f3f3f3;
+  float: right;
+  border-radius: 5px;
+  width: 67px;
+  background-position: 11px 10px;
+}
+
+.share-modal-pop select:focus {
+  outline: none;
+}
+
+.share-modal-pop .madal-footer {
+  width: 100%;
+  margin-top: 60px;
+  display: inline-block;
+}
+
+.share-modal-pop .btn-success {
+  background: #eb5a3e;
+  color: #fff;
+  border: 2px solid #eb5a3e;
+  font-size: 18px;
+  transition: all 0.5s;
+}
+
+.share-modal-pop .btn-success:hover {
+  background: none;
+  border: 2px solid #eb5a3e;
+  color: #eb5a3e;
+}
+
+.share-modal-pop .btn-success:focus {
+  outline: none;
+}
+
+.share-modal-pop .btn-link {
+  float: right;
+  padding-right: 0;
+  color: #4f4f4f;
+  font-weight: bold;
+}
+
+.message-modal-pop .modal-header h5 {
+  color: #f46044;
+}
+
+.message-modal-pop p {
+  color: #4f4f4f;
+  font-size: 16px;
+  border-bottom: 2px solid #f46044;
+  padding-bottom: 7px;
+}
+
+.message-modal-pop .modal-header {
+  border-bottom: none;
+}
+

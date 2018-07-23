@@ -1,0 +1,70 @@
+
+<div class="auth-page">
+  <div class="container page">
+    <div class="row">
+
+      <div class="col-md-6 offset-md-3 col-xs-12">
+        <div class="signin-form">
+          <h1 class="text-xs-center">{{ title }}</h1>
+          <!-- <a href="#" class="close">
+            <img src="../assets/images/close-icon.png" />
+          </a> -->
+          <p class="text-xs-center">
+            <a [routerLink]="['/login']" *ngIf="authType == 'register'">Have an account?</a>
+            <!-- <a [routerLink]="['/register']" *ngIf="authType == 'login'">Need an account?</a> -->
+          </p>
+          <div *ngFor="let alert of alerts">
+            <alert [type]="alert.type" [dismissOnTimeout]="alert.timeout" (onClosed)="onClosed(alert)">{{ alert.msg }}</alert>
+          </div>
+          <!-- <span class="alert alert-danger fade in" [hidden]="" >{{message}}</span> -->
+          <form [formGroup]="authForm" (ngSubmit)="submitForm()">
+            <fieldset [disabled]="isSubmitting">
+              <fieldset class="form-group">
+                <span class="envelope"></span>
+              </fieldset>
+              <fieldset class="form-group">
+                <input formControlName="username" placeholder="user@user.dk" class="form-control form-control-lg" type="text" [ngClass]="{ 'is-invalid': f.username.touched  && f.username.errors,'is-valid': !f.username.errors }" />
+                <div *ngIf=" f.username.touched &&  f.username.errors" class="invalid-feedback">
+                  <div *ngIf="f.username.errors.required"> *Please enter username</div>
+
+                </div>
+              </fieldset>
+              <fieldset class="form-group">
+                <span class="lock"></span>
+                <input formControlName="password" placeholder="Password" class="form-control form-control-lg" type="password" [ngClass]="{ 'is-invalid':  f.username.touched && f.password.errors,'is-valid': !f.password.errors }"/>
+                <div *ngIf=" f.password.touched && f.password.errors" class="invalid-feedback">
+                  <div *ngIf="f.password.errors.required"> *Please enter password</div>
+                </div>
+              </fieldset>
+              <div class="remember-me">
+              <input formControlName="rememberme" [value]="true" class="form-control form-control-lg" type="checkbox"/>
+                Remember Me
+              </div>
+              <div class="forget-pwd">
+                <a class="forget-link">Forgot password?</a>
+              </div>
+              <button class="btn btn-success" [disabled] ="!authForm.valid" >Log in</button>
+              <div class="dont-have-account">
+                <a class="dont-account">Dont’t have an account?</a>
+                <a class="btn btn-primary" (click)="redirect()" >Sign Up</a>
+              </div>  
+              <!-- <button class="btn btn-lg btn-primary pull-xs-right" [disabled]="!authForm.valid" type="submit">
+              {{ title }}
+            </button> -->
+            </fieldset>
+          </form>
+        </div>
+
+      </div>
+     
+    </div>
+  </div>
+</div>
+
+<ngx-spinner
+  bdColor="rgba(51,51,51,0.8)"
+  size="large"
+  color="#fff"
+  loadingText="Loading..."
+  type="ball-scale-multiple">
+</ngx-spinner>

@@ -1,0 +1,52 @@
+<nav class="navbar navbar-light">
+  <a class="navbar-brand" routerLink="/">Develop Diverse</a>
+
+  <!-- Show this for logged out users -->
+  <ul *appShowAuthed="true" class="nav navbar-nav pull-xs-right">
+
+    <div class="user-login-header"  >
+      <a class="user-login">
+        <img src="../assets/images/user-header.png" />{{currentUser.username}}
+        <span>
+          <img src="../assets/images/header-dot.png" />
+        </span>
+        <div class="header-user-dropdown">
+          <ul>
+            <li><a (click)="logout()"> Log Out</a></li>
+          </ul>
+        </div>
+      </a>
+    </div>
+  </ul>
+
+  <!-- Show this for logged in users -->
+  <!-- <ul *appShowAuthed="true" class="nav navbar-nav pull-xs-right">
+
+    <li class="nav-item">
+      <a class="nav-link" routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+        Home
+      </a>
+    </li>
+
+    <li class="nav-item">
+      <a class="nav-link" routerLink="/editor" routerLinkActive="active">
+        <i class="ion-compose"></i>&nbsp;New Article
+      </a>
+    </li>
+
+    <li class="nav-item">
+      <a class="nav-link" routerLink="/settings" routerLinkActive="active">
+        <i class="ion-gear-a"></i>&nbsp;Settings
+      </a>
+    </li>
+
+    <li class="nav-item">
+      <a class="nav-link" [routerLink]="['/profile', currentUser.username]" routerLinkActive="active">
+        <img [src]="currentUser.image" *ngIf="currentUser.image" class="user-pic" /> {{ currentUser.username }}
+      </a>
+    </li>
+
+  </ul> -->
+
+
+</nav>

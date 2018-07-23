@@ -1,0 +1,32 @@
+
+/* spinner */
+.example-h2 {
+    margin: 10px;
+  }
+  
+  .example-section {
+    display: flex;
+    align-content: center;
+    align-items: center;
+    height: 60px;
+  }
+  
+  .example-margin {
+    margin: 0 10px;
+  }
+  .remember-me input {
+    height: auto !important;
+    float: left !important;
+  }
+  .remember-me input {
+    height: auto !important;
+    float: left !important;
+    width: 19%;
+    display: block;
+    margin-top: 7px;
+}
+.remember-me {
+    display: block;
+    float: left;
+    width: 27%;
+}
