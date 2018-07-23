@@ -32,7 +32,7 @@ export class SignupComponent implements OnInit {
     this.authForm = this.fb.group({
       'name': ['', [Validators.required]],
       'email': ['', [Validators.required,Validators.email]],
-      'password': ['', Validators.required],
+      'password': ['',[Validators.required,Validators.pattern('^(?=.*[0-9])(?=.*[A-Z])(?=.*[a-z])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,}$')]],
       'company': ['', Validators.required],
       'confirmPassword':  ['',[ Validators.required,this.confirmPassword]]
     });

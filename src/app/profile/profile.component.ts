@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup,Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 import { User, UserService,Profile,ProfilesService } from '../core';
 
@@ -22,7 +23,9 @@ export class ProfileComponent implements OnInit {
     private router: Router,
     private userService: UserService,
     private fb: FormBuilder,
-    private profileService:ProfilesService
+    private profileService:ProfilesService,
+   private spinner: NgxSpinnerService,
+
   ) {
     // create form group using the form builder
     this.profileForm = this.fb.group({
@@ -34,7 +37,7 @@ export class ProfileComponent implements OnInit {
 
     this.profileForm2 = this.fb.group({
       'oldPassword': ['', Validators.required],
-      'newPassword':['', Validators.required],
+      'newPassword':['', [Validators.required,Validators.pattern('^(?=.*[0-9])(?=.*[A-Z])(?=.*[a-z])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,}$')]],
     });
     // Optional: subscribe to changes on the form
     // this.profileForm.valueChanges.subscribe(values => this.updateUser(values));
@@ -48,11 +51,14 @@ export class ProfileComponent implements OnInit {
     this.profileService
     .get()
     .subscribe(
-      getUser =>   this.profileForm.patchValue({
+      getUser =>{   
+        debugger;
+        this.profileForm.patchValue({
         'username':getUser.name,
         'email': getUser.email,
        'company':getUser.company,
-     }),
+     })
+    },
       err => {
         this.errors = err;
         this.isSubmitting = false;
@@ -71,19 +77,26 @@ export class ProfileComponent implements OnInit {
 
   submitForm() {
     this.isSubmitting = true;
+    this.spinner.show();
 
     // update the model
-    this.updateUser(this.profileForm.value);
+    var updateForm  = {company:this.profileForm.value.company,name:this.profileForm.value.username};
+  //  this.updateUser(updateForm);
 
     this.profileService
-    .update(this.user)
+    .update(updateForm)
     .subscribe(
-      updatedUser => this.router.navigateByUrl('/profile/' + updatedUser),
+      updatedUser =>       {
+      this.isSubmitting = false;
+      this.spinner.hide();
+
+      this.router.navigateByUrl('/profile')},
       err => {
         this.errors = err;
         this.isSubmitting = false;
       }
     );
+    
   }
 
   updateUser(values: Object) {

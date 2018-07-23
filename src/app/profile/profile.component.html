@@ -117,13 +117,13 @@
         <div class="col-md-10 offset-md-1 col-xs-12">
           <h2>Profile Details</h2>
 
-        <form [formGroup]="profileForm" >
+        <form [formGroup]="profileForm" (ngSubmit)="submitForm()">
           <fieldset [disabled]="isSubmitting">
 
             <div class="row">
               <div class="col-lg-3 col-md-3 col-sm-3 col-12">
                 <fieldset class="form-group">
-
+                    <label for="Name">Name</label>
                   <input formControlName="username" placeholder="Username" class="form-control form-control-lg" type="text" [ngClass]="{ 'is-invalid': !f.username.valid && f.username.touched && f.username.errors,'is-valid':  f.username.touched  && !f.username.errors }"
                     />
                   <span class="signup-user"></span>
@@ -146,6 +146,7 @@
               </div> -->
               <div class="col-lg-3 col-md-3 col-sm-3 col-12">
                 <fieldset class="form-group">
+                  <label for="Email">Email</label>
                   <span class="lock"></span>
                   <input formControlName="email" [readonly]='true' placeholder="user@user.com" class="form-control form-control-lg" type="text" [ngClass]="{ 'is-invalid': f.email.touched && f.email.errors }"
                   />
@@ -158,7 +159,7 @@
 
               <div class="col-lg-3 col-md-3 col-sm-3 col-12">
                 <fieldset class="form-group">
-
+                    <label for="Company">Company</label>
                   <input formControlName="company" placeholder="Company" class="form-control form-control-lg" type="text" [ngClass]="{ 'is-invalid': f.company.touched && f.company.errors,'is-valid':f.company.touched && !f.company.errors }"
                   />
                   <span class="signup-company"></span>
@@ -295,7 +296,7 @@
               <div class="row">
                 <div class="col-lg-3 col-md-3 col-sm-3 col-12">
                   <fieldset class="form-group">
-  
+                      <label for="Oldpassword">Old Password</label>
                     <input formControlName="oldPassword" placeholder="Old Password" class="form-control form-control-lg" type="text" [ngClass]="{ 'is-invalid': !f2.oldPassword.valid && f2.oldPassword.touched && f2.oldPassword.errors,'is-valid': f2.oldPassword.touched && !f2.oldPassword.errors }"
                       />
                     <span class="signup-user"></span>
@@ -306,12 +307,14 @@
                 </div>
                 <div class="col-lg-3 col-md-3 col-sm-3 col-12">
                   <fieldset class="form-group">
+                      <label for="Newpassword">New Password</label>
                     <input formControlName="newPassword" placeholder="New Password" class="form-control form-control-lg" type="text" [ngClass]="{ 'is-invalid': f2.newPassword.touched && f2.newPassword.errors,'is-valid': f2.newPassword.touched &&  !f2.newPassword.errors}"
                       />
                     <span class="envelope"></span>
                     <div *ngIf="f2.newPassword.touched && f2.newPassword.errors" class="invalid-feedback">
                       <div *ngIf="f2.newPassword.errors.required">*New Password is required</div>
-  
+                      <div *ngIf="f2.newPassword.errors.pattern"> *Password must be 8 characters including at least 1 uppercase letter, 1 special character and alphanumeric characters.</div>
+
                     </div>
                   </fieldset>
                 </div>
@@ -419,3 +422,10 @@
   <!-- share modal end-->
 
 </div>
+<ngx-spinner
+  bdColor="rgba(51,51,51,0.8)"
+  size="large"
+  color="#fff"
+  loadingText="Saving..."
+  type="ball-scale-multiple">
+</ngx-spinner>

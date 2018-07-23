@@ -14,16 +14,21 @@ export class ProfilesService {
   get(): Observable<Profile> {
     debugger;
     return this.apiService.get('/user_info.json/')
-      .pipe(map((data) =>data));
+      .pipe(map(
+        data =>{console.log(data);
+          debugger;
+           return data;
+           })      
+      );
     
   }
 
     
   update(profile): Observable<Profile> {
     return this.apiService
-    .put('/user_info.json/', { profile })
+    .put('/user_info.json/', profile)
     .pipe(map(data => {
-      return data.user;
+      return data;
     }));
   }
 

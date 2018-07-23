@@ -191,7 +191,7 @@
   <!-- share modal-->
 
   <ng-template #template>
-    <div class="share-modal-pop">
+    <div class="share-modal-pop share-pop-up">
       <div class="modal-header">
         <h4 class="modal-title pull-left">Share with others</h4>
       </div>
@@ -214,9 +214,7 @@
 
   <ng-template #templateOnLoad>
     <div class="share-modal-pop">
-      <div class="modal-header">
-        <h4 class="modal-title pull-left">Share with others</h4>
-      </div>
+   
       <div class="modal-body">
         <div class="step-by-step">
           <h6>Step By Step</h6>
@@ -236,7 +234,7 @@
             <label>
               <input type="checkbox" value="">Don’t show me again</label>
           </div>
-          <a class="close">
+          <a class="close"  (click)="closeFirstModal()">
             <img src="../assets/images/step-close.png" />
           </a>
         </div>

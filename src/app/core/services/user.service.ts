@@ -77,7 +77,11 @@ export class UserService {
   }
 
   purgeAuth() {
-    // Remove JWT from localstorage
+      this.apiService.get('/logout/')
+      .subscribe(
+        data =>console.log("logout" +data),
+        err => console.log(err)
+      );
     this.jwtService.destroyToken();
     // Set current user to an empty object
     this.currentUserSubject.next({} as User);

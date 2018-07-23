@@ -333,10 +333,12 @@ color:#9b9b9b;
   z-index: 9;
 }
 .upload-text .upload-file strong {
-  position: absolute;
+  position: relative;
   left: 0;
   font-weight: normal;
   top: 4px;
   text-decoration: underline;
 }
-
+.share-pop-up {
+border:none !important;
+}

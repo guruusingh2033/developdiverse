@@ -3,7 +3,8 @@ import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms'
 import { ActivatedRoute, Router } from '@angular/router';
 import { AlertComponent } from 'ngx-bootstrap/alert/alert.component';
 import { NgxSpinnerService } from 'ngx-spinner';
-
+import { CookieService } from 'ngx-cookie-service';
+import {JwtService} from '../core/services/jwt.service'
 import { Errors, UserService } from '../core';
 
 @Component({
@@ -30,6 +31,10 @@ export class AuthComponent implements OnInit {
     private userService: UserService,
     private fb: FormBuilder,
     private spinner: NgxSpinnerService,
+    private cookieService: CookieService,
+    private jwtService: JwtService,
+
+
   ) {
     // use FormBuilder to create a form group
     this.authForm = this.fb.group({
@@ -50,7 +55,22 @@ export class AuthComponent implements OnInit {
     });
     this.alerts = [];
 
+    console.log("token-------");
+    console.log(this.cookieService.get("jwtToken"));
+   var token:any =  this.jwtService.getToken();
+   
+   if(!token){
+     token = localStorage.getItem('jwtToken');
+     if(token){
+       debugger;
+       console.log("hi");
+      localStorage.setItem("jwtToken",token);
+      this.cookieService.set("jwtToken",token);
+      this.userService.purgeAuth();
 
+     }
+   }
+ 
 
   }
 

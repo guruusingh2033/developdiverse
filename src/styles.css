@@ -352,3 +352,51 @@
   border-bottom: none;
 }
 
+html {
+  padding-bottom: 0;
+}
+
+.share-modal-pop {
+  max-width: 603px;
+  width: 100%;
+  margin: auto;
+  border: 2px solid #838383;
+  padding: 20px;
+  border-radius: 0;
+  position: relative;
+}
+ .share-modal-pop h6 {
+  color:#22201b;
+  text-transform: uppercase;
+  font-weight:bold;
+  font-size: 19px;
+}
+.share-modal-pop ul {
+  padding:0;
+  margin:0;
+  display:block;
+  list-style: none;
+}
+.share-modal-pop ul li {
+  list-style: decimal inside;
+  font-size: 17px;
+  margin-bottom: 9px;
+}
+.share-modal-pop .close {
+  position: absolute;
+  top: -36px;
+  right: -36px;
+  opacity: 1;
+}
+ .share-modal-pop img {
+  margin-left: 7px;
+}
+.share-modal-pop .checkbox {
+  margin-top: 25px;
+}
+.share-modal-pop input[type="checkbox"] {
+  margin-right: 7px;
+  vertical-align: top;
+  margin-top: 6px;
+ 
+}

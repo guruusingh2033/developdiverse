@@ -8,39 +8,37 @@ export class JwtService {
   constructor( private cookieService: CookieService ) { }
 
   getToken(): String {
-    if(window.localStorage['rememberme']=="true"){
+    if(window.localStorage['rememberme']=="true"  ){
     return window.localStorage['jwtToken'];
     }
     else{
      // return window.sessionStorage['jwtToken'];
-      return  this.cookieService.get('jwtToken');;
+      // if(!this.cookieService.get('jwtToken')){
+      //   return window.localStorage['jwtToken'];
+      // }
+      // else{
+      return  this.cookieService.get('jwtToken');
 
+     // }
     }
     
   }
 
   saveToken(token) {
-    if(window.localStorage['rememberme']=="true"){
    window.localStorage['jwtToken'] = token;
-    }
-    else{
+   
       this.cookieService.set( 'jwtToken', token);
-
-   //  window.sessionStorage['jwtToken']=token;
-    }
   }
 
   destroyToken() {
-    if(window.localStorage['rememberme']=="true"){
-      debugger;
+    this.cookieService.delete('jwtToken');
+
   window.localStorage.removeItem('jwtToken');
-    }
-    else{
+  window.localStorage.removeItem('username');
 
-      this.cookieService.delete('jwtToken');
+  this.cookieService.delete('username');
 
-     // window.sessionStorage.removeItem('jwtToken');
-    }
+     
   }
 
 }
