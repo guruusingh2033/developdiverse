@@ -6,6 +6,7 @@ import { ApiService } from './api.service';
 import { JwtService } from './jwt.service';
 import { User } from '../models';
 import { map ,  distinctUntilChanged } from 'rxjs/operators';
+import { CookieService } from 'ngx-cookie-service';
 
 
 @Injectable()
@@ -19,7 +20,9 @@ export class UserService {
   constructor (
     private apiService: ApiService,
     private http: HttpClient,
-    private jwtService: JwtService
+    private jwtService: JwtService,
+    private cookieService: CookieService
+
   ) {}
 
   // Verify JWT in localstorage with server & load user's info.
@@ -39,7 +42,9 @@ export class UserService {
       this.data.username = window.localStorage['username'];
       }
       else{
-        this.data.username = window.sessionStorage['username'];
+        this.data.username =   this.cookieService.get('username');
+
+      //  this.data.username = window.sessionStorage['username'];
 
       }
       console.log(this.data.username);
@@ -60,7 +65,9 @@ export class UserService {
     window.localStorage["username"] =  user.username;
     }
     else{
-      window.sessionStorage["username"] =  user.username;
+      this.cookieService.set( 'username', user.username );
+
+     // window.sessionStorage["username"] =  user.username;
 
     }
     // Set current user data into observable

@@ -1,6 +1,6 @@
 export interface Profile {
-  username: string;
-  bio: string;
-  image: string;
-  following: boolean;
+email:string,
+name:string,
+company:string,
+member_since:string
 }

@@ -1,26 +1,32 @@
 import { Injectable } from '@angular/core';
+import { CookieService } from 'ngx-cookie-service';
 
 
 @Injectable()
 export class JwtService {
+
+  constructor( private cookieService: CookieService ) { }
 
   getToken(): String {
     if(window.localStorage['rememberme']=="true"){
     return window.localStorage['jwtToken'];
     }
     else{
-      return window.sessionStorage['jwtToken'];
+     // return window.sessionStorage['jwtToken'];
+      return  this.cookieService.get('jwtToken');;
 
     }
     
   }
 
-  saveToken(token: String) {
+  saveToken(token) {
     if(window.localStorage['rememberme']=="true"){
    window.localStorage['jwtToken'] = token;
     }
     else{
-     window.sessionStorage['jwtToken']=token;
+      this.cookieService.set( 'jwtToken', token);
+
+   //  window.sessionStorage['jwtToken']=token;
     }
   }
 
@@ -30,7 +36,10 @@ export class JwtService {
   window.localStorage.removeItem('jwtToken');
     }
     else{
-      window.sessionStorage.removeItem('jwtToken');
+
+      this.cookieService.delete('jwtToken');
+
+     // window.sessionStorage.removeItem('jwtToken');
     }
   }
 

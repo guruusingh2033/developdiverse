@@ -29,6 +29,7 @@
     "core-js": "^2.4.1",
     "marked": "^0.3.9",
     "ngx-bootstrap": "^3.0.1",
+    "ngx-cookie-service": "^1.0.10",
     "ngx-editor": "^3.3.0",
     "ngx-spinner": "^6.0.0",
     "rxjs": "^6.2.1",

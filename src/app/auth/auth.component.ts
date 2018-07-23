@@ -29,7 +29,7 @@ export class AuthComponent implements OnInit {
     private router: Router,
     private userService: UserService,
     private fb: FormBuilder,
-    private spinner: NgxSpinnerService
+    private spinner: NgxSpinnerService,
   ) {
     // use FormBuilder to create a form group
     this.authForm = this.fb.group({

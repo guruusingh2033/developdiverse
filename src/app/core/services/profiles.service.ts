@@ -18,6 +18,15 @@ export class ProfilesService {
     
   }
 
+    
+  update(profile): Observable<Profile> {
+    return this.apiService
+    .put('/user_info.json/', { profile })
+    .pipe(map(data => {
+      return data.user;
+    }));
+  }
+
   follow(username: string): Observable<Profile> {
     return this.apiService.post('/profiles/' + username + '/follow');
   }

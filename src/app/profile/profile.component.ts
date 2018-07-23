@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup,Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
-import { User, UserService,ProfilesService } from '../core';
+import { User, UserService,Profile,ProfilesService } from '../core';
 
 @Component({
   selector: 'app-profile-page',
@@ -11,6 +11,7 @@ import { User, UserService,ProfilesService } from '../core';
 })
 export class ProfileComponent implements OnInit {
   user: User = {} as User;
+  profile:any;
   profileForm: FormGroup;
   profileForm2:FormGroup;
   errors: Object = {};
@@ -26,17 +27,9 @@ export class ProfileComponent implements OnInit {
     // create form group using the form builder
     this.profileForm = this.fb.group({
       'username':  ['', Validators.required],
-      'surname':'',
       'email': ['', Validators.required],
-      'userPosition':'',
       'company': ['', Validators.required],
-      'department':'',
-      'group':'',
-      'phone':'',
-      'address':'',
-      'postcode':'',
-      'city':'',
-      'country':'',   
+     
     });
 
     this.profileForm2 = this.fb.group({
@@ -49,10 +42,23 @@ export class ProfileComponent implements OnInit {
 
   ngOnInit() {
     // Make a fresh copy of the current user's object to place in editable form fields
-    // Object.assign(this.user, this.userService.getCurrentUser());
+    //  Object.assign(this.profile, this.profileService.get());
     // Fill the form
-    // this.profileForm.patchValue(this.user);
-    
+    // this.profileForm.patchValue(this.profile);
+    this.profileService
+    .get()
+    .subscribe(
+      getUser =>   this.profileForm.patchValue({
+        'username':getUser.name,
+        'email': getUser.email,
+       'company':getUser.company,
+     }),
+      err => {
+        this.errors = err;
+        this.isSubmitting = false;
+      }
+  )
+
   }
 
   logout() {
@@ -64,20 +70,20 @@ export class ProfileComponent implements OnInit {
   get f2() { return this.profileForm2.controls; }
 
   submitForm() {
-    // this.isSubmitting = true;
+    this.isSubmitting = true;
 
-    // // update the model
-    // this.updateUser(this.profileForm.value);
+    // update the model
+    this.updateUser(this.profileForm.value);
 
-    // this.userService
-    // .update(this.user)
-    // .subscribe(
-    //   updatedUser => this.router.navigateByUrl('/profile/' + updatedUser.username),
-    //   err => {
-    //     this.errors = err;
-    //     this.isSubmitting = false;
-    //   }
-    // );
+    this.profileService
+    .update(this.user)
+    .subscribe(
+      updatedUser => this.router.navigateByUrl('/profile/' + updatedUser),
+      err => {
+        this.errors = err;
+        this.isSubmitting = false;
+      }
+    );
   }
 
   updateUser(values: Object) {

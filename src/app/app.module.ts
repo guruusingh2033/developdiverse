@@ -14,6 +14,8 @@ import { AppRoutingModule } from './app-routing.module';
 import { CoreModule } from './core/core.module';
 import { AlertModule } from 'ngx-bootstrap';
 import { ModalModule } from 'ngx-bootstrap';
+import { CookieService } from 'ngx-cookie-service';
+
 // import { SignupComponent } from './signup/signup.component';
 
 @NgModule({
@@ -28,7 +30,7 @@ import { ModalModule } from 'ngx-bootstrap';
     ModalModule.forRoot(),
     AlertModule.forRoot()
   ],
-  providers: [],
+  providers: [CookieService],
   bootstrap: [AppComponent]
 })
 export class AppModule {}
