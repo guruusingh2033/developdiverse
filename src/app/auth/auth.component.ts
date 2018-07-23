@@ -71,6 +71,7 @@ export class AuthComponent implements OnInit {
      }
    }
  
+   localStorage.setItem("rememberme","false");
 
   }
 

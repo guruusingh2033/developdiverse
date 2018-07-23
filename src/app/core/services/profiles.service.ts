@@ -12,11 +12,10 @@ export class ProfilesService {
   ) {}
 
   get(): Observable<Profile> {
-    debugger;
     return this.apiService.get('/user_info.json/')
       .pipe(map(
         data =>{console.log(data);
-          debugger;
+         
            return data;
            })      
       );

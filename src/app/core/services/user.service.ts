@@ -48,7 +48,6 @@ export class UserService {
 
       }
       console.log(this.data.username);
-      debugger;
       this.setAuth(this.data);
 
     } else {
@@ -96,7 +95,6 @@ export class UserService {
     return this.apiService.post( route, credentials)
       .pipe(map(
       data => {
-        debugger;
 
         if(type=='login'){
         data.username = credentials.username;

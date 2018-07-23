@@ -52,7 +52,6 @@ export class ProfileComponent implements OnInit {
     .get()
     .subscribe(
       getUser =>{   
-        debugger;
         this.profileForm.patchValue({
         'username':getUser.name,
         'email': getUser.email,
