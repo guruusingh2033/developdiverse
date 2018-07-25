@@ -95,7 +95,6 @@ export class UserService {
     return this.apiService.post( route, credentials)
       .pipe(map(
       data => {
-
         if(type=='login'){
         data.username = credentials.username;
         if(rememberme == true){

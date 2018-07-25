@@ -25,6 +25,7 @@ export class AuthComponent implements OnInit {
   color = 'primary';
   mode = 'determinate';
   value = 50;
+  
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -62,8 +63,6 @@ export class AuthComponent implements OnInit {
    if(!token){
      token = localStorage.getItem('jwtToken');
      if(token){
-       debugger;
-       console.log("hi");
       localStorage.setItem("jwtToken",token);
       this.cookieService.set("jwtToken",token);
       this.userService.purgeAuth();
@@ -99,7 +98,6 @@ export class AuthComponent implements OnInit {
         data => {
           console.log(data); 
           this.spinner.hide();
-         
           // this.router.navigateByUrl('/dashboard/welcome')
           this.router.navigateByUrl('/profile')
 

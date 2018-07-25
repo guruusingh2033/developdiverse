@@ -15,7 +15,6 @@ export class ProfilesService {
     return this.apiService.get('/user_info.json/')
       .pipe(map(
         data =>{console.log(data);
-         
            return data;
            })      
       );
@@ -31,12 +30,12 @@ export class ProfilesService {
     }));
   }
 
-  follow(username: string): Observable<Profile> {
-    return this.apiService.post('/profiles/' + username + '/follow');
-  }
-
-  unfollow(username: string): Observable<Profile> {
-    return this.apiService.delete('/profiles/' + username + '/follow');
+  updatePassword(data):any {
+    return this.apiService
+    .post('/reset_password/', data)
+    .pipe(map(data => {
+      return data;
+    }));
   }
 
 }

@@ -295,7 +295,7 @@
       position: absolute;
       left:0;
   } 
-  .scored-five .btn-success:hover {
+  .scored-five .btn-success:hovlabeler {
     background:none;
     border: 2px solid #dc482d;
     
@@ -356,3 +356,4 @@
     background: #e94829;
   }
   
+ 

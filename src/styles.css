@@ -400,3 +400,10 @@ html {
   margin-top: 6px;
  
 }
+
+label{
+  color:grey !important;
+}
+.remember-me label {
+  width: 100%;
+}

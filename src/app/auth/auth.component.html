@@ -36,9 +36,10 @@
                   <div *ngIf="f.password.errors.required"> *Please enter password</div>
                 </div>
               </fieldset>
-              <div class="remember-me">
+              <div class="remember-me" >
+                  <label>
               <input formControlName="rememberme" [value]="true" class="form-control form-control-lg" type="checkbox"/>
-                Remember Me
+                Remember Me </label>
               </div>
               <div class="forget-pwd">
                 <a class="forget-link">Forgot password?</a>

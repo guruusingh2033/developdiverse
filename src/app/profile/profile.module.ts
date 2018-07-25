@@ -1,5 +1,6 @@
 import { ModuleWithProviders, NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { AlertModule } from 'ngx-bootstrap/alert';
 
 import { ProfileComponent } from './profile.component';
 import { AuthGuard } from '../core';
@@ -11,7 +12,9 @@ import { NgxSpinnerModule } from 'ngx-spinner';
   imports: [
     SharedModule,
     ProfileRoutingModule,
-    NgxSpinnerModule
+    NgxSpinnerModule,
+    AlertModule.forRoot(),
+
   ],
   declarations: [
     ProfileComponent

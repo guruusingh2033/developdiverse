@@ -72,41 +72,43 @@
       </div>
     </div>
     <div class="right-side">
+
+      <form [formGroup]="homeForm" >
       <div class="job-form">
         <div class="row">
           <div class="col-lg-10 col-md-8 col-sm-12 col-xs-12">
             <div class="form-group">
-              <input type="text" class="form-control department" placeholder="Job  Title">
+              <input  formControlName="ad_title" type="text" class="form-control department" placeholder="Job  Title" [ngClass]="{ 'is-invalid': f.ad_title.touched  && f.ad_title.errors}">
             </div>
             <div class="row">
               <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12 right-padding-none">
                 <div class="form-group">
-                  <input type="text" class="form-control" placeholder="Department">
+                  <input formControlName="department" type="text" class="form-control" placeholder="Department" [ngClass]="{ 'is-invalid': f.department.touched  && f.department.errors}">
                 </div>
               </div>
               <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12 right-padding-none small-padding">
                 <div class="form-group">
-                  <input type="text" class="form-control" placeholder="Company">
+                  <input formControlName="company" type="text" class="form-control" placeholder="Company" [ngClass]="{ 'is-invalid': f.company.touched  && f.company.errors}">
                 </div>
               </div>
               <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12 right-padding-none small-padding">
                 <div class="form-group">
-                  <input type="text" class="form-control" placeholder="City">
+                  <input formControlName="city" type="text" class="form-control" placeholder="City" [ngClass]="{ 'is-invalid': f.city.touched  && f.city.errors}">
                 </div>
               </div>
               <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
                 <div class="form-group">
-                  <input type="text" class="form-control" placeholder="Country">
+                  <input formControlName="country" type="text" class="form-control" placeholder="Country" [ngClass]="{ 'is-invalid': f.country.touched  && f.country.errors}">
                 </div>
               </div>
             </div>
           </div>
           <div class="col-lg-2 col-md-4 col-sm-12 col-xs-12">
             <div class="form-group small-width">
-              <a class="btn btn-primary" (click)="openModal(template)">Share</a>
+              <button class="btn btn-primary" (click)="openModal(template)">Share</button>
             </div>
             <div class="form-group small-width1">
-              <a class="btn btn-success">Approval</a>
+              <button class="btn btn-success">Approval</button>
             </div>
           </div>
         </div>
@@ -155,8 +157,8 @@
         <div class="row" *ngIf="!openScreen">
           <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
             <div class="text-editor">
-              <app-ngx-editor [placeholder]="'Enter text here...'" [spellcheck]="true" [(ngModel)]="htmlContent"></app-ngx-editor>
-            </div>
+                <app-ngx-editor formControlName="ad_body" (keydown)="onKeydown($event)" [placeholder]="'Enter text here...'" [spellcheck]="false" [(ngModel)]="ad_body" ></app-ngx-editor>
+              </div>
           </div>
           <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
             <div class="right-sidebar">
@@ -181,6 +183,8 @@
 
 
       </div>
+    </form>
+
       <div class="scored-five">
         <a class="btn btn-success">Draft</a>
         <h5>Saved 5 Sec ago!</h5>

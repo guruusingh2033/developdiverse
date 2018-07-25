@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup,Validators } from '@angular/forms';
+import { FormBuilder, FormGroup,Validators,AbstractControl } from '@angular/forms';
 import { Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
-
+import { AlertComponent } from 'ngx-bootstrap/alert/alert.component';
 import { User, UserService,Profile,ProfilesService } from '../core';
 
 @Component({
@@ -18,6 +18,8 @@ export class ProfileComponent implements OnInit {
   errors: Object = {};
   isSubmitting = false;
   submit = false;
+  alerts: any;
+  alert1:any;
 
   constructor(
     private router: Router,
@@ -38,6 +40,8 @@ export class ProfileComponent implements OnInit {
     this.profileForm2 = this.fb.group({
       'oldPassword': ['', Validators.required],
       'newPassword':['', [Validators.required,Validators.pattern('^(?=.*[0-9])(?=.*[A-Z])(?=.*[a-z])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,}$')]],
+      'confirmPassword':  ['',[ Validators.required,confirmPassword]]
+
     });
     // Optional: subscribe to changes on the form
     // this.profileForm.valueChanges.subscribe(values => this.updateUser(values));
@@ -63,7 +67,8 @@ export class ProfileComponent implements OnInit {
         this.isSubmitting = false;
       }
   )
-
+  this.alerts = [];
+  this.alert1 = [];
   }
 
   logout() {
@@ -88,18 +93,105 @@ export class ProfileComponent implements OnInit {
       updatedUser =>       {
       this.isSubmitting = false;
       this.spinner.hide();
-
+      this.alerts.push({
+        type: 'success',
+        msg: 'Successfully Updated',
+        timeout: 3000
+      }); 
       this.router.navigateByUrl('/profile')},
       err => {
-        this.errors = err;
+        this.spinner.hide();
+        if(typeof(err) == "object")
+        {         
+         this.errors = err.error_message;
+        }
+        else{
+          this.errors = err;
+
+        }
+        this.alerts.push({
+          type: 'danger',
+          msg: this.errors,
+          timeout: 3000
+        });
         this.isSubmitting = false;
       }
     );
     
   }
 
+
+  changePassword(){
+    this.isSubmitting = true;
+    this.spinner.show();
+
+    // update the model
+    var updatePassForm  = {email:this.profileForm.value.email,old_password:this.profileForm2.value.oldPassword,new_password:this.profileForm2.value.newPassword};
+  //  this.updateUser(updateForm);
+
+    this.profileService
+    .updatePassword(updatePassForm)
+    .subscribe(
+      updatedUser =>       {
+      this.isSubmitting = false;
+      this.spinner.hide();
+      this.alert1.push({
+        type: 'success',
+        msg: updatedUser.message,
+        timeout: 3000
+      }); 
+      this.router.navigateByUrl('/profile')},
+      err => {
+        if(typeof(err) == "object")
+        {         
+         this.errors = err.error_message;
+        }
+        else{
+          this.errors = err;
+
+        }
+        this.alert1.push({
+          type: 'danger',
+          msg: this.errors,
+          timeout: 3000
+        });
+        this.spinner.hide();
+
+        this.isSubmitting = false;
+      }
+    );
+  }
+
   updateUser(values: Object) {
     Object.assign(this.user, values);
   }
 
+
+  onClosed(dismissedAlert: AlertComponent): void {
+    this.alerts = this.alerts.filter(alert => alert !== dismissedAlert);
+  }
+
+
+
+}
+function confirmPassword(control: AbstractControl) {
+  if (!control.parent || !control) {
+    return;
+  }
+  const password = control.parent.get('newPassword');
+  const passwordConfirm = control.parent.get('confirmPassword');
+
+  if (!password || !passwordConfirm) {
+    return;
+  }
+
+  if (passwordConfirm.value === '') {
+    return;
+  }
+
+  if (password.value !== passwordConfirm.value) {
+    return {
+      passwordsNotMatch: true
+    };
+  }
 }

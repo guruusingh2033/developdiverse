@@ -159,6 +159,7 @@
   font-weight:bold;
   transition:all 0.5s;
   background-position: 88% 9px;
+  color: #333;
 }
 .job-form .btn-primary:hover {
   background:url("../../assets/images/share-icon.png") no-repeat 0 0 #d33f24;
@@ -176,6 +177,7 @@
   font-weight:bold;
   transition:all 0.5s;
   background-position: 88% 9px;  
+  color: #333;
 }
 .job-form .btn-success:hover {
   background:url("../../assets/images/tick-icon.png") no-repeat 0 0 #d33f24;
