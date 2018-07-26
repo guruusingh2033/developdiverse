@@ -41,4 +41,9 @@ export class JwtService {
      
   }
 
+  destroyTokenOnPasswordUpdate(){
+    this.cookieService.delete('jwtToken');
+    window.localStorage.removeItem('jwtToken');
+  }
+
 }

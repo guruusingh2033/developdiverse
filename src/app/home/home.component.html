@@ -16,7 +16,7 @@
               <div class="drop-dwnmenu">
                 <ul>
                   <li>
-                    <a>New
+                    <a [routerLink]="['/dashboard/welcome']">New
                       <span>Upload</span>
                     </a>
                   </li>
@@ -61,11 +61,29 @@
           <li>
             <a>
               <img src="../assets/images/user-dashboard.png" />
+              <div class="drop-dwnmenu">
+                  <ul>
+                    <li>
+                      <a [routerLink]="['/profile']">Profile
+  
+                      </a>
+                    </li>
+                  </ul>
+                </div>
             </a>
           </li>
           <li>
             <a>
               <img src="../assets/images/info-icon.png" />
+              <div class="drop-dwnmenu">
+                  <ul>
+                    <li>
+                      <a>Help
+  
+                      </a>
+                    </li>
+                  </ul>
+                </div>
             </a>
           </li>
         </ul>

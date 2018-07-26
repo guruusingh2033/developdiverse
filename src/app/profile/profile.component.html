@@ -16,7 +16,7 @@
               <div class="drop-dwnmenu">
                 <ul>
                   <li>
-                    <a>New
+                    <a  [routerLink]="['/dashboard/welcome']">New
                       <span>Upload</span>
                     </a>
                   </li>
@@ -61,11 +61,28 @@
           <li>
             <a>
               <img src="../assets/images/user-dashboard.png" />
+              <div class="drop-dwnmenu">
+                  <ul>
+                    <li>
+                      <a [routerLink]="['/profile']">Profile
+                      </a>
+                    </li>
+                  </ul>
+                </div>
             </a>
           </li>
           <li>
             <a>
               <img src="../assets/images/info-icon.png" />
+              <div class="drop-dwnmenu">
+                  <ul>
+                    <li>
+                      <a>Help
+  
+                      </a>
+                    </li>
+                  </ul>
+                </div>
             </a>
           </li>
         </ul>
@@ -152,7 +169,7 @@
                   <span class="lock"></span>
                   <input formControlName="email" [readonly]='true' placeholder="user@user.com" class="form-control form-control-lg" type="text" [ngClass]="{ 'is-invalid': f.email.touched && f.email.errors }"
                   />
-                  <div *ngIf="f.email.touched && f.email.errors" class="invalid-feedback">
+                  <div *ngIf="f.email.occurencetouched && f.email.errors" class="invalid-feedback">
                       <div *ngIf="f.email.errors.required">*Email is required</div>
 
                   </div>
@@ -253,7 +270,7 @@
               <div class="col-lg-3 col-md-3 col-sm-3 col-12">
                 <fieldset class="form-group">
 
-                  <input formControlName="city" placeholder="City" class="form-control form-control-lg" type="text" [ngClass]="{ 'is-invalid': f.city.touched && f.city.errors,'is-valid':  f.city.touched  && !f.city.errors }"
+                  <input formControlName=occurence"city" placeholder="City" class="form-control form-control-lg" type="text" [ngClass]="{ 'is-invalid': f.city.touched && f.city.errors,'is-valid':  f.city.touched  && !f.city.errors }"
                   />
                   <span class="signup-company"></span>
                   <div *ngIf="f.city.touched && f.city.errors" class="invalid-feedback">

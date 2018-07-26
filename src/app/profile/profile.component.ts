@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup,Validators,AbstractControl } from '@angular/form
 import { Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { AlertComponent } from 'ngx-bootstrap/alert/alert.component';
-import { User, UserService,Profile,ProfilesService } from '../core';
+import { User, UserService,Profile,ProfilesService,JwtService } from '../core';
 
 @Component({
   selector: 'app-profile-page',
@@ -27,6 +27,7 @@ export class ProfileComponent implements OnInit {
     private fb: FormBuilder,
     private profileService:ProfilesService,
    private spinner: NgxSpinnerService,
+   private jwtService:JwtService
 
   ) {
     // create form group using the form builder
@@ -133,6 +134,9 @@ export class ProfileComponent implements OnInit {
     .updatePassword(updatePassForm)
     .subscribe(
       updatedUser =>       {
+    this.jwtService.destroyTokenOnPasswordUpdate();
+    this.jwtService.saveToken(updatedUser.auth_token);
+ 
       this.isSubmitting = false;
       this.spinner.hide();
       this.alert1.push({
@@ -140,6 +144,7 @@ export class ProfileComponent implements OnInit {
         msg: updatedUser.message,
         timeout: 3000
       }); 
+      this.profileForm2.reset({});
       this.router.navigateByUrl('/profile')},
       err => {
         if(typeof(err) == "object")

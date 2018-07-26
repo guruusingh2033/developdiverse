@@ -9,7 +9,6 @@ const routes: Routes = [
     path: 'dashboard/:id',
     component: HomeComponent,
     canActivate: [AuthGuard],
-
     resolve: {
       isAuthenticated: HomeAuthResolver
     }
