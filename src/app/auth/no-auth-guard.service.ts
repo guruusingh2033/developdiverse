@@ -22,8 +22,8 @@ export class NoAuthGuard implements CanActivate {
   ): Observable<boolean> {
     const x = this.jwtService.getToken(); 
     if (x) { 
-      // this.router.navigate(['/dashboard/welcome']); 
-     this.router.navigate(['/profile']); 
+       this.router.navigate(['/dashboard/welcome']); 
+    // this.router.navigate(['/profile']); 
 
      } else 
     { return new BehaviorSubject<boolean>(true); 

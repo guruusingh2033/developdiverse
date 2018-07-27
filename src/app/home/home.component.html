@@ -7,7 +7,7 @@
     </div>
   </div> -->
   <div id="content">
-    <div class="sidebar">
+    <!-- <div class="sidebar">
       <div class="top-dashboard-link">
         <ul>
           <li>
@@ -88,7 +88,7 @@
           </li>
         </ul>
       </div>
-    </div>
+    </div> -->
     <div class="right-side">
 
       <form [formGroup]="homeForm" >
@@ -175,7 +175,7 @@
         <div class="row" *ngIf="!openScreen">
           <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
             <div class="text-editor">
-                <app-ngx-editor formControlName="ad_body" (keydown)="onKeydown($event)" [placeholder]="'Enter text here...'" [spellcheck]="false" [(ngModel)]="ad_body" ></app-ngx-editor>
+                <app-ngx-editor formControlName="ad_body" (keydown)="onKeydown($event)" [placeholder]="'Enter text here...'" [spellcheck]="false" [(ngModel)]="ad_body"  (ngModelChange)="modelChanged($event)"></app-ngx-editor>
               </div>
           </div>
           <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">

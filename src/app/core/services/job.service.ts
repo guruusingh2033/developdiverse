@@ -23,7 +23,7 @@ export class JobService {
 
 
   analyzeJob(job):Observable<Job> {
-    return this.apiService.get('/analyze_ad/')
+    return this.apiService.post('/analyze_ad/',job)
       .pipe(map(
         data =>{
           console.log(data);

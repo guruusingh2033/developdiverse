@@ -98,8 +98,8 @@ export class AuthComponent implements OnInit {
         data => {
           console.log(data); 
           this.spinner.hide();
-          // this.router.navigateByUrl('/dashboard/welcome')
-          this.router.navigateByUrl('/profile')
+           this.router.navigateByUrl('/dashboard/welcome')
+        //  this.router.navigateByUrl('/profile')
 
         },
         err => {

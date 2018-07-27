@@ -407,3 +407,121 @@ label{
 .remember-me label {
   width: 100%;
 }
+
+/* Sidebar start here  */
+
+.sidebar {
+  width: 80px;
+  position: fixed;
+  left: 0;
+  height: calc(100% - 80px);
+  border-radius: 0;
+  padding-top: 80px;
+  background: none;
+  padding-left: 20px;
+  padding-right: 20px;
+  text-align: center;
+  z-index: 99;
+}
+.sidebar .top-dashboard-link {
+  width: 100%;
+  position: absolute;
+  top: 25%;
+  left: 0;
+}
+.sidebar .top-dashboard-link ul {
+  display:block;
+  padding:0;
+  margin:0;
+  list-style:none;
+}
+.sidebar .top-dashboard-link ul li {
+  display:list-item;
+  position: relative;
+} 
+.sidebar .top-dashboard-link ul li a {
+  display:list-item;
+  cursor: pointer;
+  margin-bottom: 35px;
+  transition:all 0.5s;
+} 
+.sidebar .top-dashboard-link ul li a img {
+  opacity:0.5;
+  transition:all 0.5s;
+}
+.sidebar .top-dashboard-link ul li a:hover img {
+  opacity:1;
+}
+.sidebar .bottom-dashboard-link {
+  width: 100%;
+  position: absolute;
+  left: 0;
+  bottom:0;
+}
+.sidebar .bottom-dashboard-link ul {
+  display:block;
+  padding:0;
+  margin:0;
+  list-style:none;
+}
+.sidebar .bottom-dashboard-link ul li {
+  display:list-item;
+  position: relative;
+} 
+.sidebar .bottom-dashboard-link ul li a {
+  display:list-item;
+  cursor: pointer;
+  margin-bottom: 35px;
+  transition:all 0.5s;
+} 
+.sidebar .bottom-dashboard-link ul li a img {
+  opacity:0.5;
+  transition:all 0.5s;
+}
+.sidebar .bottom-dashboard-link ul li a:hover img {
+  opacity:1;
+}
+.sidebar ul li .drop-dwnmenu {
+  position:absolute;
+  background:#151e39;
+  left:60px;
+  display:none;
+  top:0;
+  width: 232px;
+  box-shadow: -5px 0px 3px -1px rgba(0,0,0,0.5);
+  height:40px;
+  z-index: 9;
+}
+.sidebar ul li:hover .drop-dwnmenu {
+  display:block;
+}
+.sidebar ul li .drop-dwnmenu li {
+  font-size:22px;
+  text-align: left;
+
+}
+.sidebar ul li .drop-dwnmenu li a {
+  font-size:22px;
+  text-align: left;
+  color:#fff;
+  display:list-item;
+  padding: 2px 30px;
+}
+.sidebar ul li .drop-dwnmenu li a span {
+  padding-left: 25px;
+}
+.form-ele {
+  border: none;
+  background: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  width: auto;
+  display: inline-block;
+}
+.form-ele option {
+  width:auto;
+}
+.form-ele:focus {
+  outline: none;
+}
