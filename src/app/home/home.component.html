@@ -90,8 +90,8 @@
       </div>
     </div> -->
     <div class="right-side">
-
-      <form [formGroup]="homeForm" >
+      
+      <form [formGroup]="homeForm"  >
       <div class="job-form">
         <div class="row">
           <div class="col-lg-10 col-md-8 col-sm-12 col-xs-12">
@@ -107,7 +107,7 @@
               <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12 right-padding-none small-padding">
                 <div class="form-group">
                   <input formControlName="company" type="text" class="form-control" placeholder="Company" [ngClass]="{ 'is-invalid': f.company.touched  && f.company.errors}">
-                </div>
+                </div> 
               </div>
               <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12 right-padding-none small-padding">
                 <div class="form-group">
@@ -123,7 +123,7 @@
           </div>
           <div class="col-lg-2 col-md-4 col-sm-12 col-xs-12">
             <div class="form-group small-width">
-              <button class="btn btn-primary" (click)="openModal(template)">Share</button>
+              <button class="btn btn-primary" (click)="openModal(template)" [disabled] ="!homeForm.valid" >Share</button>
             </div>
             <div class="form-group small-width1">
               <button class="btn btn-success">Approval</button>
@@ -131,6 +131,9 @@
           </div>
         </div>
       </div>
+
+
+  
       <div class="content-all">
         <div class="upload-height" *ngIf="openScreen">
           <div class="type-upload">
@@ -171,9 +174,9 @@
             </div>
           </div>
         </div>
-
+      
         <div class="row" *ngIf="!openScreen">
-          <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
+          <div class="col-lg-9 col-dropdownmd-9 col-sm-9 col-xs-12">
             <div class="text-editor">
                 <app-ngx-editor formControlName="ad_body" (keydown)="onKeydown($event)" [placeholder]="'Enter text here...'" [spellcheck]="false" [(ngModel)]="ad_body"  (ngModelChange)="modelChanged($event)"></app-ngx-editor>
               </div>
@@ -181,7 +184,7 @@
           <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
             <div class="right-sidebar">
               <div class="score-widget">
-                <h3>
+                <h3>dropdown
                   <img src="../assets/images/dd-logo.png" /> Score</h3>
                 <div class="graph">
                   <img class="img-fluid" src="../assets/images/graph-img.png" />
@@ -219,7 +222,11 @@
       </div>
       <div class="modal-body">
         <div class="share-input">
-          <input type="text" class="form-control" placeholder="reviewer@reviewer.dk">
+         
+          <div *ngFor="let alert of alerts">
+              <alert [type]="alert.type" [dismissOnTimeout]="alert.timeout" (onClosed)="onClosed(alert)">{{ alert.msg }}</alert>
+            </div>
+          <input type="text" class="form-control" placeholder="reviewer@reviewer.dk" [(ngModel)]="email">
           <select name="" id="">
             <option value=""></option>
             <option value=""></option>
@@ -283,3 +290,12 @@
   <span style="visibility: hidden" id="modal" (click)="openModal3(templateOnLoad)"></span>
 
 </div>
+<ngx-spinner
+  bdColor="rgba(51,51,51,0.8)"
+  size="large"
+  color="#fff"
+  loadingText="Saving..."
+  type="ball-scale-multiple">
+</ngx-spinner>
+
+

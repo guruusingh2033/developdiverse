@@ -6,13 +6,18 @@ import { SharedModule } from '../shared';
 import { HomeRoutingModule } from './home-routing.module';
 import { NgxEditorModule } from 'ngx-editor';
 import { FormsModule } from '@angular/forms';
- 
+import { NgxSpinnerModule } from 'ngx-spinner';
+import { AlertModule } from 'ngx-bootstrap/alert';
+
 @NgModule({
   imports: [
     SharedModule,
     HomeRoutingModule,
     NgxEditorModule,
-    FormsModule 
+    FormsModule,
+    AlertModule.forRoot(),
+    NgxSpinnerModule
+
   ],
   declarations: [
     HomeComponent

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable ,  BehaviorSubject ,  ReplaySubject } from 'rxjs';
+import { ActivatedRoute, Router } from '@angular/router';
 
 import { ApiService } from './api.service';
 import { JwtService } from './jwt.service';
@@ -21,7 +22,9 @@ export class UserService {
     private apiService: ApiService,
     private http: HttpClient,
     private jwtService: JwtService,
-    private cookieService: CookieService
+    private cookieService: CookieService,
+    private router: Router,
+
 
   ) {}
 
@@ -79,7 +82,17 @@ export class UserService {
       this.apiService.get('/logout/')
       .subscribe(
         data =>console.log("logout" +data),
-        err => console.log(err)
+        err => {
+          console.log(err);    
+          
+          this.jwtService.destroyToken();
+          // Set current user to an empty object
+          this.currentUserSubject.next({} as User);
+          // Set auth status to false
+          this.isAuthenticatedSubject.next(false);
+          this.router.navigateByUrl('/'); 
+        }
+
       );
     this.jwtService.destroyToken();
     // Set current user to an empty object
@@ -95,6 +108,9 @@ export class UserService {
     return this.apiService.post( route, credentials)
       .pipe(map(
       data => {
+        console.log("------");
+        console.log(data);
+        debugger;
         if(type=='login'){
         data.username = credentials.username;
         if(rememberme == true){

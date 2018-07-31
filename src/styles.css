@@ -525,3 +525,40 @@ label{
 .form-ele:focus {
   outline: none;
 }
+.dropdown-ex {
+  display: inline-block;
+  width: auto;
+  position: relative;
+}
+ .openDrp {
+  border: navajowhite;
+  background: none;
+  padding: 0;
+}
+ #openDrp:focus {
+  outline: none;
+}
+ .dropdown {
+  position: absolute;
+  width: 100%;
+  top: 30px;
+  left: 0;
+  background: #fff;
+  box-shadow: 0 1px 12px rgba(0,0,0,0.5);
+  border-radius: 5px;
+  z-index: 1;
+}
+ .dropdown ul {
+  padding: 0;
+  margin:0;
+  list-style: none;
+  display:block;
+}
+ .dropdown ul li {
+  padding:7px 15px;
+  font-size: 16px;
+  border-bottom:1px solid #eee;
+}
+ .dropdown ul li:last-child {
+  border-bottom:none;
+}

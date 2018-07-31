@@ -41,6 +41,14 @@ export class JobService {
     }));
   }
 
+  shareJob(job): Observable<Job> {
+    debugger;
+    return this.apiService
+    .post('/share_ad/', job)
+    .pipe(map(data => {
+      return data;
+    }));
+  }
 
   update(job): Observable<Job> {
     return this.apiService

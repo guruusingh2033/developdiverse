@@ -81,7 +81,6 @@ export class AuthComponent implements OnInit {
 
     this.submit = true;
     this.spinner.show();
-
     // stop here if form is invalid
     if (this.authForm.invalid) {
       return;
@@ -104,13 +103,14 @@ export class AuthComponent implements OnInit {
         },
         err => {
           this.errors = err;
-          var msg = err.non_field_errors[0];
+          console.log(err);
+         // var msg = err.non_field_errors[0];
           this.spinner.hide();
 
-          this.message = msg;
+          this.message = err;
           this.alerts.push({
             type: 'danger',
-            msg: msg,
+            msg: err.error_message,
             timeout: 5000
           });
           this.isSubmitting = false;
