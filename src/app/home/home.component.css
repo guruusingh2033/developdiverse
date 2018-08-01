@@ -245,3 +245,9 @@ color:#9b9b9b;
 .share-pop-up {
 border:none !important;
 }
+.job-form-inner {
+  padding-right: 12px;
+}
+.left-padding {
+padding-left:0;
+}

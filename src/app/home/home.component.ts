@@ -7,6 +7,8 @@ import { ArticleListConfig, JobService, Job, UserService } from '../core';
 import * as $ from 'jquery';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { AlertComponent } from 'ngx-bootstrap/alert/alert.component';
+import 'rxjs/add/operator/filter';
+
 
 @Component({
   selector: 'app-home-page',
@@ -19,6 +21,7 @@ export class HomeComponent implements OnInit {
   modalRef3: BsModalRef;
   openScreen: boolean = true;
   state: string = '';
+  updateData:number;
 
   authType: String = '';
   title: String = '';
@@ -40,7 +43,9 @@ export class HomeComponent implements OnInit {
   dropdownContent: any;
   email: string;
   dialogErr: string = "";
-
+  actionState:string = "add";
+  isOwner:boolean=false;
+  loaderMsg:string="Saving...";
 
   constructor(
     private router: Router,
@@ -70,7 +75,7 @@ export class HomeComponent implements OnInit {
 
   ngOnInit() {
 
-
+    console.log("isowner"+this.isOwner);
     this.dropdownContent = `<div class="dropdown" contenteditable="false">
     <ul class="dropdown-select">
       <li class="drop"><a>Data</a></li>
@@ -126,6 +131,39 @@ export class HomeComponent implements OnInit {
 
 
     this.state = this.route.snapshot.params.id;
+    this.route.queryParams
+    .filter(params => params.data)
+    .subscribe(params => {
+      console.log(params); // {order: "popular"}
+
+      this.updateData = params.data;
+      console.log(this.updateData); // popular
+    });
+
+    if(this.updateData){
+      this.actionState =  "update";
+      this.loaderMsg ="Loading..";
+
+      this.spinner.show();
+      this.jobService.getJobListById(this.updateData)
+      .subscribe(
+        jobList => {
+          //response
+          this.spinner.hide();
+
+          console.log(jobList);
+          this.isOwner = ! jobList.is_owner;
+          console.log(this.isOwner);
+          this.homeForm.patchValue(jobList);
+         },
+        err => {
+          //  debugger;
+  
+        }
+      );
+
+    }
+  
     if (this.state == 'editor') {
       this.openScreen = false;
     }
@@ -138,19 +176,7 @@ export class HomeComponent implements OnInit {
       }
     );
 
-    this.ad_body = `Our company is looking for an expert negotiator. Aggressiveness is a required trait, but sympathy is important as well.
-    <div class="dropdown-ex">
-  <button class="openDrp">Dropdown</button>
-  <div class="dropdown" contenteditable="false">
-  <ul class="dropdown-select">
-    <li class="drop"><a>Data</a></li>
-    <li class="drop" id=""><a>Data1</a></li>
-    <li class="drop" id=""><a>Data2</a></li>
-    <li class="drop" id=""><a>Data3</a></li>
-  </ul>
-  </div>
-</div>
-    `;
+    this.ad_body = ``;
 
     //  this.ad_body =`Lorem <span id='ipsum' style='color:red' (click)='call()'>ipsum</span> is a pseudo-Latin text used in web design, typography, layout, and printing in place of English to emphasise design elements over <span id='content' style='color:green' (click)='call()'>content</span>. It's also called placeholder (or filler) text. It's a convenient tool for mock-ups. It helps to outline the visual elements of a document or presentation, eg typography, font, or layout. Lorem <span id='ipsum' style='color:red' (click)='call()'>ipsum</span> is mostly a part of a Latin text by the classical author and philosopher Cicero. Its words and letters have been changed by addition or removal, so to deliberately render its <span id='content' style='color:green' (click)='call()'>content</span> nonsensical; it's not genuine, correct, or comprehensible Latin anymore. While lorem <span id='ipsum' style='color:red' (click)='call()'>ipsum</span>'s still resembles classical Latin, it actually has no meaning whatsoever. As Cicero's text doesn't contain the letters K, W, or Z, alien to latin, these, and others are often inserted randomly to mimic the typographic appearence of European languages, as are digraphs not to be found in the original.  In a professional context it often happens that private or corporate clients corder a publication to be made and presented with the actual <span id='content' style='color:green' (click)='call()'>content</span> still not being ready. Think of a news blog that's filled with <span id='content' style='color:green' (click)='call()'>content</span> hourly on the day of going live. However, reviewers tend to be distracted by comprehensible <span id='content' style='color:green' (click)='call()'>content</span>, say, a random text copied from a newspaper or the internet. The are likely to focus on the text, disregarding the layout and its elements. Besides, random text risks to be unintendedly humorous or offensive, an unacceptable risk in corporate environments. Lorem <span id='ipsum' style='color:red' (click)='call()'>ipsum</span> and its many variants have been employed since the early 1960ies, and quite likely since the sixteenth century.` ; 
     var input = document.getElementById('myInput');

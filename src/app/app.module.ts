@@ -15,6 +15,7 @@ import { CoreModule } from './core/core.module';
 import { AlertModule } from 'ngx-bootstrap';
 import { ModalModule } from 'ngx-bootstrap';
 import { CookieService } from 'ngx-cookie-service';
+import {NgxPaginationModule} from 'ngx-pagination'; // <-- import the module
 
 // import { SignupComponent } from './signup/signup.component';
 
@@ -28,7 +29,8 @@ import { CookieService } from 'ngx-cookie-service';
     AuthModule,
     AppRoutingModule,
     ModalModule.forRoot(),
-    AlertModule.forRoot()
+    AlertModule.forRoot(),
+    NgxPaginationModule
   ],
   providers: [CookieService],
   bootstrap: [AppComponent]

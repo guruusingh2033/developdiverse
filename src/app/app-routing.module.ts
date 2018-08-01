@@ -10,7 +10,10 @@ const routes: Routes = [
     path: 'profile',
     loadChildren: './profile/profile.module#ProfileModule'
   },
- 
+  {
+    path: 'joblisting',
+    loadChildren: './joblist/joblist.module#JoblistModule'
+  },
   {
     path:'signup',
     loadChildren:'./signup/signup.module#SignupModule'

@@ -68,6 +68,33 @@ export class JobService {
     }));
   }
 
-  
+  getJobList(): Observable<Job> {
+    return this.apiService.get('/jobads.json/')
+      .pipe(map(
+        data =>{console.log(data);
+           return data;
+           })      
+      );
+    
+  } 
+
+  download(job): Observable<Job> {
+    return this.apiService
+    .post('/download/jobad/', job)
+    .pipe(map(data => {
+      return data;
+    }));
+    
+  } 
+
+  getJobListById(id): Observable<Job> {
+    return this.apiService.get('/jobads/'+id+'.json/')
+      .pipe(map(
+        data =>{console.log(data);
+           return data;
+           })      
+      );
+    
+  } 
 
 }

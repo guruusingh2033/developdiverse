@@ -23,7 +23,7 @@
             <ul>
               <li>
                 <a>Copy
-                  <span>Download</span>
+                  <span (click)="download()">Download</span>
                 </a>
               </li>
             </ul>
@@ -37,7 +37,7 @@
           <div class="drop-dwnmenu">
             <ul>
               <li>
-                <a>Job Listing
+                <a [routerLink]="['/joblisting']">Job Listing
 
                 </a>
               </li>

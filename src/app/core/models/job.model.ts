@@ -5,5 +5,6 @@ export interface Job {
     department: string;
     city: string;
     country: string;
+    is_owner:boolean
  }
   
