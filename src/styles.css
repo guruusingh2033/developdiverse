@@ -568,3 +568,12 @@ label{
  .dropdown ul li:last-child {
   border-bottom:none;
 }
+.ngx-editor .ngx-wrapper .ngx-editor-textarea {
+  border:none !important;
+}
+.border-grey {
+  border: 1px solid #eee;
+  padding-right: 0;
+  margin: 0 1%;
+  max-width: 73%;
+}

@@ -8,6 +8,8 @@ const routes: Routes = [
     path: 'dashboard/:id',
     component: HomeComponent,
     canActivate: [AuthGuard],
+    runGuardsAndResolvers: 'always',
+
   }
 ];
 

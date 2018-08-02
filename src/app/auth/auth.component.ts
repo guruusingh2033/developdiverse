@@ -56,8 +56,8 @@ export class AuthComponent implements OnInit {
     });
     this.alerts = [];
 
-    console.log("token-------");
-    console.log(this.cookieService.get("jwtToken"));
+    // console.log("token-------");
+    // console.log(this.cookieService.get("jwtToken"));
    var token:any =  this.jwtService.getToken();
    
    if(!token){
@@ -65,7 +65,7 @@ export class AuthComponent implements OnInit {
      if(token){
       localStorage.setItem("jwtToken",token);
       this.cookieService.set("jwtToken",token);
-      this.userService.purgeAuth();
+    this.userService.purgeAuth();
 
      }
    }
@@ -95,7 +95,7 @@ export class AuthComponent implements OnInit {
       .attemptAuth(this.authType, credentials)
       .subscribe(
         data => {
-          console.log(data); 
+         // console.log(data); 
           this.spinner.hide();
            this.router.navigateByUrl('/dashboard/welcome')
         //  this.router.navigateByUrl('/profile')
@@ -103,7 +103,7 @@ export class AuthComponent implements OnInit {
         },
         err => {
           this.errors = err;
-          console.log(err);
+        //  console.log(err);
          // var msg = err.non_field_errors[0];
           this.spinner.hide();
 

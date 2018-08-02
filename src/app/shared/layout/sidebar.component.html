@@ -7,7 +7,7 @@
           <div class="drop-dwnmenu">
             <ul>
               <li>
-                <a [routerLink]="['/dashboard/editor']">New
+                <a (click)="loadJobEditor()">New
                   <!-- <span>Upload</span> -->
                 </a>
               </li>
@@ -22,7 +22,7 @@
           <div class="drop-dwnmenu">
             <ul>
               <li>
-                <a>Copy
+                <a>
                   <span (click)="download()">Download</span>
                 </a>
               </li>

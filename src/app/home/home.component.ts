@@ -1,5 +1,5 @@
-import { Component, OnInit, TemplateRef, ElementRef } from '@angular/core';
-import { Router, Route, ActivatedRoute } from '@angular/router';
+import { Component, OnInit, TemplateRef, ElementRef ,OnDestroy} from '@angular/core';
+import { Router, Route, ActivatedRoute,NavigationEnd } from '@angular/router';
 import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
@@ -15,13 +15,13 @@ import 'rxjs/add/operator/filter';
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent implements OnInit,OnDestroy {
   modalRef: BsModalRef;
   modalRef2: BsModalRef;
   modalRef3: BsModalRef;
   openScreen: boolean = true;
   state: string = '';
-  updateData:number;
+  updateData: number;
 
   authType: String = '';
   title: String = '';
@@ -43,9 +43,12 @@ export class HomeComponent implements OnInit {
   dropdownContent: any;
   email: string;
   dialogErr: string = "";
-  actionState:string = "add";
-  isOwner:boolean=false;
-  loaderMsg:string="Saving...";
+  actionState: string = "add";
+  isOwner: boolean = false;
+  loaderMsg: string = "Saving...";
+  createdJobId: any;
+  dialogRemember:any;
+  navigationSubscription;
 
   constructor(
     private router: Router,
@@ -59,6 +62,15 @@ export class HomeComponent implements OnInit {
 
 
   ) {
+
+    this.navigationSubscription = this.router.events.subscribe((e: any) => {
+      // If it is a NavigationEnd event re-initalise the component
+      if (e instanceof NavigationEnd) {
+     //   this.initialiseInvites();
+          this.homeForm.reset({});
+          this.createdJobId = false;
+    }
+    });
     this.homeForm = this.fb.group({
       'ad_title': ['', Validators.required],
       'ad_body': ['', Validators.required],
@@ -68,14 +80,14 @@ export class HomeComponent implements OnInit {
       'department': ['', Validators.required],
     });
 
+    
 
   }
 
   get f() { return this.homeForm.controls; }
 
   ngOnInit() {
-
-    console.log("isowner"+this.isOwner);
+   // console.log("isowner" + this.isOwner);
     this.dropdownContent = `<div class="dropdown" contenteditable="false">
     <ul class="dropdown-select">
       <li class="drop"><a>Data</a></li>
@@ -132,38 +144,38 @@ export class HomeComponent implements OnInit {
 
     this.state = this.route.snapshot.params.id;
     this.route.queryParams
-    .filter(params => params.data)
-    .subscribe(params => {
-      console.log(params); // {order: "popular"}
+      .filter(params => params.data)
+      .subscribe(params => {
+      //  console.log(params); // {order: "popular"}
 
-      this.updateData = params.data;
-      console.log(this.updateData); // popular
-    });
+        this.updateData = params.data;
+     //   console.log(this.updateData); // popular
+      });
 
-    if(this.updateData){
-      this.actionState =  "update";
-      this.loaderMsg ="Loading..";
+    if (this.updateData) {
+      this.actionState = "update";
+      this.loaderMsg = "Loading..";
 
       this.spinner.show();
       this.jobService.getJobListById(this.updateData)
-      .subscribe(
-        jobList => {
-          //response
-          this.spinner.hide();
+        .subscribe(
+          jobList => {
+            //response
+            this.spinner.hide();
 
-          console.log(jobList);
-          this.isOwner = ! jobList.is_owner;
-          console.log(this.isOwner);
-          this.homeForm.patchValue(jobList);
-         },
-        err => {
-          //  debugger;
-  
-        }
-      );
+          //  console.log(jobList);
+            this.isOwner = !jobList.is_owner;
+          //  console.log(this.isOwner);
+            this.homeForm.patchValue(jobList);
+          },
+          err => {
+            //  debugger;
+
+          }
+        );
 
     }
-  
+
     if (this.state == 'editor') {
       this.openScreen = false;
     }
@@ -255,43 +267,87 @@ export class HomeComponent implements OnInit {
   }
 
   openModal2(template: TemplateRef<any>) {
-    this.spinner.show();
 
-    var res = this.createJob()
-      .then((res: any) => {
-        if (res.status == "true") {
-          this.spinner.hide();
+    if (!this.updateData) {
+      this.spinner.show();
+     // console.log(this.createdJobId);
+      debugger;
+      if (!this.createdJobId) {
+        var res = this.createJob()
+          .then((res: any) => {
+         //   console.log(res);
+            if (res.status == "true") {
+              this.spinner.hide();
+              debugger;
+              this.closeFirstModal();
+              this.modalRef = this.modalService.show(template);
+              this.router.navigateByUrl('/joblisting');
 
-          this.closeFirstModal();
-          this.modalRef = this.modalService.show(template);
-        }
-        else {
-          debugger;
-          this.spinner.hide();
+            }
+            else {
+              debugger;
+              this.spinner.hide();
+              // this.createdJobId = res.jobId;
 
-          if (typeof(res.data) == "object") {
-             
-            this.dialogErr = res.data.error_message;
+              if (typeof (res.data) == "object") {
+                this.createdJobId = res.jobId;
+
+                this.dialogErr = res.data.error_message;
+                this.alerts.push({
+                  type: 'danger',
+                  msg: this.dialogErr,
+                  timeout: 3000
+                });
+              }
+              else {
+                //this.dialogErr = res.data;
+
+                this.closeFirstModal();
+                this.modalRef = this.modalService.show(template);
+                this.router.navigateByUrl('/joblisting');
+
+              }
+            }
+          })
+          .catch((err) => {
+            // console.log(err); 
+             this.dialogErr = err });
+      }
+      else {
+        this.shareJob(this.createdJobId)
+          .then((data: any) => {
+            this.spinner.hide();
+         //   console.log(data);
+            if (data.status) {
+              this.closeFirstModal();
+              this.modalRef = this.modalService.show(template);
+              this.router.navigateByUrl('/joblisting');
+
+            }
+            else {
               this.alerts.push({
+                type: 'danger',
+                msg: data.data.error_message,
+                timeout: 3000
+              });
+            }
+
+          })
+          .catch((err) => {
+            this.alerts.push({
               type: 'danger',
-              msg: this.dialogErr,
+              msg: err.error_message,
               timeout: 3000
             });
-          }
-          else {
-            //this.dialogErr = res.data;
-            this.closeFirstModal();
-            this.modalRef = this.modalService.show(template);
-          }
-        }
-      })
-      .catch((err) => { console.log(err); this.dialogErr = err });
-
-
+          });
+      }
+    }
   }
 
   openModal3(template: TemplateRef<any>) {
+    if(localStorage.getItem("dialogOff") != "true"){
     this.modalRef = this.modalService.show(template);
+    }
   }
 
 
@@ -305,28 +361,28 @@ export class HomeComponent implements OnInit {
 
   dropdownSelect() {
     var selectBox = this.elRef.nativeElement.querySelectorAll('select');
-    console.log(selectBox);
+   // console.log(selectBox);
     for (var i = 0; i < selectBox.length; i++) {
 
       selectBox[i].addEventListener('change', this.onClick.bind(this));
-      console.log("binded");
+     // console.log("binded");
     }
   }
 
   modelChanged(data) {
-    console.log("fire");
+   // console.log("fire");
     this.dropdownSelect();
 
-    console.log(data);
+   // console.log(data);
   }
   magic() {
-    console.log(this.ad_body);
+   // console.log(this.ad_body);
   }
 
 
   getNoHtmlContent() {
     var data = document.querySelector(".ngx-editor-textarea").innerHTML;
-    console.log(data);
+   // console.log(data);
     // var html=this.ad_body;
     var dom = document.createElement("DIV");
     dom.innerHTML = data;
@@ -337,9 +393,9 @@ export class HomeComponent implements OnInit {
 
   clearOptionWithoutSelectedTag() {
     var selectBoxes = document.querySelectorAll(".form-ele");
-    console.log(selectBoxes);
+    //console.log(selectBoxes);
     Object.keys(selectBoxes).map(function (key) {
-      console.log(selectBoxes[key].options.length);
+    //  console.log(selectBoxes[key].options.length);
       for (var i = 0; i < selectBoxes[key].options.length; i++) {
         if (selectBoxes[key].options[i].index != selectBoxes[key].selectedIndex)
           selectBoxes[key].remove(i);
@@ -347,6 +403,15 @@ export class HomeComponent implements OnInit {
     })
   }
 
+  setDialogState(){
+    if(this.dialogRemember == "true"){
+    localStorage.setItem("dialogOff","false");
+    }
+    else{
+      localStorage.setItem("dialogOff","true");
+
+    }
+  }
 
   onKeydown(event) {
 
@@ -375,14 +440,14 @@ export class HomeComponent implements OnInit {
       //    console.log(err)
       //   }
       // );
-      this.afterServiceProcess();
+      //this.afterServiceProcess();
 
     }
   }
 
   onClick(data) {
-    console.log("fire");
-    console.log(data);
+  //  console.log("fire");
+  //  console.log(data);
 
     //  console.log("fire");
     //  var selectBoxes = document.querySelectorAll(".form-control");
@@ -419,22 +484,22 @@ export class HomeComponent implements OnInit {
             //response
             this.isSubmitting = false;
 
-           this.shareJob(updatedUser.id)
+            this.shareJob(updatedUser.id)
               .then((datax: any) => {
                 debugger;
 
                 if (datax.status) {
-                  resolve({ status: true, data: datax.data });
+                  resolve({ status: true, data: datax.data, jobId: datax.jobId });
                 }
                 else {
-                  resolve({ status: false, data: datax.data });
+                  resolve({ status: false, data: datax.data, jobId: datax.jobId });
 
                 }
               })
               .catch((err) => {
                 resolve({ status: false, data: err });
               });
-             
+
           },
           err => {
             this.spinner.hide();
@@ -455,7 +520,7 @@ export class HomeComponent implements OnInit {
     debugger;
     return new Promise(resolve => {
       var email = this.email;
-      var shareJob:object = {jobad_id: id,recipient: email};
+      var shareJob: object = { jobad_id: id, recipient: email };
 
       this.jobService
         .shareJob(shareJob)
@@ -463,12 +528,12 @@ export class HomeComponent implements OnInit {
           sharedUser => {
             //response
             debugger;
-            resolve({ status: true, data: sharedUser });
+            resolve({ status: true, data: sharedUser, jobId: id });
 
           },
           err => {
             //  debugger;
-            resolve({ status: false, data: err });
+            resolve({ status: false, data: err, jobId: id });
 
           }
         );
@@ -480,7 +545,7 @@ export class HomeComponent implements OnInit {
 
     var index = 0;
     //your code
-    console.log("Spacebar fired");
+   // console.log("Spacebar fired");
     var lastTypedText: any = this.fetchLastTextTyped();
     var n = this.ad_body.includes(".");
     if (n) {
@@ -517,7 +582,7 @@ export class HomeComponent implements OnInit {
       }
       this.ad_body = this.buildJobContentAfterServiceCall(testing);
 
-      console.log(this.ad_body);
+    ///  console.log(this.ad_body);
 
     }
   }
@@ -528,7 +593,7 @@ export class HomeComponent implements OnInit {
     var data = this.ad_body.split(".");
     var dataLength = data.length;
     var getLastIndex = dataLength - 1;
-    console.log(data);
+   // console.log(data);
     debugger;
     return data[getLastIndex] + '.';
 
@@ -549,11 +614,41 @@ export class HomeComponent implements OnInit {
   }
 
 
+  onClosed(dismissedAlert: AlertComponent): void {
+    this.alerts = this.alerts.filter(alert => alert !== dismissedAlert);
+  }
 
+  closeAllModal(){
+    if(this.modalRef){
+      this.modalRef.hide();
+      this.modalRef = null; 
+      }
+      if(this.modalRef2){
+        this.modalRef2.hide();
+        this.modalRef2 = null; 
+      } 
+      if(this.modalRef3){
+        this.modalRef3.hide();
+        this.modalRef3 = null; 
+    } 
+  }
+
+  ngOnDestroy(){
+ //   console.log("desroyed called");
+ // delete  this.updateData;
+   this.closeAllModal();
+     // avoid memory leaks here by cleaning up after ourselves. If we  
+    // don't then we will continue to run our initialiseInvites()   
+    // method on every navigationEnd event.
+    if (this.navigationSubscription) {  
+      this.navigationSubscription.unsubscribe();
+   }
+    
+  }
 }
 
 
 function fire(data) {
-  console.log(data);
+  //console.log(data);
   $(".dropdown").hide();
 }

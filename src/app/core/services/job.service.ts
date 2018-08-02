@@ -20,13 +20,13 @@ export class JobService {
       );
     
   } 
-
+  
 
   analyzeJob(job):Observable<Job> {
     return this.apiService.post('/analyze_ad/',job)
       .pipe(map(
         data =>{
-          console.log(data);
+          //console.log(data);
            return data;
            })      
       );
@@ -42,7 +42,7 @@ export class JobService {
   }
 
   shareJob(job): Observable<Job> {
-    debugger;
+    //debugger;
     return this.apiService
     .post('/share_ad/', job)
     .pipe(map(data => {
@@ -71,7 +71,7 @@ export class JobService {
   getJobList(): Observable<Job> {
     return this.apiService.get('/jobads.json/')
       .pipe(map(
-        data =>{console.log(data);
+        data =>{//console.log(data);
            return data;
            })      
       );
@@ -90,7 +90,8 @@ export class JobService {
   getJobListById(id): Observable<Job> {
     return this.apiService.get('/jobads/'+id+'.json/')
       .pipe(map(
-        data =>{console.log(data);
+        data =>{
+          //console.log(data);
            return data;
            })      
       );

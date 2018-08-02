@@ -32,7 +32,7 @@ export class UserService {
   // This runs once on application startup.
   populate() {
     // If JWT detected, attempt to get & store user's info
-    console.log(this.jwtService.getToken());
+   // console.log(this.jwtService.getToken());
     if (this.jwtService.getToken()) {
       // this.apiService.get('/user')
       // .subscribe(
@@ -50,7 +50,7 @@ export class UserService {
       //  this.data.username = window.sessionStorage['username'];
 
       }
-      console.log(this.data.username);
+    //  console.log(this.data.username);
       this.setAuth(this.data);
 
     } else {
@@ -81,9 +81,11 @@ export class UserService {
   purgeAuth() {
       this.apiService.get('/logout/')
       .subscribe(
-        data =>console.log("logout" +data),
+        data =>{
+          //console.log("logout" +data)
+        },
         err => {
-          console.log(err);    
+         // console.log(err);    
           
           this.jwtService.destroyToken();
           // Set current user to an empty object
@@ -108,9 +110,9 @@ export class UserService {
     return this.apiService.post( route, credentials)
       .pipe(map(
       data => {
-        console.log("------");
-        console.log(data);
-        debugger;
+      ///  console.log("------");
+       // console.log(data);
+       // debugger;
         if(type=='login'){
         data.username = credentials.username;
         if(rememberme == true){

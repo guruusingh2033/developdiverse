@@ -24,7 +24,7 @@ export class SidebarComponent implements OnInit {
     this.userService.currentUser.subscribe(
       (userData) => {
         this.currentUser = userData;
-        console.log(userData)
+        //console.log(userData)
       }
     );
   }
@@ -34,16 +34,16 @@ export class SidebarComponent implements OnInit {
     this.route.queryParams
     .filter(params => params.data)
     .subscribe(params => {
-      console.log(params); // {order: "popular"}
+    //  console.log(params); // {order: "popular"}
 
       this.jobID = params.data;
-      console.log(this.jobID); // popular
+     // console.log(this.jobID); // popular
     });
     if(this.jobID){
     var job = { "jobad_id": this.jobID}
     this.jobService.download(job).subscribe(
       (jobData) => {
-        console.log(jobData)
+        //console.log(jobData)
       }
     );
   }
@@ -52,6 +52,14 @@ export class SidebarComponent implements OnInit {
   logout() {
     this.userService.purgeAuth();
     this.router.navigateByUrl('/');
+  }
+
+
+  loadJobEditor() {
+   // this.router.navigate(['/']);
+
+    this.router.navigate(['/dashboard/editor']);
+    
   }
 
 }

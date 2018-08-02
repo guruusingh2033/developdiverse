@@ -34,8 +34,8 @@ export class JoblistComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log("------");
-    debugger;
+    //console.log("------");
+   // debugger;
     this.spinner.show();
     this.jobService.getJobList()
     .subscribe(
@@ -43,12 +43,13 @@ export class JoblistComponent implements OnInit {
         //response
         this.spinner.hide();
 
-        console.log(jobList);
+       // console.log(jobList);
         this.joblist = jobList;
+        this.joblist = this.joblist.reverse();
        },
       err => {
         //  debugger;
-
+        
       }
     );
 

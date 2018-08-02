@@ -28,7 +28,7 @@
               <tbody>
                 <tr *ngFor="let listData of joblist| filter:term | paginate: { itemsPerPage: 10, currentPage: p }">
                  <td>
-                     <a (click)="redirect(listData.id)"> {{listData.ad_title}} </a>
+                     <a (click)="redirect(listData.id)"> {{listData.ad_title}},{{listData.department}} </a>
                   </td>
                   <td> {{listData.city}},{{listData.country}}</td>
                   <td>2018-5-2018</td>

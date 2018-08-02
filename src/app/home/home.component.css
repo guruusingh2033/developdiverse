@@ -251,3 +251,37 @@ border:none !important;
 .left-padding {
 padding-left:0;
 }
+.graph-caption {
+  position: absolute;
+  top: 50%;
+  width: 100%;
+  text-align: center;
+}
+.graph {
+  position: relative;
+}
+.graph-caption h2 {
+  font-size: 44px;
+  color: #000;
+  font-weight: 500;
+  margin-bottom: 0;
+}
+.graph-caption h6 {
+  font-size: 19px;
+  color: #000;
+}
+.border-grey:after {
+  content: "";
+  border-right: 1px solid #eee;
+  width: 1px;
+  height: 125%;
+  position: absolute;
+  right: -10px;
+  top: -51px;
+}
+.content-all {
+  overflow: hidden;
+}
+.border-grey {
+  border:none;
+}

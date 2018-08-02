@@ -73,7 +73,7 @@ export class SignupComponent implements OnInit {
         this.router.navigateByUrl('/')
        },
       err => {
-        console.log(err);
+      //  console.log(err);
         this.errors = err;
         var msg = err;
        this.alerts.push({
