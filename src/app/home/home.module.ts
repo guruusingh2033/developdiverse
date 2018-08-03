@@ -8,6 +8,7 @@ import { NgxEditorModule } from 'ngx-editor';
 import { FormsModule } from '@angular/forms';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { AlertModule } from 'ngx-bootstrap/alert';
+import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
 
 @NgModule({
   imports: [
@@ -16,7 +17,8 @@ import { AlertModule } from 'ngx-bootstrap/alert';
     NgxEditorModule,
     FormsModule,
     AlertModule.forRoot(),
-    NgxSpinnerModule
+    NgxSpinnerModule,
+    TypeaheadModule.forRoot()
 
   ],
   declarations: [

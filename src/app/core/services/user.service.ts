@@ -55,7 +55,7 @@ export class UserService {
 
     } else {
       // Remove any potential remnants of previous auth states
-      this.purgeAuth();
+     // this.purgeAuth();
     
     }
   }
@@ -102,6 +102,20 @@ export class UserService {
     // Set auth status to false
     this.isAuthenticatedSubject.next(false);
   }
+
+  purgeAuthInterceptor(){
+    this.jwtService.destroyToken();
+
+    // Set current user to an empty object
+    this.currentUserSubject.next({} as User);
+    // Set auth status to false
+    this.isAuthenticatedSubject.next(false);
+
+    this.router.navigateByUrl('/'); 
+
+  }
+
+
 
   attemptAuth(type, credentials): Observable<User> {
     const route = (type === 'login') ? '/get_auth_token/' : '/signup/';

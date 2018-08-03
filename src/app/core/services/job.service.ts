@@ -21,6 +21,15 @@ export class JobService {
     
   } 
   
+  getApprovalEmails(): Observable<Job> {
+    return this.apiService.get('/user_contacts.json/')
+      .pipe(map(
+        data =>{console.log(data);
+           return data;
+           })      
+      );
+    
+  } 
 
   analyzeJob(job):Observable<Job> {
     return this.apiService.post('/analyze_ad/',job)

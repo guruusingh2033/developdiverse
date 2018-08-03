@@ -1,5 +1,5 @@
-import { Component, OnInit, TemplateRef, ElementRef ,OnDestroy} from '@angular/core';
-import { Router, Route, ActivatedRoute,NavigationEnd } from '@angular/router';
+import { Component, OnInit, TemplateRef, ElementRef, OnDestroy } from '@angular/core';
+import { Router, Route, ActivatedRoute, NavigationEnd } from '@angular/router';
 import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
@@ -15,7 +15,7 @@ import 'rxjs/add/operator/filter';
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']
 })
-export class HomeComponent implements OnInit,OnDestroy {
+export class HomeComponent implements OnInit, OnDestroy {
   modalRef: BsModalRef;
   modalRef2: BsModalRef;
   modalRef3: BsModalRef;
@@ -47,8 +47,63 @@ export class HomeComponent implements OnInit,OnDestroy {
   isOwner: boolean = false;
   loaderMsg: string = "Saving...";
   createdJobId: any;
-  dialogRemember:any;
+  dialogRemember: any;
   navigationSubscription;
+
+  customSelected: string;
+  statesComplex:any[] = [{}];
+  // statesComplex: any[] = [
+  //   { id: 1, name: 'Alabama', region: 'South' },
+  //   { id: 2, name: 'Alaska', region: 'West' },
+  //   { id: 3, name: 'Arizona', region: 'West' },
+  //   { id: 4, name: 'Arkansas', region: 'South' },
+  //   { id: 5, name: 'California', region: 'West' },
+  //   { id: 6, name: 'Colorado', region: 'West' },
+  //   { id: 7, name: 'Connecticut', region: 'Northeast' },
+  //   { id: 8, name: 'Delaware', region: 'South' },
+  //   { id: 9, name: 'Florida', region: 'South' },
+  //   { id: 10, name: 'Georgia', region: 'South' },
+  //   { id: 11, name: 'Hawaii', region: 'West' },
+  //   { id: 12, name: 'Idaho', region: 'West' },
+  //   { id: 13, name: 'Illinois', region: 'Midwest' },
+  //   { id: 14, name: 'Indiana', region: 'Midwest' },
+  //   { id: 15, name: 'Iowa', region: 'Midwest' },
+  //   { id: 16, name: 'Kansas', region: 'Midwest' },
+  //   { id: 17, name: 'Kentucky', region: 'South' },
+  //   { id: 18, name: 'Louisiana', region: 'South' },
+  //   { id: 19, name: 'Maine', region: 'Northeast' },
+  //   { id: 21, name: 'Maryland', region: 'South' },
+  //   { id: 22, name: 'Massachusetts', region: 'Northeast' },
+  //   { id: 23, name: 'Michigan', region: 'Midwest' },
+  //   { id: 24, name: 'Minnesota', region: 'Midwest' },
+  //   { id: 25, name: 'Mississippi', region: 'South' },
+  //   { id: 26, name: 'Missouri', region: 'Midwest' },
+  //   { id: 27, name: 'Montana', region: 'West' },
+  //   { id: 28, name: 'Nebraska', region: 'Midwest' },
+  //   { id: 29, name: 'Nevada', region: 'West' },
+  //   { id: 30, name: 'New Hampshire', region: 'Northeast' },
+  //   { id: 31, name: 'New Jersey', region: 'Northeast' },
+  //   { id: 32, name: 'New Mexico', region: 'West' },
+  //   { id: 33, name: 'New York', region: 'Northeast' },
+  //   { id: 34, name: 'North Dakota', region: 'Midwest' },
+  //   { id: 35, name: 'North Carolina', region: 'South' },
+  //   { id: 36, name: 'Ohio', region: 'Midwest' },
+  //   { id: 37, name: 'Oklahoma', region: 'South' },
+  //   { id: 38, name: 'Oregon', region: 'West' },
+  //   { id: 39, name: 'Pennsylvania', region: 'Northeast' },
+  //   { id: 40, name: 'Rhode Island', region: 'Northeast' },
+  //   { id: 41, name: 'South Carolina', region: 'South' },
+  //   { id: 42, name: 'South Dakota', region: 'Midwest' },
+  //   { id: 43, name: 'Tennessee', region: 'South' },
+  //   { id: 44, name: 'Texas', region: 'South' },
+  //   { id: 45, name: 'Utah', region: 'West' },
+  //   { id: 46, name: 'Vermont', region: 'Northeast' },
+  //   { id: 47, name: 'Virginia', region: 'South' },
+  //   { id: 48, name: 'Washington', region: 'South' },
+  //   { id: 49, name: 'West Virginia', region: 'South' },
+  //   { id: 50, name: 'Wisconsin', region: 'Midwest' },
+  //   { id: 51, name: 'Wyoming', region: 'West' }
+  // ];
 
   constructor(
     private router: Router,
@@ -66,10 +121,10 @@ export class HomeComponent implements OnInit,OnDestroy {
     this.navigationSubscription = this.router.events.subscribe((e: any) => {
       // If it is a NavigationEnd event re-initalise the component
       if (e instanceof NavigationEnd) {
-     //   this.initialiseInvites();
-          this.homeForm.reset({});
-          this.createdJobId = false;
-    }
+        //   this.initialiseInvites();
+        this.homeForm.reset({});
+        this.createdJobId = false;
+      }
     });
     this.homeForm = this.fb.group({
       'ad_title': ['', Validators.required],
@@ -80,14 +135,14 @@ export class HomeComponent implements OnInit,OnDestroy {
       'department': ['', Validators.required],
     });
 
-    
+
 
   }
 
   get f() { return this.homeForm.controls; }
 
   ngOnInit() {
-   // console.log("isowner" + this.isOwner);
+    // console.log("isowner" + this.isOwner);
     this.dropdownContent = `<div class="dropdown" contenteditable="false">
     <ul class="dropdown-select">
       <li class="drop"><a>Data</a></li>
@@ -146,10 +201,10 @@ export class HomeComponent implements OnInit,OnDestroy {
     this.route.queryParams
       .filter(params => params.data)
       .subscribe(params => {
-      //  console.log(params); // {order: "popular"}
+        //  console.log(params); // {order: "popular"}
 
         this.updateData = params.data;
-     //   console.log(this.updateData); // popular
+        //   console.log(this.updateData); // popular
       });
 
     if (this.updateData) {
@@ -163,9 +218,9 @@ export class HomeComponent implements OnInit,OnDestroy {
             //response
             this.spinner.hide();
 
-          //  console.log(jobList);
+            //  console.log(jobList);
             this.isOwner = !jobList.is_owner;
-          //  console.log(this.isOwner);
+            //  console.log(this.isOwner);
             this.homeForm.patchValue(jobList);
           },
           err => {
@@ -247,6 +302,7 @@ export class HomeComponent implements OnInit,OnDestroy {
       }
     }
     // console.log(this.serviceReply.biases.biases[0].key);
+    this.getApprovalEmail();
   }
 
   loadJobEditor() {
@@ -270,12 +326,12 @@ export class HomeComponent implements OnInit,OnDestroy {
 
     if (!this.updateData) {
       this.spinner.show();
-     // console.log(this.createdJobId);
+      // console.log(this.createdJobId);
       debugger;
       if (!this.createdJobId) {
         var res = this.createJob()
           .then((res: any) => {
-         //   console.log(res);
+            //   console.log(res);
             if (res.status == "true") {
               this.spinner.hide();
               debugger;
@@ -311,13 +367,14 @@ export class HomeComponent implements OnInit,OnDestroy {
           })
           .catch((err) => {
             // console.log(err); 
-             this.dialogErr = err });
+            this.dialogErr = err
+          });
       }
       else {
         this.shareJob(this.createdJobId)
           .then((data: any) => {
             this.spinner.hide();
-         //   console.log(data);
+            //   console.log(data);
             if (data.status) {
               this.closeFirstModal();
               this.modalRef = this.modalService.show(template);
@@ -345,8 +402,8 @@ export class HomeComponent implements OnInit,OnDestroy {
   }
 
   openModal3(template: TemplateRef<any>) {
-    if(localStorage.getItem("dialogOff") != "true"){
-    this.modalRef = this.modalService.show(template);
+    if (localStorage.getItem("dialogOff") != "true") {
+      this.modalRef = this.modalService.show(template);
     }
   }
 
@@ -361,28 +418,28 @@ export class HomeComponent implements OnInit,OnDestroy {
 
   dropdownSelect() {
     var selectBox = this.elRef.nativeElement.querySelectorAll('select');
-   // console.log(selectBox);
+    // console.log(selectBox);
     for (var i = 0; i < selectBox.length; i++) {
 
       selectBox[i].addEventListener('change', this.onClick.bind(this));
-     // console.log("binded");
+      // console.log("binded");
     }
   }
 
   modelChanged(data) {
-   // console.log("fire");
+    // console.log("fire");
     this.dropdownSelect();
 
-   // console.log(data);
+    // console.log(data);
   }
   magic() {
-   // console.log(this.ad_body);
+    // console.log(this.ad_body);
   }
 
 
   getNoHtmlContent() {
     var data = document.querySelector(".ngx-editor-textarea").innerHTML;
-   // console.log(data);
+    // console.log(data);
     // var html=this.ad_body;
     var dom = document.createElement("DIV");
     dom.innerHTML = data;
@@ -395,7 +452,7 @@ export class HomeComponent implements OnInit,OnDestroy {
     var selectBoxes = document.querySelectorAll(".form-ele");
     //console.log(selectBoxes);
     Object.keys(selectBoxes).map(function (key) {
-    //  console.log(selectBoxes[key].options.length);
+      //  console.log(selectBoxes[key].options.length);
       for (var i = 0; i < selectBoxes[key].options.length; i++) {
         if (selectBoxes[key].options[i].index != selectBoxes[key].selectedIndex)
           selectBoxes[key].remove(i);
@@ -403,12 +460,12 @@ export class HomeComponent implements OnInit,OnDestroy {
     })
   }
 
-  setDialogState(){
-    if(this.dialogRemember == "true"){
-    localStorage.setItem("dialogOff","false");
+  setDialogState() {
+    if (this.dialogRemember == "true") {
+      localStorage.setItem("dialogOff", "false");
     }
-    else{
-      localStorage.setItem("dialogOff","true");
+    else {
+      localStorage.setItem("dialogOff", "true");
 
     }
   }
@@ -446,8 +503,8 @@ export class HomeComponent implements OnInit,OnDestroy {
   }
 
   onClick(data) {
-  //  console.log("fire");
-  //  console.log(data);
+    //  console.log("fire");
+    //  console.log(data);
 
     //  console.log("fire");
     //  var selectBoxes = document.querySelectorAll(".form-control");
@@ -545,7 +602,7 @@ export class HomeComponent implements OnInit,OnDestroy {
 
     var index = 0;
     //your code
-   // console.log("Spacebar fired");
+    // console.log("Spacebar fired");
     var lastTypedText: any = this.fetchLastTextTyped();
     var n = this.ad_body.includes(".");
     if (n) {
@@ -582,7 +639,7 @@ export class HomeComponent implements OnInit,OnDestroy {
       }
       this.ad_body = this.buildJobContentAfterServiceCall(testing);
 
-    ///  console.log(this.ad_body);
+      ///  console.log(this.ad_body);
 
     }
   }
@@ -593,7 +650,7 @@ export class HomeComponent implements OnInit,OnDestroy {
     var data = this.ad_body.split(".");
     var dataLength = data.length;
     var getLastIndex = dataLength - 1;
-   // console.log(data);
+    // console.log(data);
     debugger;
     return data[getLastIndex] + '.';
 
@@ -618,32 +675,48 @@ export class HomeComponent implements OnInit,OnDestroy {
     this.alerts = this.alerts.filter(alert => alert !== dismissedAlert);
   }
 
-  closeAllModal(){
-    if(this.modalRef){
+  closeAllModal() {
+    if (this.modalRef) {
       this.modalRef.hide();
-      this.modalRef = null; 
-      }
-      if(this.modalRef2){
-        this.modalRef2.hide();
-        this.modalRef2 = null; 
-      } 
-      if(this.modalRef3){
-        this.modalRef3.hide();
-        this.modalRef3 = null; 
-    } 
+      this.modalRef = null;
+    }
+    if (this.modalRef2) {
+      this.modalRef2.hide();
+      this.modalRef2 = null;
+    }
+    if (this.modalRef3) {
+      this.modalRef3.hide();
+      this.modalRef3 = null;
+    }
   }
 
-  ngOnDestroy(){
- //   console.log("desroyed called");
- // delete  this.updateData;
-   this.closeAllModal();
-     // avoid memory leaks here by cleaning up after ourselves. If we  
+  getApprovalEmail() {
+    this.jobService
+      .getApprovalEmails()
+      .subscribe(
+        (sharedEmail:any) => {
+          //response
+          console.log(sharedEmail);
+         this.statesComplex = sharedEmail.contacts;
+        },
+        err => {
+          //  debugger;
+
+        }
+      );
+  }
+
+  ngOnDestroy() {
+    //   console.log("desroyed called");
+    // delete  this.updateData;
+    this.closeAllModal();
+    // avoid memory leaks here by cleaning up after ourselves. If we  
     // don't then we will continue to run our initialiseInvites()   
     // method on every navigationEnd event.
-    if (this.navigationSubscription) {  
+    if (this.navigationSubscription) {
       this.navigationSubscription.unsubscribe();
-   }
-    
+    }
+
   }
 }
 

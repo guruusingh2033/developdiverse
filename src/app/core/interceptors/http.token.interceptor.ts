@@ -33,7 +33,7 @@ export class HttpTokenInterceptor implements HttpInterceptor {
        // console.log(err);
       if (err.status === 401 || err.status === 403 ) {
           this.jwtService.destroyToken();
-          this.userService.purgeAuth();
+      //   this.userService.purgeAuth();
 
           this.router.navigateByUrl('/'); 
       }

@@ -128,7 +128,7 @@
               <button [hidden]="isOwner" class="btn btn-primary" (click)="openModal(template)" [disabled] ="!homeForm.valid" >Share</button>
             </div>
             <div class="form-group small-width1">
-              <button   [hidden]="!isOwner" class="btn btn-success">Approval</button>
+              <button   [hidden]="!isOwner" class="btn btn-success"  (click)="openModal(template)">Approval</button>
             </div>
           </div>
         </div>
@@ -232,12 +232,19 @@
           <div *ngFor="let alert of alerts">
               <alert [type]="alert.type" [dismissOnTimeout]="alert.timeout" (onClosed)="onClosed(alert)">{{ alert.msg }}</alert>
             </div>
-          <input type="text" class="form-control" placeholder="reviewer@reviewer.dk" [(ngModel)]="email">
+          <input type="text" class="form-control"   [typeahead]="statesComplex"
+          typeaheadOptionField="email"  placeholder="reviewer@reviewer.dk" [(ngModel)]="email">
+         
           <select name="" id="">
             <option value=""></option>
             <option value=""></option>
             <option value=""></option>
           </select>
+          <!-- <pre class="card card-block card-header mb-3">Model: {{customSelected | json}}</pre>
+          <input [(ngModel)]="customSelected"
+                 [typeahead]="statesComplex"
+                 typeaheadOptionField="name"
+                 class="form-control"> -->
         </div>
         <div class="madal-footer">
           <button class="btn btn-success" (click)="openModal2(templates)">Done</button>

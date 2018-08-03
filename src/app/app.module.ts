@@ -30,7 +30,7 @@ import {NgxPaginationModule} from 'ngx-pagination'; // <-- import the module
     AppRoutingModule,
     ModalModule.forRoot(),
     AlertModule.forRoot(),
-    NgxPaginationModule
+    NgxPaginationModule,
   ],
   providers: [CookieService],
   bootstrap: [AppComponent]

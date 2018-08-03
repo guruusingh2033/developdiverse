@@ -564,6 +564,7 @@ label{
   padding:7px 15px;
   font-size: 16px;
   border-bottom:1px solid #eee;
+  list-style: none;
 }
  .dropdown ul li:last-child {
   border-bottom:none;
