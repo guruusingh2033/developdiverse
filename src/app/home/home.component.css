@@ -96,6 +96,7 @@
   padding: 50px 25px;
   margin-top: 15px;
   position: relative;
+  height: 495px;
 }
 .content-all .step-by-step {
   max-width:603px;
@@ -179,10 +180,12 @@
   margin:0 20px;
 }
 .scored-five {
-  width:100%;
-  margin-top:10px;
+  width: 100%;
+  margin-top: 10px;
   text-align: center;
-  position: relative;
+  position: absolute;
+  bottom: 0;
+  height: 75px;
 }
 .scored-five .btn-success {
   background: #dc482d;
@@ -284,4 +287,9 @@ padding-left:0;
 }
 .border-grey {
   border:none;
+}
+.text-editor {
+  position: relative;
+  padding-bottom: 80px;
+  box-sizing: border-box;
 }

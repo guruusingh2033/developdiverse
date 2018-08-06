@@ -255,7 +255,10 @@
 }
 
 .ngx-editor-textarea {
-  min-height: 250px !important;
+  min-height: 347px !important;
+  overflow-y: scroll !important;
+  height: 341px !important;
+  position: initial !important;
 }
 
 .ngx-editor-grippie {
