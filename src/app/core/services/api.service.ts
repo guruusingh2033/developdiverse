@@ -6,6 +6,7 @@ import { Observable } from 'rxjs';
 import { JwtService } from './jwt.service';
 import { throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
+import { ResponseContentType } from '@angular/http';
 
 @Injectable()
 export class ApiService {
@@ -42,4 +43,8 @@ export class ApiService {
       `${environment.api_url}${path}`
     ).pipe(catchError(this.formatErrors));
   }
+  
+ 
+
+
 }

@@ -15,8 +15,8 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
     this.userService.populate();
-    console.log("get user");
-    console.log(this.userService.getCurrentUser());
+   // console.log("get user");
+   // console.log(this.userService.getCurrentUser());
     if(typeof this.userService.getCurrentUser() == "object" && this.userService.getCurrentUser().token){
       this.hideSidebar =false;
     }

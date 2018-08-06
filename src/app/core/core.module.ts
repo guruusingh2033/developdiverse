@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { HttpTokenInterceptor } from './interceptors/http.token.interceptor';
+import {RequestOptions, Request, RequestMethod,Http,HttpModule} from '@angular/http';
 
 import {
   ApiService,
@@ -12,12 +13,15 @@ import {
   ProfilesService,
   TagsService,
   UserService,
-  JobService
+  JobService,
+
+
 } from './services';
 
 @NgModule({
   imports: [
-    CommonModule
+    CommonModule,
+    HttpModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: HttpTokenInterceptor, multi: true },

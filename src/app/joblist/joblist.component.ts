@@ -43,7 +43,7 @@ export class JoblistComponent implements OnInit {
         //response
         this.spinner.hide();
 
-        console.log(jobList);
+       // console.log(jobList);
         this.joblist = jobList;
         this.joblist = this.joblist.reverse();
        },

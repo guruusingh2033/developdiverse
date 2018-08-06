@@ -60,8 +60,8 @@ export class HomeComponent implements OnInit, OnDestroy {
   isDraft: boolean = false;
   isFinished: boolean = false;
   selectedJobStatus: any;
-  templateMsg:String;
-  
+  templateMsg: String;
+
   // statesComplex: any[] = [
   //   { id: 1, name: 'Alabama', region: 'South' },
   //   { id: 2, name: 'Alaska', region: 'West' },
@@ -124,8 +124,8 @@ export class HomeComponent implements OnInit, OnDestroy {
     private fb: FormBuilder,
     private jobService: JobService,
     private spinner: NgxSpinnerService,
-    private cdRef:ChangeDetectorRef
-    
+    private cdRef: ChangeDetectorRef
+
 
   ) {
 
@@ -151,7 +151,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       'department': ['', Validators.required],
     });
 
-    
+
 
   }
 
@@ -232,21 +232,21 @@ export class HomeComponent implements OnInit, OnDestroy {
       this.spinner.show();
       this.jobService.getJobListById(this.updateData)
         .subscribe(
-        jobList => {
-          //response
-          console.log(jobList)
-          this.spinner.hide();
-          this.updatedData = jobList;
-          this.statusUpdate();
-          this.isOwner = jobList.is_owner;
-          //  console.log(this.isOwner);
-          this.homeForm.patchValue(jobList);
+          jobList => {
+            //response
+            console.log(jobList)
+            this.spinner.hide();
+            this.updatedData = jobList;
+            this.statusUpdate();
+            this.isOwner = jobList.is_owner;
+            //  console.log(this.isOwner);
+            this.homeForm.patchValue(jobList);
 
-        },
-        err => {
-          //  debugger;
+          },
+          err => {
+            //  debugger;
 
-        }
+          }
         );
 
     }
@@ -367,8 +367,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   }
 
-  ngAfterViewChecked()
-  {
+  ngAfterViewChecked() {
     this.dialogRemember = "";
     this.cdRef.detectChanges();
   }
@@ -380,7 +379,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   openModal2(template: TemplateRef<any>) {
     this.spinner.show();
-    
+
     if (!this.updateData) {
       // console.log(this.createdJobId);
       debugger;
@@ -391,7 +390,7 @@ export class HomeComponent implements OnInit, OnDestroy {
             if (res.status == "true") {
               this.spinner.hide();
               debugger;
-              this.templateMsg ="A notification has been sent to your Colleague’s email";
+              this.templateMsg = "A notification has been sent to your Colleague’s email";
               this.closeFirstModal();
               this.modalRef = this.modalService.show(template);
               this.router.navigateByUrl('/joblisting');
@@ -414,8 +413,8 @@ export class HomeComponent implements OnInit, OnDestroy {
               }
               else {
                 //this.dialogErr = res.data;
-                this.templateMsg ="A notification has been sent to your Colleague’s email";
-                
+                this.templateMsg = "A notification has been sent to your Colleague’s email";
+
                 this.closeFirstModal();
                 this.modalRef = this.modalService.show(template);
                 this.router.navigateByUrl('/joblisting');
@@ -429,15 +428,15 @@ export class HomeComponent implements OnInit, OnDestroy {
           });
       }
       else {
-        
+
         this.shareJob(this.createdJobId)
           .then((data: any) => {
             this.spinner.hide();
             //   console.log(data);
             if (data.status) {
               this.closeFirstModal();
-              this.templateMsg ="A notification has been sent to your Colleague’s email";
-              
+              this.templateMsg = "A notification has been sent to your Colleague’s email";
+
               this.modalRef = this.modalService.show(template);
               this.router.navigateByUrl('/joblisting');
 
@@ -460,36 +459,36 @@ export class HomeComponent implements OnInit, OnDestroy {
           });
       }
     }
-    else{
+    else {
 
       this.shareJob(this.updateData)
-      .then((data: any) => {
-        this.spinner.hide();
-        //   console.log(data);
-        if (data.status) {
-          this.closeFirstModal();
-          this.templateMsg ="A notification has been sent to your Colleague’s email";
-          
-          this.modalRef = this.modalService.show(template);
-          this.router.navigateByUrl('/joblisting');
+        .then((data: any) => {
+          this.spinner.hide();
+          //   console.log(data);
+          if (data.status) {
+            this.closeFirstModal();
+            this.templateMsg = "A notification has been sent to your Colleague’s email";
 
-        }
-        else {
+            this.modalRef = this.modalService.show(template);
+            this.router.navigateByUrl('/joblisting');
+
+          }
+          else {
+            this.alerts.push({
+              type: 'danger',
+              msg: data.data.error_message,
+              timeout: 3000
+            });
+          }
+
+        })
+        .catch((err) => {
           this.alerts.push({
             type: 'danger',
-            msg: data.data.error_message,
+            msg: err.error_message,
             timeout: 3000
           });
-        }
-
-      })
-      .catch((err) => {
-        this.alerts.push({
-          type: 'danger',
-          msg: err.error_message,
-          timeout: 3000
         });
-      });
 
 
 
@@ -506,102 +505,127 @@ export class HomeComponent implements OnInit, OnDestroy {
   closeFirstModal() {
     this.modalRef.hide();
     this.modalRef = null;
-    
+
   }
 
-  displayButton(button){
-    if(button == "create"){
-      return (this.isOwner && !this.isDraft)|| !this.updateData;
+  displayButton(button) {
+    if (button == "create") {
+      return (this.isOwner && !this.isDraft) || !this.updateData;
     }
-    else if(button  == "share"){
+    else if (button == "share") {
       return this.isOwner && this.isDraft && !this.isShared;
     }
-    else if(button == "approve"){
+    else if (button == "approve") {
       return !this.isOwner && this.isShared && !this.isApproved;
     }
-    else if(button == "finish"){
+    else if (button == "finish") {
       return this.isApproved && this.isOwner && !this.isFinished;
     }
-    else if(button == "finishread"){
+    else if (button == "finishread") {
       return !this.isOwner && this.isShared && this.isApproved && !this.isFinished;
-      
+
     }
-    else if(button == "finishr"){
-      return this.isOwner && this.isShared ;
-      
+    else if (button == "finishr") {
+      return this.isOwner && this.isShared && !this.isApproved;
+
     }
 
   }
   approve(template) {
     this.spinner.show();
     if (this.selectedJobStatus == 1) {
-      this.jobService.approve({ jobad_id: this.updateData })
-        .subscribe(
-        jobList => {
-          //response
-          //  this.spinner.hide();
-          console.log(jobList);
-          this.spinner.hide();
-          if(jobList.is_approved == true){
-            this.router.navigateByUrl('/joblisting');
-          }
-          else{
-            this.spinner.hide();
-            this.templateMsg ="Unable To Approve Job";
-            this.modalRef = this.modalService.show(template);
-            
-          }
 
-          //  this.isOwner = !jobList.is_owner;
-          //  console.log(this.isOwner);
-          //   this.homeForm.patchValue(jobList);
-        },
-        err => {
-          //  debugger;
-          this.spinner.hide();
-          this.templateMsg ="Unable To Approve Job";
-          
-          this.modalRef = this.modalService.show(template);
-          
-        }
-        );
+      var dataForm = {
+        "ad_body": this.homeForm.value.ad_body,
+        "ad_title": this.homeForm.value.ad_title,
+        "department": this.homeForm.value.department,
+        "city": this.homeForm.value.city,
+        "country": this.homeForm.value.country
+      };
+
+      // this.updateJob(dataForm, this.updateData)
+      //   .then((dataUpdate) => {
+          // start of approve job
+          this.jobService.approve({ jobad_id: this.updateData })
+            .subscribe(
+              jobList => {
+                //response
+                //  this.spinner.hide();
+                console.log(jobList);
+                this.spinner.hide();
+                if (jobList.is_approved == true) {
+                  this.router.navigateByUrl('/joblisting');
+                }
+                else {
+                  this.spinner.hide();
+                  this.templateMsg = "Unable To Approve Job :approve";
+                  this.modalRef = this.modalService.show(template);
+
+                }
+
+                //  this.isOwner = !jobList.is_owner;
+                //  console.log(this.isOwner);
+                //   this.homeForm.patchValue(jobList);
+              },
+              err => {
+                //  debugger;
+                this.spinner.hide();
+                this.templateMsg = "Unable To Approve Job : approve";
+
+                this.modalRef = this.modalService.show(template);
+
+              }
+            );
+          //end of approve job
+        // })
+        // .catch((err) => {
+        //   this.spinner.hide();
+        //   this.templateMsg = "Unable To Approve Job : update issue";
+
+        //   this.modalRef = this.modalService.show(template);
+        // })
+
+
+
+
+
     }
 
 
   }
 
-  finish(template){
+  finish(template) {
     this.spinner.show();
     if (this.selectedJobStatus == 2) {
       this.jobService.finish({ jobad_id: this.updateData })
         .subscribe(
-        jobList => {
-          //response
-          //  this.spinner.hide();
-          console.log(jobList);
-          this.spinner.hide();
-          if(jobList.is_finished == true){
-            this.router.navigateByUrl('/joblisting');
-          }
-          else{
+          jobList => {
+            //response
+            //  this.spinner.hide();
+            console.log(jobList);
             this.spinner.hide();
-            this.templateMsg ="Unable To Finish Job";
-            this.modalRef = this.modalService.show(template);
-            
-          }
+            if (jobList.is_finished == true) {
+              this.router.navigateByUrl('/joblisting');
+            }
+            else {
+              this.spinner.hide();
+              this.templateMsg = "Unable To Finish Job";
+              this.modalRef = this.modalService.show(template);
 
-          //  this.isOwner = !jobList.is_owner;
-          //  console.log(this.isOwner);
-          //   this.homeForm.patchValue(jobList);
-        },
-        err => {
-          //  debugger;
-          this.spinner.hide();
-          this.templateMsg ="Unable To Finish Job";
-          
-          this.modalRef = this.modalService.show(template);
-          
-        }
+            }
+
+            //  this.isOwner = !jobList.is_owner;
+            //  console.log(this.isOwner);
+            //   this.homeForm.patchValue(jobList);
+          },
+          err => {
+            //  debugger;
+            this.spinner.hide();
+            this.templateMsg = "Unable To Finish Job";
+
+            this.modalRef = this.modalService.show(template);
+
+          }
         );
     }
 
@@ -609,34 +633,34 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
 
-  shareJobDirect(template){
+  shareJobDirect(template) {
     this.spinner.show();
-    
+
     var email = this.email;
-    var shareJob = { jobad_id: this.updateData,recipient: email };
+    var shareJob = { jobad_id: this.updateData, recipient: email };
 
     this.jobService
       .shareJob(shareJob)
       .subscribe(
-      sharedUser => {
-        //response
-        this.spinner.hide();
-        this.router.navigateByUrl('/joblisting');
-        
+        sharedUser => {
+          //response
+          this.spinner.hide();
+          this.router.navigateByUrl('/joblisting');
 
-      },
-      err => {
-        //  debugger;
-        this.spinner.hide();
-        this.modalRef = this.modalService.show(template);
-        
-      }
+
+        },
+        err => {
+          //  debugger;
+          this.spinner.hide();
+          this.modalRef = this.modalService.show(template);
+
+        }
       );
 
   }
 
 
- 
+
   /** from old  functionality   */
 
   dropdownSelect() {
@@ -760,37 +784,37 @@ export class HomeComponent implements OnInit, OnDestroy {
       this.jobService
         .create(dataForm)
         .subscribe(
-        updatedUser => {
-          //response
-          this.isSubmitting = false;
+          updatedUser => {
+            //response
+            this.isSubmitting = false;
 
-          this.shareJob(updatedUser.id)
-            .then((datax: any) => {
-              debugger;
+            this.shareJob(updatedUser.id)
+              .then((datax: any) => {
+                debugger;
 
-              if (datax.status) {
-                resolve({ status: true, data: datax.data, jobId: datax.jobId });
-              }
-              else {
-                resolve({ status: false, data: datax.data, jobId: datax.jobId });
+                if (datax.status) {
+                  resolve({ status: true, data: datax.data, jobId: datax.jobId });
+                }
+                else {
+                  resolve({ status: false, data: datax.data, jobId: datax.jobId });
 
-              }
-            })
-            .catch((err) => {
-              resolve({ status: false, data: err });
-            });
+                }
+              })
+              .catch((err) => {
+                resolve({ status: false, data: err });
+              });
 
-        },
-        err => {
-          this.spinner.hide();
-          // this.alerts.push({
-          //   type: 'danger',
-          //   msg: this.errors,
-          //   timeout: 3000
-          // });
-          this.isSubmitting = false;
-          resolve({ status: false, data: err });
-        }
+          },
+          err => {
+            this.spinner.hide();
+            // this.alerts.push({
+            //   type: 'danger',
+            //   msg: this.errors,
+            //   timeout: 3000
+            // });
+            this.isSubmitting = false;
+            resolve({ status: false, data: err });
+          }
         );
     });
   }
@@ -805,23 +829,46 @@ export class HomeComponent implements OnInit, OnDestroy {
       this.jobService
         .shareJob(shareJob)
         .subscribe(
-        sharedUser => {
-          //response
-          debugger;
-          resolve({ status: true, data: sharedUser, jobId: id });
+          sharedUser => {
+            //response
+            debugger;
+            resolve({ status: true, data: sharedUser, jobId: id });
 
-        },
-        err => {
-          //  debugger;
-          resolve({ status: false, data: err, jobId: id });
+          },
+          err => {
+            //  debugger;
+            resolve({ status: false, data: err, jobId: id });
 
-        }
+          }
         );
     });
 
   }
 
-  
+  updateJob(formData, id) {
+    debugger;
+    return new Promise(resolve => {
+
+      this.jobService
+        .update(formData, id)
+        .subscribe(
+          updateJob => {
+            //response
+            debugger;
+            resolve({ status: true, data: updateJob });
+
+          },
+          err => {
+            //  debugger;
+            resolve({ status: false, data: err, jobId: id });
+
+          }
+        );
+    });
+
+  }
+
+
 
   afterServiceProcess() {
 
@@ -919,15 +966,15 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.jobService
       .getApprovalEmails()
       .subscribe(
-      (sharedEmail: any) => {
-        //response
-        console.log(sharedEmail);
-        this.statesComplex = sharedEmail.contacts;
-      },
-      err => {
-        //  debugger;
+        (sharedEmail: any) => {
+          //response
+          console.log(sharedEmail);
+          this.statesComplex = sharedEmail.contacts;
+        },
+        err => {
+          //  debugger;
 
-      }
+        }
       );
   }
 

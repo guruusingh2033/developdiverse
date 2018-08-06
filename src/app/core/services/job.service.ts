@@ -1,5 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { ResponseContentType, Headers } from '@angular/http';
+import {  saveFile } from './file-download-helper';
+import {RequestOptions, Request, RequestMethod,Http,HttpModule} from '@angular/http';
+import { environment } from '../../../environments/environment';
 
 import { ApiService } from './api.service';
 import { Job } from '../models';
@@ -8,7 +12,8 @@ import { map } from 'rxjs/operators';
 @Injectable()
 export class JobService {
   constructor (
-    private apiService: ApiService
+    private apiService: ApiService,
+    private http: Http,
   ) {}
 
   getActiveJob(jobID): Observable<Job> {
@@ -59,9 +64,9 @@ export class JobService {
     }));
   }
 
-  update(job): Observable<Job> {
+  update(job,id): Observable<Job> {
     return this.apiService
-    .put('/jobads/1.json/', job)
+    .put('/jobads/'+id+'.json/', job)
     .pipe(map(data => {
       return data;
     }));
@@ -95,15 +100,6 @@ export class JobService {
     
   } 
 
-  download(job): Observable<Job> {
-    return this.apiService
-    .post('/download/jobad/', job)
-    .pipe(map(data => {
-      return data;
-    }));
-    
-  } 
-
   getJobListById(id): Observable<Job> {
     return this.apiService.get('/jobads/'+id+'.json/')
       .pipe(map(
@@ -115,4 +111,22 @@ export class JobService {
     
   } 
 
+  downloadFile(job) {
+    const url = `${environment.api_url}`+`/download/jobad/`;
+    const headers = new Headers();
+
+   headers.append('Authorization', `Token `+localStorage.getItem("jwtToken"));
+
+    const options = new RequestOptions(
+      {
+        responseType: ResponseContentType.Blob ,
+        headers:headers
+      });
+      var jobid = job.jobad_id ;
+    // Process the file downloaded
+    this.http.post(url,job, options).subscribe(res => {
+        const fileName = "jobad_"+jobid+".docx";
+        saveFile(res.blob(), fileName);
+    });
+}
 }
