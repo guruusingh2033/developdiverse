@@ -125,11 +125,25 @@
           </div>
           <div class="col-lg-3 col-md-4 col-sm-12 col-xs-12 left-padding">
             <div class="form-group small-width">
-              <button [hidden]="isOwner" class="btn btn-primary" (click)="openModal(template)" [disabled] ="!homeForm.valid" >Share</button>
+              <button *ngIf="displayButton('create')" class="btn btn-primary" (click)="openModal(template)" [disabled] ="!homeForm.valid" >Create</button>
+            </div>
+            <div class="form-group small-width">
+              <button *ngIf="displayButton('share')" class="btn btn-primary" (click)="openModal(template)" [disabled] ="!homeForm.valid" >Share</button>
             </div>
             <div class="form-group small-width1">
-              <button   [hidden]="!isOwner" class="btn btn-success"  (click)="openModal(template)">Approval</button>
+              <button   *ngIf="displayButton('approve')" class="btn btn-success"  (click)="approve(templates)">Approval</button>
             </div>
+            <div class="form-group small-width1">
+              <button   *ngIf="displayButton('finish')" class="btn btn-success"  (click)="finish(templates)">Finish</button>
+            </div>
+            <div class="form-group small-width1">
+              <button   [disabled]="true" *ngIf="displayButton('finishread')" class="btn btn-success"  >Finish</button>
+            </div>
+            <div class="form-group small-width1">
+              <button   [disabled]="true" *ngIf="displayButton('finishr')" class="btn btn-success"  >Finish</button>
+            </div>
+
+
           </div>
         </div>
       </div>
@@ -274,7 +288,8 @@
           </ul>
           <div class="checkbox">
             <label>
-              <input type="checkbox" value="true" (click)="setDialogState()" [(ngModel)]="dialogRemember">Don’t show me again</label>
+              <input type="checkbox" value="true" (click)="setDialogState()" [(ngModel)]="dialogRemember">
+              Don’t show me again</label>
           </div>
           <a class="close"  (click)="closeFirstModal()">
             <img src="../assets/images/step-close.png" />
@@ -293,7 +308,7 @@
 
       </div>
       <div class="modal-body">
-        <p>A notification has been sent to your Colleague’s email</p>
+        <p>{{templateMsg}}</p>
       </div>
     </div>
   </ng-template>

@@ -79,23 +79,7 @@ export class UserService {
   }
 
   purgeAuth() {
-      this.apiService.get('/logout/')
-      .subscribe(
-        data =>{
-          //console.log("logout" +data)
-        },
-        err => {
-         // console.log(err);    
-          
-          this.jwtService.destroyToken();
-          // Set current user to an empty object
-          this.currentUserSubject.next({} as User);
-          // Set auth status to false
-          this.isAuthenticatedSubject.next(false);
-          this.router.navigateByUrl('/'); 
-        }
-
-      );
+    debugger;
     this.jwtService.destroyToken();
     // Set current user to an empty object
     this.currentUserSubject.next({} as User);
@@ -104,14 +88,34 @@ export class UserService {
   }
 
   purgeAuthInterceptor(){
-    this.jwtService.destroyToken();
+     this.apiService.get('/logout/')
+        .subscribe(
+         data =>{
+           //console.log("logout" +data)
+           this.purgeAuth();
+           this.router.navigateByUrl('/'); 
+
+         },
+         err => {
+         console.log(err);    
+          
+          //  this.jwtService.destroyToken();
+          //  // Set current user to an empty object
+          //  this.currentUserSubject.next({} as User);
+          //  // Set auth status to false
+          //  this.isAuthenticatedSubject.next(false);
+          //  this.router.navigateByUrl('/'); 
+         }
+
+       );
+    //this.jwtService.destroyToken();
 
     // Set current user to an empty object
-    this.currentUserSubject.next({} as User);
+   // this.currentUserSubject.next({} as User);
     // Set auth status to false
-    this.isAuthenticatedSubject.next(false);
+   // this.isAuthenticatedSubject.next(false);
 
-    this.router.navigateByUrl('/'); 
+   // this.router.navigateByUrl('/'); 
 
   }
 

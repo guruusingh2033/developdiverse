@@ -169,7 +169,7 @@
                   <span class="lock"></span>
                   <input formControlName="email" [readonly]='true' placeholder="user@user.com" class="form-control form-control-lg" type="text" [ngClass]="{ 'is-invalid': f.email.touched && f.email.errors }"
                   />
-                  <div *ngIf="f.email.occurencetouched && f.email.errors" class="invalid-feedback">
+                  <div *ngIf="f.email.touched && f.email.errors" class="invalid-feedback">
                       <div *ngIf="f.email.errors.required">*Email is required</div>
 
                   </div>

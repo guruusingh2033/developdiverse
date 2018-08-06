@@ -50,8 +50,8 @@ export class JobService {
     }));
   }
 
-  shareJob(job): Observable<Job> {
-    //debugger;
+  shareJob(job): Observable<any> {
+    debugger;
     return this.apiService
     .post('/share_ad/', job)
     .pipe(map(data => {
@@ -69,9 +69,17 @@ export class JobService {
 
 
   
-  approve(job): Observable<Job> {
+  approve(job): Observable<any> {
     return this.apiService
-    .put('/jobads/1.json/', job)
+    .post('/approve_ad/', job)
+    .pipe(map(data => {
+      return data;
+    }));
+  }
+
+  finish(job): Observable<any> {
+    return this.apiService
+    .post('/finish_ad/', job)
     .pipe(map(data => {
       return data;
     }));

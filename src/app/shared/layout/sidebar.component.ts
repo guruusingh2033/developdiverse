@@ -50,8 +50,9 @@ export class SidebarComponent implements OnInit {
   }
 
   logout() {
-    this.userService.purgeAuth();
-    this.router.navigateByUrl('/');
+   // this.userService.purgeAuth();
+    this.userService.purgeAuthInterceptor();
+   // this.router.navigateByUrl('/');
   }
 
 

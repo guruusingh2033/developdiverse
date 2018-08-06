@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { User, UserService } from '../../core';
 import { Router } from '@angular/router';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-layout-header',
@@ -10,6 +11,8 @@ export class HeaderComponent implements OnInit {
   constructor(
     private userService: UserService,
     private router: Router,
+    private spinner: NgxSpinnerService,
+    
 
   ) {}
 
@@ -26,8 +29,12 @@ export class HeaderComponent implements OnInit {
 
 
   logout() {
-    this.userService.purgeAuth();
-    this.router.navigateByUrl('/');
+    debugger;
+    this.spinner.show();
+    this.userService.purgeAuthInterceptor();
+    this.spinner.hide();
+   // this.userService.purgeAuth();
+   // this.router.navigateByUrl('/');
   }
 
 }

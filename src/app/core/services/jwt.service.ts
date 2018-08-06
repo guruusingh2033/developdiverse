@@ -19,7 +19,6 @@ export class JwtService {
       // else{
       return  this.cookieService.get('jwtToken');
 
-     // }
     }
     
   }
@@ -32,13 +31,11 @@ export class JwtService {
 
   destroyToken() {
     this.cookieService.delete('jwtToken');
+    window.localStorage.removeItem('jwtToken');
+    window.localStorage.removeItem('username');
+    this.cookieService.delete('username');
+    window.localStorage.removeItem('dialogOff'); 
 
-  window.localStorage.removeItem('jwtToken');
-  window.localStorage.removeItem('username');
-
-  this.cookieService.delete('username');
-
-     
   }
 
   destroyTokenOnPasswordUpdate(){

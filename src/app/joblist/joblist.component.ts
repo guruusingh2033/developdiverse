@@ -21,7 +21,7 @@ export class JoblistComponent implements OnInit {
   alert1: any;
   p: number = 1;
   jobType=["Draft","Shared","Approved","Finished"];
-
+  term:any;
   constructor(
     private router: Router,
     private jobService: JobService,
@@ -43,7 +43,7 @@ export class JoblistComponent implements OnInit {
         //response
         this.spinner.hide();
 
-       // console.log(jobList);
+        console.log(jobList);
         this.joblist = jobList;
         this.joblist = this.joblist.reverse();
        },
@@ -56,8 +56,8 @@ export class JoblistComponent implements OnInit {
   }
 
 
-  redirect(id){
-    this.router.navigateByUrl('/dashboard/editor?data='+id);
+  redirect(id,status){
+    this.router.navigateByUrl('/dashboard/editor?data='+id+'&status='+status);
 
   }
 

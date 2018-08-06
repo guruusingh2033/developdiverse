@@ -6,6 +6,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { CookieService } from 'ngx-cookie-service';
 import {JwtService} from '../core/services/jwt.service'
 import { Errors, UserService } from '../core';
+import { ChangeDetectorRef } from '@angular/core';
 
 @Component({
   selector: 'app-auth-page',
@@ -25,6 +26,7 @@ export class AuthComponent implements OnInit {
   color = 'primary';
   mode = 'determinate';
   value = 50;
+  password:string="";
   
   constructor(
     private route: ActivatedRoute,
@@ -34,7 +36,7 @@ export class AuthComponent implements OnInit {
     private spinner: NgxSpinnerService,
     private cookieService: CookieService,
     private jwtService: JwtService,
-
+    private cdRef:ChangeDetectorRef
 
   ) {
     // use FormBuilder to create a form group
@@ -63,8 +65,8 @@ export class AuthComponent implements OnInit {
    if(!token){
      token = localStorage.getItem('jwtToken');
      if(token){
-      localStorage.setItem("jwtToken",token);
-      this.cookieService.set("jwtToken",token);
+     // localStorage.setItem("jwtToken",token);
+    //  this.cookieService.set("jwtToken",token);
     this.userService.purgeAuth();
 
      }
@@ -74,6 +76,11 @@ export class AuthComponent implements OnInit {
 
   }
 
+  ngAfterViewChecked()
+  {
+    this.password = "";
+    this.cdRef.detectChanges();
+  }
   // convenience ge  <alert [type]="alert.type" [dismissOnTimeout]="alert.timeout" (onClosed)="onClosed(alert)">{{ alert.msg }}</alert>
   get f() { return this.authForm.controls; }
 

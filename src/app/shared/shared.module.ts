@@ -5,6 +5,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 
 
+import { NgxSpinnerModule } from 'ngx-spinner';
 
 import { ListErrorsComponent } from './list-errors.component';
 import { ShowAuthedDirective } from './show-authed.directive';
@@ -15,7 +16,9 @@ import { ShowAuthedDirective } from './show-authed.directive';
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
-    RouterModule
+    RouterModule,
+    NgxSpinnerModule,
+    
   ],
   declarations: [
 

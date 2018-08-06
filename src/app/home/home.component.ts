@@ -8,6 +8,7 @@ import * as $ from 'jquery';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { AlertComponent } from 'ngx-bootstrap/alert/alert.component';
 import 'rxjs/add/operator/filter';
+import { ChangeDetectorRef } from '@angular/core';
 
 
 @Component({
@@ -21,7 +22,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   modalRef3: BsModalRef;
   openScreen: boolean = true;
   state: string = '';
-  updateData: number;
+  updateData: any;
 
   authType: String = '';
   title: String = '';
@@ -47,11 +48,20 @@ export class HomeComponent implements OnInit, OnDestroy {
   isOwner: boolean = false;
   loaderMsg: string = "Saving...";
   createdJobId: any;
-  dialogRemember: any;
+  dialogRemember: any = "";
   navigationSubscription;
 
   customSelected: string;
-  statesComplex:any[] = [{}];
+  statesComplex: any[] = [{}];
+  jobType = ["Draft", "Shared", "Approved", "Finished"];
+  updatedData: any;
+  isApproved: boolean = false;
+  isShared: boolean = false;
+  isDraft: boolean = false;
+  isFinished: boolean = false;
+  selectedJobStatus: any;
+  templateMsg:String;
+  
   // statesComplex: any[] = [
   //   { id: 1, name: 'Alabama', region: 'South' },
   //   { id: 2, name: 'Alaska', region: 'West' },
@@ -114,7 +124,8 @@ export class HomeComponent implements OnInit, OnDestroy {
     private fb: FormBuilder,
     private jobService: JobService,
     private spinner: NgxSpinnerService,
-
+    private cdRef:ChangeDetectorRef
+    
 
   ) {
 
@@ -124,6 +135,11 @@ export class HomeComponent implements OnInit, OnDestroy {
         //   this.initialiseInvites();
         this.homeForm.reset({});
         this.createdJobId = false;
+        this.updateData = false;
+        this.isApproved = false;
+        this.isDraft = false;
+        this.isShared = false;
+        this.isFinished = false;
       }
     });
     this.homeForm = this.fb.group({
@@ -135,13 +151,14 @@ export class HomeComponent implements OnInit, OnDestroy {
       'department': ['', Validators.required],
     });
 
-
+    
 
   }
 
   get f() { return this.homeForm.controls; }
 
   ngOnInit() {
+
     // console.log("isowner" + this.isOwner);
     this.dropdownContent = `<div class="dropdown" contenteditable="false">
     <ul class="dropdown-select">
@@ -204,6 +221,7 @@ export class HomeComponent implements OnInit, OnDestroy {
         //  console.log(params); // {order: "popular"}
 
         this.updateData = params.data;
+        this.selectedJobStatus = params.status;
         //   console.log(this.updateData); // popular
       });
 
@@ -214,19 +232,21 @@ export class HomeComponent implements OnInit, OnDestroy {
       this.spinner.show();
       this.jobService.getJobListById(this.updateData)
         .subscribe(
-          jobList => {
-            //response
-            this.spinner.hide();
+        jobList => {
+          //response
+          console.log(jobList)
+          this.spinner.hide();
+          this.updatedData = jobList;
+          this.statusUpdate();
+          this.isOwner = jobList.is_owner;
+          //  console.log(this.isOwner);
+          this.homeForm.patchValue(jobList);
 
-            //  console.log(jobList);
-            this.isOwner = !jobList.is_owner;
-            //  console.log(this.isOwner);
-            this.homeForm.patchValue(jobList);
-          },
-          err => {
-            //  debugger;
+        },
+        err => {
+          //  debugger;
 
-          }
+        }
         );
 
     }
@@ -305,6 +325,35 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.getApprovalEmail();
   }
 
+  statusUpdate() {
+    console.log("----------");
+    console.log(this.updateData);
+
+    if (this.updateData) {
+      console.log(this.selectedJobStatus);
+
+      if (this.selectedJobStatus == 0) {
+        this.isDraft = true;
+      }
+      else if (this.selectedJobStatus == 1) {
+        this.isDraft = true;
+        this.isShared = true;
+
+      }
+      else if (this.selectedJobStatus == 2) {
+        this.isDraft = true;
+        this.isShared = true;
+        this.isApproved = true;
+      }
+      else if (this.selectedJobStatus == 3) {
+        this.isDraft = true;
+        this.isShared = true;
+        this.isApproved = true;
+        this.isFinished = true;
+      }
+    }
+  }
+
   loadJobEditor() {
     this.openScreen = false;
     this.router.navigateByUrl('/dashboard/editor');
@@ -318,14 +367,21 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   }
 
+  ngAfterViewChecked()
+  {
+    this.dialogRemember = "";
+    this.cdRef.detectChanges();
+  }
+
+
   openModal(template: TemplateRef<any>) {
     this.modalRef = this.modalService.show(template);
   }
 
   openModal2(template: TemplateRef<any>) {
-
+    this.spinner.show();
+    
     if (!this.updateData) {
-      this.spinner.show();
       // console.log(this.createdJobId);
       debugger;
       if (!this.createdJobId) {
@@ -335,6 +391,7 @@ export class HomeComponent implements OnInit, OnDestroy {
             if (res.status == "true") {
               this.spinner.hide();
               debugger;
+              this.templateMsg ="A notification has been sent to your Colleague’s email";
               this.closeFirstModal();
               this.modalRef = this.modalService.show(template);
               this.router.navigateByUrl('/joblisting');
@@ -357,7 +414,8 @@ export class HomeComponent implements OnInit, OnDestroy {
               }
               else {
                 //this.dialogErr = res.data;
-
+                this.templateMsg ="A notification has been sent to your Colleague’s email";
+                
                 this.closeFirstModal();
                 this.modalRef = this.modalService.show(template);
                 this.router.navigateByUrl('/joblisting');
@@ -371,12 +429,15 @@ export class HomeComponent implements OnInit, OnDestroy {
           });
       }
       else {
+        
         this.shareJob(this.createdJobId)
           .then((data: any) => {
             this.spinner.hide();
             //   console.log(data);
             if (data.status) {
               this.closeFirstModal();
+              this.templateMsg ="A notification has been sent to your Colleague’s email";
+              
               this.modalRef = this.modalService.show(template);
               this.router.navigateByUrl('/joblisting');
 
@@ -399,6 +460,40 @@ export class HomeComponent implements OnInit, OnDestroy {
           });
       }
     }
+    else{
+
+      this.shareJob(this.updateData)
+      .then((data: any) => {
+        this.spinner.hide();
+        //   console.log(data);
+        if (data.status) {
+          this.closeFirstModal();
+          this.templateMsg ="A notification has been sent to your Colleague’s email";
+          
+          this.modalRef = this.modalService.show(template);
+          this.router.navigateByUrl('/joblisting');
+
+        }
+        else {
+          this.alerts.push({
+            type: 'danger',
+            msg: data.data.error_message,
+            timeout: 3000
+          });
+        }
+
+      })
+      .catch((err) => {
+        this.alerts.push({
+          type: 'danger',
+          msg: err.error_message,
+          timeout: 3000
+        });
+      });
+
+
+
+    }
   }
 
   openModal3(template: TemplateRef<any>) {
@@ -411,9 +506,137 @@ export class HomeComponent implements OnInit, OnDestroy {
   closeFirstModal() {
     this.modalRef.hide();
     this.modalRef = null;
+    
+  }
+
+  displayButton(button){
+    if(button == "create"){
+      return (this.isOwner && !this.isDraft)|| !this.updateData;
+    }
+    else if(button  == "share"){
+      return this.isOwner && this.isDraft && !this.isShared;
+    }
+    else if(button == "approve"){
+      return !this.isOwner && this.isShared && !this.isApproved;
+    }
+    else if(button == "finish"){
+      return this.isApproved && this.isOwner && !this.isFinished;
+    }
+    else if(button == "finishread"){
+      return !this.isOwner && this.isShared && this.isApproved && !this.isFinished;
+      
+    }
+    else if(button == "finishr"){
+      return this.isOwner && this.isShared ;
+      
+    }
+
+  }
+  approve(template) {
+    this.spinner.show();
+    if (this.selectedJobStatus == 1) {
+      this.jobService.approve({ jobad_id: this.updateData })
+        .subscribe(
+        jobList => {
+          //response
+          //  this.spinner.hide();
+          console.log(jobList);
+          this.spinner.hide();
+          if(jobList.is_approved == true){
+            this.router.navigateByUrl('/joblisting');
+          }
+          else{
+            this.spinner.hide();
+            this.templateMsg ="Unable To Approve Job";
+            this.modalRef = this.modalService.show(template);
+            
+          }
+
+          //  this.isOwner = !jobList.is_owner;
+          //  console.log(this.isOwner);
+          //   this.homeForm.patchValue(jobList);
+        },
+        err => {
+          //  debugger;
+          this.spinner.hide();
+          this.templateMsg ="Unable To Approve Job";
+          
+          this.modalRef = this.modalService.show(template);
+          
+        }
+        );
+    }
+
+
+  }
+
+  finish(template){
+    this.spinner.show();
+    if (this.selectedJobStatus == 2) {
+      this.jobService.finish({ jobad_id: this.updateData })
+        .subscribe(
+        jobList => {
+          //response
+          //  this.spinner.hide();
+          console.log(jobList);
+          this.spinner.hide();
+          if(jobList.is_finished == true){
+            this.router.navigateByUrl('/joblisting');
+          }
+          else{
+            this.spinner.hide();
+            this.templateMsg ="Unable To Finish Job";
+            this.modalRef = this.modalService.show(template);
+            
+          }
+
+          //  this.isOwner = !jobList.is_owner;
+          //  console.log(this.isOwner);
+          //   this.homeForm.patchValue(jobList);
+        },
+        err => {
+          //  debugger;
+          this.spinner.hide();
+          this.templateMsg ="Unable To Finish Job";
+          
+          this.modalRef = this.modalService.show(template);
+          
+        }
+        );
+    }
+
+
   }
 
 
+  shareJobDirect(template){
+    this.spinner.show();
+    
+    var email = this.email;
+    var shareJob = { jobad_id: this.updateData,recipient: email };
+
+    this.jobService
+      .shareJob(shareJob)
+      .subscribe(
+      sharedUser => {
+        //response
+        this.spinner.hide();
+        this.router.navigateByUrl('/joblisting');
+        
+
+      },
+      err => {
+        //  debugger;
+        this.spinner.hide();
+        this.modalRef = this.modalService.show(template);
+        
+      }
+      );
+
+  }
+
+
+ 
   /** from old  functionality   */
 
   dropdownSelect() {
@@ -461,7 +684,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   setDialogState() {
-    if (this.dialogRemember == "true") {
+    if (localStorage.getItem("dialogOff") == "true") {
       localStorage.setItem("dialogOff", "false");
     }
     else {
@@ -537,37 +760,37 @@ export class HomeComponent implements OnInit, OnDestroy {
       this.jobService
         .create(dataForm)
         .subscribe(
-          updatedUser => {
-            //response
-            this.isSubmitting = false;
+        updatedUser => {
+          //response
+          this.isSubmitting = false;
 
-            this.shareJob(updatedUser.id)
-              .then((datax: any) => {
-                debugger;
+          this.shareJob(updatedUser.id)
+            .then((datax: any) => {
+              debugger;
 
-                if (datax.status) {
-                  resolve({ status: true, data: datax.data, jobId: datax.jobId });
-                }
-                else {
-                  resolve({ status: false, data: datax.data, jobId: datax.jobId });
+              if (datax.status) {
+                resolve({ status: true, data: datax.data, jobId: datax.jobId });
+              }
+              else {
+                resolve({ status: false, data: datax.data, jobId: datax.jobId });
 
-                }
-              })
-              .catch((err) => {
-                resolve({ status: false, data: err });
-              });
+              }
+            })
+            .catch((err) => {
+              resolve({ status: false, data: err });
+            });
 
-          },
-          err => {
-            this.spinner.hide();
-            // this.alerts.push({
-            //   type: 'danger',
-            //   msg: this.errors,
-            //   timeout: 3000
-            // });
-            this.isSubmitting = false;
-            resolve({ status: false, data: err });
-          }
+        },
+        err => {
+          this.spinner.hide();
+          // this.alerts.push({
+          //   type: 'danger',
+          //   msg: this.errors,
+          //   timeout: 3000
+          // });
+          this.isSubmitting = false;
+          resolve({ status: false, data: err });
+        }
         );
     });
   }
@@ -582,21 +805,23 @@ export class HomeComponent implements OnInit, OnDestroy {
       this.jobService
         .shareJob(shareJob)
         .subscribe(
-          sharedUser => {
-            //response
-            debugger;
-            resolve({ status: true, data: sharedUser, jobId: id });
+        sharedUser => {
+          //response
+          debugger;
+          resolve({ status: true, data: sharedUser, jobId: id });
 
-          },
-          err => {
-            //  debugger;
-            resolve({ status: false, data: err, jobId: id });
+        },
+        err => {
+          //  debugger;
+          resolve({ status: false, data: err, jobId: id });
 
-          }
+        }
         );
     });
 
   }
+
+  
 
   afterServiceProcess() {
 
@@ -694,15 +919,15 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.jobService
       .getApprovalEmails()
       .subscribe(
-        (sharedEmail:any) => {
-          //response
-          console.log(sharedEmail);
-         this.statesComplex = sharedEmail.contacts;
-        },
-        err => {
-          //  debugger;
+      (sharedEmail: any) => {
+        //response
+        console.log(sharedEmail);
+        this.statesComplex = sharedEmail.contacts;
+      },
+      err => {
+        //  debugger;
 
-        }
+      }
       );
   }
 
