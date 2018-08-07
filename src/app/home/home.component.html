@@ -105,17 +105,17 @@
                 <div class="graph">
                   <img class="img-fluid" src="../assets/images/graph-img.png" />
                   <div class="graph-caption">
-                    <h2>75</h2>
-                    <h6>Low Biased</h6>
+                    <h2>{{ddScore}}</h2>
+                    <h6 *ngIf="ddScore">Low Biased</h6>
                   </div>
                 </div>
               </div>
               <div class="gender-wordings">
                 <h5>Gender Wording</h5>
                 <div class="per-count">
-                  <span>0,5%</span>
+                  <span>{{percBiasedMaleWords}}</span>
                   <img class="img-fluid" src="../assets/images/gender-icon.png" />
-                  <span>0%</span>
+                  <span>{{percBiasedFemaleWords}}</span>
                 </div>
               </div>
             </div>
@@ -221,4 +221,3 @@
   
   type="ball-scale-multiple">
 </ngx-spinner>
-

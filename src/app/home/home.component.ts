@@ -66,6 +66,9 @@ export class HomeComponent implements OnInit, OnDestroy {
   isReadonly: boolean = false;
   currentUser: any;
   company: String;
+  percBiasedMaleWords:any;
+  percBiasedFemaleWords:any;
+  ddScore:any;
 
   constructor(
     private router: Router,
@@ -151,43 +154,39 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.alerts = [];
 
     var dropdown = this.dropdownContent;
-      var dropdownContent = 
-    `<div class="dropdown" contenteditable="false">
-      <ul>
-        <li id=""><a>Data</a></li>
-        <li id=""><a>Data1</a></li>o
-        <li id=""><a>Data2</a></li>
-        <li id=""><a>Data3</a></li>
-      </ul>
-      </div>`;
-
-      
     
       $(document).ready(function () {
         $(".dropdown").hide();
         $(".openDrp").click(function () {
+          debugger;
           // alert("hi");
-          $(".dropdown").toggle();
-          $(this).append(dropdown);
+          var attrID =  $(this).attr('id');
+          $($(this).closest('div').children('.dropdown')).toggle()
+        //  console.log($("#" +attrID).children('.$(this)'));
+       //   $(this).append(dropdown);
   
   
-        //   var selectBox = document.querySelectorAll('.drop');
-        //   console.log(selectBox);
-        //   for(var i=0;i<selectBox.length;i++){
-        //     console.log(selectBox[i]);
-        //   // selectBox[i].addEventListener('click',function(){
-  
-        //   // },false);
-        //    console.log("binded");
-        //   }
+          // var selectBox = document.querySelectorAll('.drop');
+          // console.log(selectBox);
+          // for(var i=0;i<selectBox.length;i++){
+          //   console.log(selectBox[i]);
+          // selectBox[i].addEventListener('click',fire.bind(this),false);
+          //  console.log("binded");
+          // }
           });
   
         $(".drop").click(function () {
-          //alert("hello");
-            console.log($(this).attr('id'));
-              $(".dropdown").toggle();
+       //   alert("hello");
+            // console.log($(this).attr('id'));
+            var selectedId =  $(this).parent();
+            console.log($(this).closest('div'));
+            $(this).closest('div').toggle();
   
         });
+
+      //   $(".dropdown").on("click", "li .drop", function(){
+      //     alert("jkjk");
+      // });
   
       });
       
@@ -212,15 +211,35 @@ export class HomeComponent implements OnInit, OnDestroy {
       }
     );
 
-//     this.ad_body = `Our company is looking for an expert negotiator. Aggressiveness is a required trait, but sympathy is important as well.
-//     <div class="dropdown-ex">
-//   <button class="openDrp">Dropdown</button>
-//   <div class="dropdown" contenteditable="false">
-//   </div>  
+    this.ad_body = `Our company is looking for an expert negotiator. Aggressiveness is a required trait, but sympathy is important as well.
+    <div class="dropdown-ex" >
+  <button class="openDrp" id="1" >Dropdown</button>
+  <div class="dropdown"  contenteditable="false">
+  <ul class="dropdown-select">
+    <li class="drop" id="11"><a>Data</a></li>
+    <li class="drop" id="12"><a>Data1</a></li>
+    <li class="drop" id="13"><a>Data2</a></li>
+    <li class="drop" id="14"><a>Data3</a></li>
+  </ul>
+  </div> 
+</div>
+hjjhjh
+<div class="dropdown-ex">
+<button class="openDrp"  id="2">Dropdown</button>
+<div class="dropdown" contenteditable="false">
+<ul class="dropdown-select">
+  <li class="drop" id="15"><a>Data</a></li>
+  <li class="drop" id="16"><a>Data4</a></li>
+  <li class="drop" id="17"><a>Data2</a></li>
+  <li class="drop" id="18"><a>Data3</a></li>
+</ul>
+</div> 
+</div>
 
-// </div>
-//     `;
-    this.ad_body = ``;
+    `;
+
+    
+    //this.ad_body = ``;
 
     //  this.ad_body =`Lorem <span id='ipsum' style='color:red' (click)='call()'>ipsum</span> is a pseudo-Latin text used in web design, typography, layout, and printing in place of English to emphasise design elements over <span id='content' style='color:green' (click)='call()'>content</span>. It's also called placeholder (or filler) text. It's a convenient tool for mock-ups. It helps to outline the visual elements of a document or presentation, eg typography, font, or layout. Lorem <span id='ipsum' style='color:red' (click)='call()'>ipsum</span> is mostly a part of a Latin text by the classical author and philosopher Cicero. Its words and letters have been changed by addition or removal, so to deliberately render its <span id='content' style='color:green' (click)='call()'>content</span> nonsensical; it's not genuine, correct, or comprehensible Latin anymore. While lorem <span id='ipsum' style='color:red' (click)='call()'>ipsum</span>'s still resembles classical Latin, it actually has no meaning whatsoever. As Cicero's text doesn't contain the letters K, W, or Z, alien to latin, these, and others are often inserted randomly to mimic the typographic appearence of European languages, as are digraphs not to be found in the original.  In a professional context it often happens that private or corporate clients corder a publication to be made and presented with the actual <span id='content' style='color:green' (click)='call()'>content</span> still not being ready. Think of a news blog that's filled with <span id='content' style='color:green' (click)='call()'>content</span> hourly on the day of going live. However, reviewers tend to be distracted by comprehensible <span id='content' style='color:green' (click)='call()'>content</span>, say, a random text copied from a newspaper or the internet. The are likely to focus on the text, disregarding the layout and its elements. Besides, random text risks to be unintendedly humorous or offensive, an unacceptable risk in corporate environments. Lorem <span id='ipsum' style='color:red' (click)='call()'>ipsum</span> and its many variants have been employed since the early 1960ies, and quite likely since the sixteenth century.` ; 
     var input = document.getElementById('myInput');
@@ -284,6 +303,10 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.getApprovalEmail();
   }
 
+  fire(){
+    console.log("fire")
+  }
+
   getUser() {
     this.profileService.get().subscribe(
       (userData) => {
@@ -319,7 +342,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.spinner.show();
     this.jobService.getJobListById(this.updateData)
       .subscribe(
-        jobList => {
+        (jobList:any) => {
           //response
 
           console.log(jobList)
@@ -329,6 +352,8 @@ export class HomeComponent implements OnInit, OnDestroy {
           this.isOwner = jobList.is_owner;
           //  console.log(this.isOwner);
           this.homeForm.patchValue(jobList);
+          this.ddScore = jobList.dd_score;
+          this.percBiasedFemaleWords = jobList.female_phrases_percentage;
 
         },
         err => {
@@ -745,18 +770,18 @@ export class HomeComponent implements OnInit, OnDestroy {
   /** from old  functionality   */
 
   dropdownSelect() {
-    var selectBox = this.elRef.nativeElement.querySelectorAll('select');
+    var selectBox = this.elRef.nativeElement.querySelectorAll('.openDrp');
     // console.log(selectBox);
     for (var i = 0; i < selectBox.length; i++) {
 
-      selectBox[i].addEventListener('change', this.onClick.bind(this));
+      selectBox[i].addEventListener('click', this.fire.bind(this));
       // console.log("binded");
     }
   }
 
   modelChanged(data) {
     // console.log("fire");
-    this.dropdownSelect();
+    //this.dropdownSelect();
   }
   magic() {
     // console.log(this.ad_body);
@@ -797,33 +822,36 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   onKeydown(event) {
-  //   if (event.keyCode == 190) {
+    if (event.keyCode == 190) {
 
-  //       this.clearOptionWithoutSelectedTag();
-  //      this.ad_body = this.getNoHtmlContent()+".";
-  //      console.log("body to be sent");
-  //      console.log(this.ad_body);
-  //     debugger;
-  //     var jobForm={
-  //       jobad_title:this.homeForm.value.ad_title,
-  //       jobad_body:this.ad_body
-  //     };
+        this.clearOptionWithoutSelectedTag();
+       this.ad_body = this.getNoHtmlContent()+".";
+       console.log("body to be sent");
+       console.log(this.ad_body);
+      debugger;
+      var jobForm={
+        jobad_title:this.homeForm.value.ad_title,
+        jobad_body:this.ad_body
+      };
 
-  //     this.jobService
-  //     .analyzeJob(jobForm)
-  //     .subscribe(
-  //       updatedJob => {
-  //       console.log(updatedJob);
-  //       this.serviceReply = updatedJob;
-  //          //clear and fetch new data
-  //       },
-  //       err => {
-  //        console.log(err)
-  //       }
-  //     );
-  //  //   this.afterServiceProcess();
+      this.jobService
+      .analyzeJob(jobForm)
+      .subscribe(
+        (updatedJob:any) => {
+        console.log(updatedJob);
+        this.serviceReply = updatedJob;
+        this.percBiasedMaleWords = updatedJob.percentages.perc_biased_male_words.toFixed(2);
+        this.percBiasedFemaleWords = updatedJob.percentages.perc_biased_female_words.toFixed(2);
+        this.ddScore =  updatedJob.biases.dd_score;
+           //clear and fetch new data
+        },
+        err => {
+         console.log(err)
+        }
+      );
+   //   this.afterServiceProcess();
 
-  //   }
+    }
   }
 
 
@@ -1138,7 +1166,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 }
 
 
-function fire(data) {
-  console.log(data);
+function fire() {
+  alert("ddf")
   $(".dropdown").hide();
 }
