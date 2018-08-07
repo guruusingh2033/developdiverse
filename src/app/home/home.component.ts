@@ -559,7 +559,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       if (!this.isOwner && this.isShared && this.isApproved && !this.isFinished) {
         this.isReadonly = true;
       }
-      return !this.isOwner && this.isShared && this.isApproved && !this.isFinished;
+      return this.isOwner && this.isShared && this.isApproved && !this.isFinished;
 
     }
     else if (button == "finishr") {
