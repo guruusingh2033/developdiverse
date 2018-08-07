@@ -590,3 +590,7 @@ label{
 app-ngx-editor.readonly:read-only {
   pointer-events: none;
 }
+
+.form-group.small-width {
+  display: inline;
+ }
