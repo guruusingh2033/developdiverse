@@ -3,7 +3,7 @@ import { Router, Route, ActivatedRoute, NavigationEnd } from '@angular/router';
 import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
-import { ArticleListConfig, JobService, Job, UserService } from '../core';
+import { ArticleListConfig, JobService, Job, UserService, ProfilesService } from '../core';
 import * as $ from 'jquery';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { AlertComponent } from 'ngx-bootstrap/alert/alert.component';
@@ -63,6 +63,9 @@ export class HomeComponent implements OnInit, OnDestroy {
   templateMsg: String;
 
   savingStatus: String;
+  isReadonly: boolean = false;
+  currentUser: any;
+  company: String;
 
   constructor(
     private router: Router,
@@ -72,6 +75,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     private elRef: ElementRef,
     private fb: FormBuilder,
     private jobService: JobService,
+    private profileService: ProfilesService,
     private spinner: NgxSpinnerService,
     private cdRef: ChangeDetectorRef
 
@@ -82,27 +86,20 @@ export class HomeComponent implements OnInit, OnDestroy {
       // If it is a NavigationEnd event re-initalise the component
       if (e instanceof NavigationEnd) {
         console.log("hiii");
-       var newstate = this.route.snapshot.params; 
-       
-        this.route.queryParams
-          .filter(params => params.data)
-          .subscribe(params => {
-            console.log("paramdata---")
-            console.log(params); // {order: "popular"}
-            console.log("paramdata-end--")
-    
-            this.updateData = params.data;
-            this.selectedJobStatus = params.status;
-            //  console.log(this.updateData); // popular
-          });
-        //   this.initialiseInvites();
-        console.log(this.actionState);
-        console.log(this.updateData);
-        if(this.actionState == "update" && this.updateData){
+        var newstate = this.route.queryParams;
+        this.route.queryParams.subscribe(params => {
+          console.log("hiii2");
+          if (Object.keys(params).length == 0) {
+            this.updateData = false;
+            this.actionState = "add";
+          }
+        });
+        console.log(newstate);
+        if (this.actionState == "update" && this.updateData) {
           this.fetchJobDataById();
         }
-        else{
-          this.homeForm.reset({});
+        else {
+          this.homeForm.reset({company:this.company});
           this.createdJobId = false;
           this.updateData = false;
           this.isApproved = false;
@@ -110,8 +107,8 @@ export class HomeComponent implements OnInit, OnDestroy {
           this.isShared = false;
           this.isFinished = false;
         }
-    
-       
+
+
       }
     });
 
@@ -128,9 +125,25 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   }
 
+  addClass() {
+    if (this.isReadonly == true) {
+      return "readonly";
+    }
+    else {
+      return "enable";
+    }
+  }
+
   get f() { return this.homeForm.controls; }
 
   ngOnInit() {
+    console.log("init1");
+    //get user data
+
+    this.getUser();
+
+    //make fields readonly according to status
+
 
     // console.log("isowner" + this.isOwner);
     this.dropdownContent = `<div class="dropdown" contenteditable="false">
@@ -184,7 +197,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     });
 
     this.fetchUrlParams();
-   
+
 
     if (this.updateData) {
       this.actionState = "update";
@@ -266,16 +279,25 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.getApprovalEmail();
   }
 
+  getUser(){
+    this.profileService.get().subscribe(
+      (userData) => {
+        this.company =  userData.company;
+        this.homeForm.patchValue({ company: userData.company });
 
-  fetchUrlParams(){
+      }
+    );
+  }
+
+  fetchUrlParams() {
     debugger;
     this.state = this.route.snapshot.params.id;
     this.route.queryParams
       .filter(params => params.data)
       .subscribe(params => {
-        console.log("paramdata---")
-        console.log(params); // {order: "popular"}
-        console.log("paramdata-end--")
+        // console.log("paramdata---")
+        // console.log(params); // {order: "popular"}
+        // console.log("paramdata-end--")
 
         this.updateData = params.data;
         this.selectedJobStatus = params.status;
@@ -284,7 +306,9 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   }
 
-  fetchJobDataById(){
+
+
+  fetchJobDataById() {
     this.loaderMsg = "Loading..";
 
     this.spinner.show();
@@ -292,6 +316,8 @@ export class HomeComponent implements OnInit, OnDestroy {
       .subscribe(
         jobList => {
           //response
+          console.log("job data..")
+
           console.log(jobList)
           this.spinner.hide();
           this.updatedData = jobList;
@@ -333,6 +359,7 @@ export class HomeComponent implements OnInit, OnDestroy {
         this.isShared = true;
         this.isApproved = true;
         this.isFinished = true;
+        this.isReadonly = true;
       }
     }
   }
@@ -443,34 +470,51 @@ export class HomeComponent implements OnInit, OnDestroy {
       }
     }
     else {
+      var dataForm = {
+        "ad_body": this.homeForm.value.ad_body,
+        "ad_title": this.homeForm.value.ad_title,
+        "department": this.homeForm.value.department,
+        "city": this.homeForm.value.city,
+        "country": this.homeForm.value.country
+      };
+      this.updateJob(dataForm, this.updateData)
+        .then((updatedJobData) => {
+          this.shareJob(this.updateData)
+            .then((data: any) => {
+              this.spinner.hide();
+              //   console.log(data);
+              if (data.status) {
+                this.closeFirstModal();
+                this.templateMsg = "A notification has been sent to your Colleague’s email";
+                this.modalRef = this.modalService.show(template);
+                this.router.navigateByUrl('/joblisting');
+              }
+              else {
+                this.alerts.push({
+                  type: 'danger',
+                  msg: data.data.error_message,
+                  timeout: 3000
+                });
+              }
 
-      this.shareJob(this.updateData)
-        .then((data: any) => {
-          this.spinner.hide();
-          //   console.log(data);
-          if (data.status) {
-            this.closeFirstModal();
-            this.templateMsg = "A notification has been sent to your Colleague’s email";
-            this.modalRef = this.modalService.show(template);
-            this.router.navigateByUrl('/joblisting');
-          }
-          else {
-            this.alerts.push({
-              type: 'danger',
-              msg: data.data.error_message,
-              timeout: 3000
+            })
+            .catch((err) => {
+              this.alerts.push({
+                type: 'danger',
+                msg: err.error_message,
+                timeout: 3000
+              });
             });
-          }
+
 
         })
         .catch((err) => {
           this.alerts.push({
             type: 'danger',
-            msg: err.error_message,
+            msg: err.data.error_message,
             timeout: 3000
           });
         });
-
 
 
     }
@@ -494,22 +538,35 @@ export class HomeComponent implements OnInit, OnDestroy {
       return (this.isOwner && !this.isDraft) || !this.updateData;
     }
     else if (button == "share") {
+      if (!this.isOwner && this.isDraft && !this.isShared) {
+        this.isReadonly = true;
+      }
       return this.isOwner && this.isDraft && !this.isShared;
     }
     else if (button == "approve") {
       return !this.isOwner && this.isShared && !this.isApproved;
     }
     else if (button == "finish") {
-      return this.isApproved && this.isOwner && !this.isFinished;
+      if (this.isApproved && this.isOwner && !this.isFinished) {
+        this.isReadonly = true;
+      }
+      return !this.isShared && this.isDraft && this.isOwner && !this.isFinished;
     }
     else if (button == "finishread") {
+      if (!this.isOwner && this.isShared && this.isApproved && !this.isFinished) {
+        this.isReadonly = true;
+      }
       return !this.isOwner && this.isShared && this.isApproved && !this.isFinished;
 
     }
     else if (button == "finishr") {
+      if (this.isOwner && this.isShared && !this.isApproved) {
+        this.isReadonly = true;
+      }
       return this.isOwner && this.isShared && !this.isApproved;
 
     }
+
 
   }
   approve(template) {
@@ -552,7 +609,6 @@ export class HomeComponent implements OnInit, OnDestroy {
             //  debugger;
             this.spinner.hide();
             this.templateMsg = "Unable To Approve Job : approve";
-
             this.modalRef = this.modalService.show(template);
 
           }
@@ -565,10 +621,6 @@ export class HomeComponent implements OnInit, OnDestroy {
 
       //   this.modalRef = this.modalService.show(template);
       // })
-
-
-
-
 
     }
 
@@ -609,6 +661,56 @@ export class HomeComponent implements OnInit, OnDestroy {
           }
         );
     }
+    else if (this.selectedJobStatus == 0) {
+
+      var dataForm = {
+        "ad_body": this.homeForm.value.ad_body,
+        "ad_title": this.homeForm.value.ad_title,
+        "department": this.homeForm.value.department,
+        "city": this.homeForm.value.city,
+        "country": this.homeForm.value.country
+      };
+      this.updateJob(dataForm, this.updateData)
+        .then((datax) => {
+          this.jobService.finish({ jobad_id: this.updateData })
+            .subscribe(
+              jobList => {
+                //response
+                //  this.spinner.hide();
+                console.log(jobList);
+                this.spinner.hide();
+                if (jobList.is_finished == true) {
+                  this.router.navigateByUrl('/joblisting');
+                }
+                else {
+                  this.spinner.hide();
+                  this.templateMsg = "Unable To Finish Job";
+                  this.modalRef = this.modalService.show(template);
+
+                }
+
+                //  this.isOwner = !jobList.is_owner;
+                //  console.log(this.isOwner);
+                //   this.homeForm.patchValue(jobList);
+              },
+              err => {
+                //  debugger;
+                this.spinner.hide();
+                this.templateMsg = "Unable To Finish Job";
+
+                this.modalRef = this.modalService.show(template);
+
+              }
+            );
+        })
+        .catch((err) => {
+          this.spinner.hide();
+          this.templateMsg = "Unable To Finish Job";
+
+          this.modalRef = this.modalService.show(template);
+        });
+
+    }
 
 
   }
@@ -627,8 +729,6 @@ export class HomeComponent implements OnInit, OnDestroy {
           //response
           this.spinner.hide();
           this.router.navigateByUrl('/joblisting');
-
-
         },
         err => {
           //  debugger;
@@ -657,8 +757,6 @@ export class HomeComponent implements OnInit, OnDestroy {
   modelChanged(data) {
     // console.log("fire");
     this.dropdownSelect();
-
-    // console.log(data);
   }
   magic() {
     // console.log(this.ad_body);
@@ -750,8 +848,6 @@ export class HomeComponent implements OnInit, OnDestroy {
 
 
 
-
-
   createJob() {
     return new Promise(resolve => {
 
@@ -820,7 +916,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   saveJob() {
     this.savingStatus = "Saving..... ";
-    
+
     var dataForm = {
       "ad_body": this.homeForm.value.ad_body,
       "ad_title": this.homeForm.value.ad_title,
@@ -842,7 +938,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     }
     else {
       this.createOnly(dataForm)
-        .then((datax:any) => {
+        .then((datax: any) => {
           this.savingStatus = "";
           this.redirect(datax.data.id, 0)
         })
@@ -881,7 +977,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   updateJob(formData, id) {
     debugger;
-    return new Promise(resolve => {
+    return new Promise((resolve, reject) => {
 
       this.jobService
         .update(formData, id)
@@ -894,7 +990,7 @@ export class HomeComponent implements OnInit, OnDestroy {
           },
           err => {
             //  debugger;
-            resolve({ status: false, data: err, jobId: id });
+            reject({ status: false, data: err, jobId: id });
 
           }
         );
@@ -1022,13 +1118,13 @@ export class HomeComponent implements OnInit, OnDestroy {
     if (this.navigationSubscription) {
       this.navigationSubscription.unsubscribe();
     }
-    this.actionState ="add"
+    this.actionState = "add";
 
   }
 
   redirect(id, status) {
     debugger;
-    this.actionState ="update";
+    this.actionState = "update";
     this.router.navigateByUrl('/dashboard/editor?data=' + id + '&status=' + status);
 
   }

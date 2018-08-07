@@ -581,3 +581,12 @@ label{
   margin: 0 1%;
   max-width: 73%;
 }
+
+.readonly:read-only{
+  background-color: yellow;
+
+}
+
+app-ngx-editor.readonly:read-only {
+  pointer-events: none;
+}
