@@ -56,6 +56,9 @@
               <button   *ngIf="displayButton('finish')" class="btn btn-success"  (click)="finish(templates)">Finish</button>
             </div>
             <div class="form-group small-width1">
+                <button   *ngIf="displayButton('ownerfinish')" class="btn btn-success"  (click)="finish(templates)">Finish</button>
+              </div>
+            <div class="form-group small-width1">
               <button   [disabled]="true" *ngIf="displayButton('finishread')" class="btn btn-success"  >Finish</button>
             </div>
             <div class="form-group small-width1">
