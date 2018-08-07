@@ -85,27 +85,25 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.navigationSubscription = this.router.events.subscribe((e: any) => {
       // If it is a NavigationEnd event re-initalise the component
       if (e instanceof NavigationEnd) {
-        console.log("hiii");
         var newstate = this.route.queryParams;
         this.route.queryParams.subscribe(params => {
-          console.log("hiii2");
           if (Object.keys(params).length == 0) {
             this.updateData = false;
             this.actionState = "add";
           }
         });
-        console.log(newstate);
         if (this.actionState == "update" && this.updateData) {
           this.fetchJobDataById();
         }
         else {
-          this.homeForm.reset({company:this.company});
+          this.homeForm.reset({ company: this.company });
           this.createdJobId = false;
           this.updateData = false;
           this.isApproved = false;
           this.isDraft = false;
           this.isShared = false;
           this.isFinished = false;
+          this.isReadonly = false;
         }
 
 
@@ -137,15 +135,11 @@ export class HomeComponent implements OnInit, OnDestroy {
   get f() { return this.homeForm.controls; }
 
   ngOnInit() {
-    console.log("init1");
     //get user data
 
     this.getUser();
 
     //make fields readonly according to status
-
-
-    // console.log("isowner" + this.isOwner);
     this.dropdownContent = `<div class="dropdown" contenteditable="false">
     <ul class="dropdown-select">
       <li class="drop"><a>Data</a></li>
@@ -157,44 +151,45 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.alerts = [];
 
     var dropdown = this.dropdownContent;
-    //   var dropdownContent = 
-    // `<div class="dropdown" contenteditable="false">
-    //   <ul>
-    //     <li id=""><a>Data</a></li>
-    //     <li id=""><a>Data1</a></li>o
-    //     <li id=""><a>Data2</a></li>
-    //     <li id=""><a>Data3</a></li>
-    //   </ul>
-    //   </div>`;
+      var dropdownContent = 
+    `<div class="dropdown" contenteditable="false">
+      <ul>
+        <li id=""><a>Data</a></li>
+        <li id=""><a>Data1</a></li>o
+        <li id=""><a>Data2</a></li>
+        <li id=""><a>Data3</a></li>
+      </ul>
+      </div>`;
 
 
-    $(document).ready(function () {
-      $(".dropdown").hide();
-      $(".openDrp").click(function () {
-        // alert("hi");
-        $(".dropdown").toggle();
-
-        ////   $(this).append(dropdown);
-
-
-        // var selectBox = document.querySelectorAll('.drop');
-        // console.log(selectBox);
-        // for(var i=0;i<selectBox.length;i++){
-        //   console.log(selectBox[i]);
-        // selectBox[i].addEventListener('click',function(){
-
-        // },false);
-        //  console.log("binded");
-        // }
+    
+      $(document).ready(function () {
+        $(".dropdown").hide();
+        $(".openDrp").click(function () {
+          // alert("hi");
+          $(".dropdown").toggle();
+  
+          ////   $(this).append(dropdown);
+  
+  
+          // var selectBox = document.querySelectorAll('.drop');
+          // console.log(selectBox);
+          // for(var i=0;i<selectBox.length;i++){
+          //   console.log(selectBox[i]);
+          // selectBox[i].addEventListener('click',function(){
+  
+          // },false);
+          //  console.log("binded");
+          // }
+        });
+  
+        $(".drop").click(function () {
+          //alert("hello");
+          //  /     $(".dropdown").toggle();
+  
+        });
+  
       });
-
-      $(".drop").click(function () {
-        //alert("hello");
-        //  /     $(".dropdown").toggle();
-
-      });
-
-    });
 
     this.fetchUrlParams();
 
@@ -217,72 +212,86 @@ export class HomeComponent implements OnInit, OnDestroy {
       }
     );
 
+//     this.ad_body = `Our company is looking for an expert negotiator. Aggressiveness is a required trait, but sympathy is important as well.
+//     <div class="dropdown-ex">
+//   <button class="openDrp">Dropdown</button>
+//   <div class="dropdown" contenteditable="false">
+//   <ul class="dropdown-select">
+//     <li class="drop"><a>Data</a></li>
+//     <li class="drop" id=""><a>Data1</a></li>
+//     <li class="drop" id=""><a>Data2</a></li>
+//     <li class="drop" id=""><a>Data3</a></li>
+//   </ul>
+//   </div>
+// </div>
+//     `;
     this.ad_body = ``;
-
     //  this.ad_body =`Lorem <span id='ipsum' style='color:red' (click)='call()'>ipsum</span> is a pseudo-Latin text used in web design, typography, layout, and printing in place of English to emphasise design elements over <span id='content' style='color:green' (click)='call()'>content</span>. It's also called placeholder (or filler) text. It's a convenient tool for mock-ups. It helps to outline the visual elements of a document or presentation, eg typography, font, or layout. Lorem <span id='ipsum' style='color:red' (click)='call()'>ipsum</span> is mostly a part of a Latin text by the classical author and philosopher Cicero. Its words and letters have been changed by addition or removal, so to deliberately render its <span id='content' style='color:green' (click)='call()'>content</span> nonsensical; it's not genuine, correct, or comprehensible Latin anymore. While lorem <span id='ipsum' style='color:red' (click)='call()'>ipsum</span>'s still resembles classical Latin, it actually has no meaning whatsoever. As Cicero's text doesn't contain the letters K, W, or Z, alien to latin, these, and others are often inserted randomly to mimic the typographic appearence of European languages, as are digraphs not to be found in the original.  In a professional context it often happens that private or corporate clients corder a publication to be made and presented with the actual <span id='content' style='color:green' (click)='call()'>content</span> still not being ready. Think of a news blog that's filled with <span id='content' style='color:green' (click)='call()'>content</span> hourly on the day of going live. However, reviewers tend to be distracted by comprehensible <span id='content' style='color:green' (click)='call()'>content</span>, say, a random text copied from a newspaper or the internet. The are likely to focus on the text, disregarding the layout and its elements. Besides, random text risks to be unintendedly humorous or offensive, an unacceptable risk in corporate environments. Lorem <span id='ipsum' style='color:red' (click)='call()'>ipsum</span> and its many variants have been employed since the early 1960ies, and quite likely since the sixteenth century.` ; 
     var input = document.getElementById('myInput');
-    this.serviceReply = {
+    this.serviceReply ={
       "biases": {
-        "dd_score": 50.82,
-        "bias_analysis": {
-          "sentences": [
-            {
-              "key": "Aggressiveness is a required trait, but sympathy is important as well.",
-              "biases": [
-                {
-                  "key": "sympathy",
-                  "suggestions": [
-                    {
-                      "alternative_phrase_id": 2910,
-                      "alternative_phrase": "respect",
-                      "biased_phrase_id": 961,
-                      "selected_counter": 0,
-                      "biased_towards_female": true
-                    },
-                    {
-                      "alternative_phrase_id": 2911,
-                      "alternative_phrase": "personability",
-                      "biased_phrase_id": 961,
-                      "selected_counter": 0,
-                      "biased_towards_female": true
-                    },
-                    {
-                      "alternative_phrase_id": 2912,
-                      "alternative_phrase": "friendliness",
-                      "biased_phrase_id": 961,
-                      "selected_counter": 0,
-                      "biased_towards_female": true
-                    },
-                    {
-                      "alternative_phrase_id": 2913,
-                      "alternative_phrase": "openness",
-                      "biased_phrase_id": 961,
-                      "selected_counter": 0,
-                      "biased_towards_female": true
-                    }
-                  ]
-                }
+          "dd_score": 5.07,
+          "bias_analysis": {
+              "sentences": [
+                  {
+                      "key": "I am a motivated individual, I think",
+                      "phrases": [
+                          {
+                              "key": "a motivated individual",
+                              "biases": [
+                                  {
+                                      "key": "motivated individual",
+                                      "biased_phrase_id": 44,
+                                      "replaceable_subphrases": [
+                                          {
+                                              "key": "motivated",
+                                              "replaceable_subphrase_id": 21,
+                                              "biased_towards_female": true,
+                                              "alternatives": [
+                                                  {
+                                                      "alternative_subphrase_id": 148,
+                                                      "alternative_subphrase": "driven",
+                                                      "selected_counter": 0
+                                                  }
+                                              ]
+                                          },
+                                          {
+                                              "key": "individual",
+                                              "replaceable_subphrase_id": 24,
+                                              "biased_towards_female": false,
+                                              "alternatives": [
+                                                  {
+                                                      "alternative_subphrase_id": 152,
+                                                      "alternative_subphrase": "person",
+                                                      "selected_counter": 0
+                                                  }
+                                              ]
+                                          }
+                                      ]
+                                  }
+                              ]
+                          }
+                      ]
+                  }
               ]
-            }
-          ]
-        }
+          }
       },
       "percentages": {
-        "num_total_words": 19,
-        "num_biased_male_words": 0,
-        "num_biased_female_words": 4,
-        "perc_biased_male_words": 0,
-        "perc_biased_female_words": 21.05
+          "num_total_words": 8,
+          "num_biased_male_words": 1,
+          "num_biased_female_words": 1,
+          "perc_biased_male_words": 12.5,
+          "perc_biased_female_words": 12.5
       }
-    }
+  };
     // console.log(this.serviceReply.biases.biases[0].key);
     this.getApprovalEmail();
   }
 
-  getUser(){
+  getUser() {
     this.profileService.get().subscribe(
       (userData) => {
-        this.company =  userData.company;
+        this.company = userData.company;
         this.homeForm.patchValue({ company: userData.company });
 
       }
@@ -316,7 +325,6 @@ export class HomeComponent implements OnInit, OnDestroy {
       .subscribe(
         jobList => {
           //response
-          console.log("job data..")
 
           console.log(jobList)
           this.spinner.hide();
@@ -335,11 +343,8 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   statusUpdate() {
-    console.log("----------");
-    console.log(this.updateData);
 
     if (this.updateData) {
-      console.log(this.selectedJobStatus);
 
       if (this.selectedJobStatus == 0) {
         this.isDraft = true;
@@ -391,12 +396,10 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.spinner.show();
 
     if (!this.updateData) {
-      // console.log(this.createdJobId);
       debugger;
       if (!this.createdJobId) {
         var res = this.createJob()
           .then((res: any) => {
-            //   console.log(res);
             if (res.status == "true") {
               this.spinner.hide();
               debugger;
@@ -433,7 +436,6 @@ export class HomeComponent implements OnInit, OnDestroy {
             }
           })
           .catch((err) => {
-            // console.log(err); 
             this.dialogErr = err
           });
       }
@@ -442,7 +444,6 @@ export class HomeComponent implements OnInit, OnDestroy {
         this.shareJob(this.createdJobId)
           .then((data: any) => {
             this.spinner.hide();
-            //   console.log(data);
             if (data.status) {
               this.closeFirstModal();
               this.templateMsg = "A notification has been sent to your Colleague’s email";
@@ -482,7 +483,6 @@ export class HomeComponent implements OnInit, OnDestroy {
           this.shareJob(this.updateData)
             .then((data: any) => {
               this.spinner.hide();
-              //   console.log(data);
               if (data.status) {
                 this.closeFirstModal();
                 this.templateMsg = "A notification has been sent to your Colleague’s email";
@@ -532,6 +532,9 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.modalRef = null;
 
   }
+
+
+  
 
   displayButton(button) {
     if (button == "create") {
@@ -589,7 +592,6 @@ export class HomeComponent implements OnInit, OnDestroy {
           jobList => {
             //response
             //  this.spinner.hide();
-            console.log(jobList);
             this.spinner.hide();
             if (jobList.is_approved == true) {
               this.router.navigateByUrl('/joblisting');
@@ -635,7 +637,6 @@ export class HomeComponent implements OnInit, OnDestroy {
           jobList => {
             //response
             //  this.spinner.hide();
-            console.log(jobList);
             this.spinner.hide();
             if (jobList.is_finished == true) {
               this.router.navigateByUrl('/joblisting');
@@ -677,7 +678,6 @@ export class HomeComponent implements OnInit, OnDestroy {
               jobList => {
                 //response
                 //  this.spinner.hide();
-                console.log(jobList);
                 this.spinner.hide();
                 if (jobList.is_finished == true) {
                   this.router.navigateByUrl('/joblisting');
@@ -797,36 +797,82 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   onKeydown(event) {
+  //   if (event.keyCode == 190) {
 
-    // console.log(event);
-    // console.log(this.ad_body);
-    if (event.keyCode == 190) {
+  //       this.clearOptionWithoutSelectedTag();
+  //      this.ad_body = this.getNoHtmlContent()+".";
+  //      console.log("body to be sent");
+  //      console.log(this.ad_body);
+  //     debugger;
+  //     var jobForm={
+  //       jobad_title:this.homeForm.value.ad_title,
+  //       jobad_body:this.ad_body
+  //     };
 
-      //   this.clearOptionWithoutSelectedTag();
-      //  this.ad_body = this.getNoHtmlContent();
-      // debugger;
-      // var jobForm={
-      //   jobad_title:this.homeForm.value.ad_title,
-      //   jobad_body:this.ad_body
-      // };
-      //hit service
-      // this.jobService
-      // .analyzeJob(jobForm)
-      // .subscribe(
-      //   updatedJob => {
-      //   console.log(updatedJob);
-      //   this.serviceReply = updatedJob;
-      //      //clear and fetch new data
+  //     this.jobService
+  //     .analyzeJob(jobForm)
+  //     .subscribe(
+  //       updatedJob => {
+  //       console.log(updatedJob);
+  //       this.serviceReply = updatedJob;
+  //          //clear and fetch new data
+  //       },
+  //       err => {
+  //        console.log(err)
+  //       }
+  //     );
+  //  //   this.afterServiceProcess();
 
-      //   },
-      //   err => {
-      //    console.log(err)
-      //   }
-      // );
-      //this.afterServiceProcess();
-
-    }
+  //   }
   }
+
+
+  afterServiceProcess() {
+    var index = 0;
+  //your code
+  // console.log("Spacebar fired");
+  var lastTypedText: any = this.fetchLastTextTyped();
+  console.log(lastTypedText);
+  var n = this.ad_body.includes(".");
+  if (n) {
+    var testing = lastTypedText;
+    debugger;
+    for (var i = 0; i < this.serviceReply.biases.bias_analysis.sentences[index].biases.length; i++) {
+      var test = this.serviceReply.biases.bias_analysis.sentences[index].biases[i].key;
+      if (testing.includes(test)) {
+        // var re = new RegExp(test, 'gi');
+        var re = new RegExp(test + '(?!([^ ]+)?>)', 'gi');
+        //   var optionregEx = '^(<option value="([^"]+).*?(?:selected="selected")?.*)$';
+        // var matchIfOption =  new RegExp("<option>"+test+"</option>");
+        //   var testRegex =  matchIfOption.test(testing);
+        // var suggestions = this.serviceReply.biases.bias_analysis.sentences[index].biases[i].suggestions;
+        // var suggestionToHtml = suggestions.map(function (data) {
+        //   return '<option>' + data.alternative_phrase + '</option>';
+        // });
+        // var implodeSuggestion = suggestionToHtml.join(" ");
+        //  var replaceValue = '<span class="dropdown">hello <div class="dropdown-content"><p>Bye World!</p></div></span> ';
+        var substrVal = test.substring(0, 3);
+        var color;
+        // if(this.serviceReply.biases.bias_analysis.sentences[index].biases[i].key) 
+        var replaceValue =
+          "<select  id='" + substrVal + i + "' style='color:"
+          + this.serviceReply.biases.bias_analysis.sentences[index].biases[i].key +
+          "' class='form-ele'> <option>" + test +
+          "</option><option>test</option></select> ";
+        //  if(testRegex == false){
+        testing = testing.replace(re, replaceValue);
+        // testing = testing.replace('.','');
+        //}
+
+      }
+    }
+    this.ad_body = this.buildJobContentAfterServiceCall(testing);
+
+      //console.log(this.ad_body);
+
+  }
+}
+
 
   onClick(data) {
     //  console.log("fire");
@@ -912,6 +958,11 @@ export class HomeComponent implements OnInit, OnDestroy {
         );
     });
 
+  }
+
+  saveState(){
+    return !this.homeForm.valid || this.isFinished || this.isApproved || this.isShared;
+  
   }
 
   saveJob() {
@@ -1000,51 +1051,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
 
 
-  afterServiceProcess() {
-
-    var index = 0;
-    //your code
-    // console.log("Spacebar fired");
-    var lastTypedText: any = this.fetchLastTextTyped();
-    var n = this.ad_body.includes(".");
-    if (n) {
-      var testing = lastTypedText;
-      debugger;
-      for (var i = 0; i < this.serviceReply.biases.bias_analysis.sentences[index].biases.length; i++) {
-        var test = this.serviceReply.biases.bias_analysis.sentences[index].biases[i].key;
-        if (testing.includes(test)) {
-          // var re = new RegExp(test, 'gi');
-          var re = new RegExp(test + '(?!([^ ]+)?>)', 'gi');
-          //   var optionregEx = '^(<option value="([^"]+).*?(?:selected="selected")?.*)$';
-          // var matchIfOption =  new RegExp("<option>"+test+"</option>");
-          //   var testRegex =  matchIfOption.test(testing);
-          // var suggestions = this.serviceReply.biases.bias_analysis.sentences[index].biases[i].suggestions;
-          // var suggestionToHtml = suggestions.map(function (data) {
-          //   return '<option>' + data.alternative_phrase + '</option>';
-          // });
-          // var implodeSuggestion = suggestionToHtml.join(" ");
-          //  var replaceValue = '<span class="dropdown">hello <div class="dropdown-content"><p>Bye World!</p></div></span> ';
-          var substrVal = test.substring(0, 3);
-          var color;
-          // if(this.serviceReply.biases.bias_analysis.sentences[index].biases[i].key) 
-          var replaceValue =
-            "<select  id='" + substrVal + i + "' style='color:"
-            + this.serviceReply.biases.bias_analysis.sentences[index].biases[i].key +
-            "' class='form-ele'> <option>" + test +
-            "</option><option>test</option></select> ";
-          //  if(testRegex == false){
-          testing = testing.replace(re, replaceValue);
-          // testing = testing.replace('.','');
-          //}
-
-        }
-      }
-      this.ad_body = this.buildJobContentAfterServiceCall(testing);
-
-      ///  console.log(this.ad_body);
-
-    }
-  }
+ 
 
   /** end from old functionlit */
   //fetched last typed text
@@ -1052,9 +1059,9 @@ export class HomeComponent implements OnInit, OnDestroy {
     var data = this.ad_body.split(".");
     var dataLength = data.length;
     var getLastIndex = dataLength - 1;
-    // console.log(data);
+    //console.log(data);
     debugger;
-    return data[getLastIndex] + '.';
+    return data[getLastIndex] ;
 
   }
 

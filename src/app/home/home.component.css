@@ -52,7 +52,7 @@
 .job-form .btn-primary {
   width:100%;
   /* max-width: 140px; */
-  background:url("../../assets/images/share-icon.png") no-repeat 0 0 #d5d5d5;
+  background:url("../../assets/images/share-icon.png") no-repeat 0 0 #fff;
   height: 39px;
   border:none;
   text-align: center;
@@ -70,7 +70,7 @@
 .job-form .btn-success {
   width:100%;
   /* max-width: 140px; */
-  background:url("../../assets/images/tick-icon.png") no-repeat 0 0 #d5d5d5;
+  background:url("../../assets/images/tick-icon.png") no-repeat 0 0 #fff;
   height: 39px;
   border:none;
   text-align: center;

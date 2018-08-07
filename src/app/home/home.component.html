@@ -73,35 +73,7 @@
         <div class="upload-height" *ngIf="openScreen">
           <div class="type-upload">
             <div class="upload-text">
-              <h2>Type, Paste or   <!-- 
-                <div class="col-md-9">
-                  <div class="feed-toggle">
-                    <ul class="nav nav-pills outline-active">
-                      <li class="nav-item">
-                        <a class="nav-link"
-                           [ngClass]="{'active': listConfig.type === 'feed'}"
-                           (click)="setListTo('feed')">
-                           Your Feed
-                        </a>
-                      </li>
-                      <li class="nav-item">
-                        <a class="nav-link"
-                           [ngClass]="{'active': listConfig.type === 'all' && !listConfig.filters.tag}"
-                           (click)="setListTo('all')">
-                           Global Feed
-                        </a>
-                      </li>
-                      <li class="nav-item" [hidden]="!listConfig.filters.tag">
-                        <a class="nav-link active">
-                          <i class="ion-pound"></i> {{ listConfig.filters.tag }}
-                        </a>
-                      </li>
-                    </ul>
-                  </div>
-          
-                  <app-article-list [limit]="10" [config]="listConfig"></app-article-list>
-                </div> -->
-          
+              <h2>Type, Paste or 
                 <span class="upload-file">
                   <!-- <input type="file"> -->
                   <strong (click)="loadJobEditor()">upload</strong>
@@ -116,7 +88,8 @@
                 <app-ngx-editor formControlName="ad_body"  [ngClass]="addClass()"  (keydown)="onKeydown($event)" [placeholder]="'Enter text here...'" [spellcheck]="false" [(ngModel)]="ad_body"  (ngModelChange)="modelChanged($event)" ></app-ngx-editor>
 
       <div class="scored-five">
-        <button class="btn btn-success" [disabled] ="!homeForm.valid" (click)="saveJob()">Save</button>
+
+        <button class="btn btn-success" [disabled] ="saveState()" (click)="saveJob()">Save</button>
          <!-- <h5>{{savingStatus}}</h5>  -->
       </div>
               </div>
