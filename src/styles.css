@@ -594,3 +594,6 @@ app-ngx-editor.readonly:read-only {
 .form-group.small-width {
   display: inline;
  }
+ .dropdown {
+  width: auto;
+}

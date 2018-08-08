@@ -177,9 +177,17 @@ export class HomeComponent implements OnInit, OnDestroy {
   
         $(".drop").click(function () {
        //   alert("hello");
-            // console.log($(this).attr('id'));
+           // console.log($(this).attr('id');
+            var currentSelected = $(this).text();
+            console.log(currentSelected);
             var selectedId =  $(this).parent();
-            console.log($(this).closest('div'));
+            console.log(selectedId);
+            //console.log($(this).closest('div'));
+            console.log("find closest button");
+         //   console.log($(this).find('button'));
+           // console.log($(this).closest("div").parent("div").children("a").text());
+            $(this).closest("div").parent("div").children("button").text(currentSelected);
+            $(this).closest("div").parent("div").children("button").css('color','green');
             $(this).closest('div').toggle();
   
         });
@@ -211,33 +219,8 @@ export class HomeComponent implements OnInit, OnDestroy {
       }
     );
 
-    this.ad_body = `Our company is looking for an expert negotiator. Aggressiveness is a required trait, but sympathy is important as well.
-    <div class="dropdown-ex" >
-  <button class="openDrp" id="1" >Dropdown</button>
-  <div class="dropdown"  contenteditable="false">
-  <ul class="dropdown-select">
-    <li class="drop" id="11"><a>Data</a></li>
-    <li class="drop" id="12"><a>Data1</a></li>
-    <li class="drop" id="13"><a>Data2</a></li>
-    <li class="drop" id="14"><a>Data3</a></li>
-  </ul>
-  </div> 
-</div>
-hjjhjh
-<div class="dropdown-ex">
-<button class="openDrp"  id="2">Dropdown</button>
-<div class="dropdown" contenteditable="false">
-<ul class="dropdown-select">
-  <li class="drop" id="15"><a>Data</a></li>
-  <li class="drop" id="16"><a>Data4</a></li>
-  <li class="drop" id="17"><a>Data2</a></li>
-  <li class="drop" id="18"><a>Data3</a></li>
-</ul>
-</div> 
-</div>
-
-    `;
-
+    this.ad_body = ``;
+    this.homeForm.patchValue({ad_title:"test"});
     
     //this.ad_body = ``;
 
@@ -301,6 +284,54 @@ hjjhjh
   };
     // console.log(this.serviceReply.biases.biases[0].key);
     this.getApprovalEmail();
+  }
+
+
+  loadingJquery(){
+    $(document).ready(function () {
+      $(".dropdown").hide();
+      $(".openDrp").click(function () {
+        debugger;
+        // alert("hi");
+        var attrID =  $(this).attr('id');
+        $($(this).closest('div').children('.dropdown')).toggle()
+      //  console.log($("#" +attrID).children('.$(this)'));
+     //   $(this).append(dropdown);
+
+
+        // var selectBox = document.querySelectorAll('.drop');
+        // console.log(selectBox);
+        // for(var i=0;i<selectBox.length;i++){
+        //   console.log(selectBox[i]);
+        // selectBox[i].addEventListener('click',fire.bind(this),false);
+        //  console.log("binded");
+        // }
+        });
+
+      $(".drop").click(function () {
+     //   alert("hello");
+         // console.log($(this).attr('id');
+          var currentSelected = $(this).text();
+          console.log(currentSelected);
+          var selectedId =  $(this).parent();
+          console.log(selectedId);
+          //console.log($(this).closest('div'));
+          console.log("find closest button");
+       //   console.log($(this).find('button'));
+         // console.log($(this).closest("div").parent("div").children("a").text());
+          $(this).closest("div").parent("div").children("button").text(currentSelected);
+          $(this).closest("div").parent("div").children("button").css('color','green');
+          selectedId.remove();
+          $(this).closest('div').toggle();
+
+      });
+
+    //   $(".dropdown").on("click", "li .drop", function(){
+    //     alert("jkjk");
+    // });
+
+    });
+    
   }
 
   fire(){
@@ -788,27 +819,24 @@ hjjhjh
   }
 
 
-  getNoHtmlContent() {
+   getNoHtmlContent() {
+     
     var data = document.querySelector(".ngx-editor-textarea").innerHTML;
     // console.log(data);
     // var html=this.ad_body;
     var dom = document.createElement("DIV");
     dom.innerHTML = data;
     var plain_text = (dom.textContent || dom.innerText);
-    return this.noHtmlContent = plain_text;
+    return this.noHtmlContent =  plain_text.replace(/\s+/g,' ').trim();;
 
   }
 
   clearOptionWithoutSelectedTag() {
     var selectBoxes = document.querySelectorAll(".form-ele");
-    //console.log(selectBoxes);
-    Object.keys(selectBoxes).map(function (key) {
-      //  console.log(selectBoxes[key].options.length);
-      for (var i = 0; i < selectBoxes[key].options.length; i++) {
-        if (selectBoxes[key].options[i].index != selectBoxes[key].selectedIndex)
-          selectBoxes[key].remove(i);
-      }
-    })
+    console.log(selectBoxes);
+    for(var i = 0 ;i < selectBoxes.length;i++ ){
+    selectBoxes[i].remove();  
+    }
   }
 
   setDialogState() {
@@ -823,17 +851,21 @@ hjjhjh
 
   onKeydown(event) {
     if (event.keyCode == 190) {
-
+     console.log(event)
         this.clearOptionWithoutSelectedTag();
-       this.ad_body = this.getNoHtmlContent()+".";
+      this.ad_body = this.getNoHtmlContent()+".";
        console.log("body to be sent");
        console.log(this.ad_body);
-      debugger;
+
+      //  setTimeout(function(){
+      //    alert("");
+
       var jobForm={
         jobad_title:this.homeForm.value.ad_title,
         jobad_body:this.ad_body
       };
-
+      
+      this.spinner.show();
       this.jobService
       .analyzeJob(jobForm)
       .subscribe(
@@ -843,14 +875,15 @@ hjjhjh
         this.percBiasedMaleWords = updatedJob.percentages.perc_biased_male_words.toFixed(2);
         this.percBiasedFemaleWords = updatedJob.percentages.perc_biased_female_words.toFixed(2);
         this.ddScore =  updatedJob.biases.dd_score;
+        this.afterServiceProcessData();
+
            //clear and fetch new data
         },
         err => {
          console.log(err)
         }
       );
-   //   this.afterServiceProcess();
-
+    // },500);
     }
   }
 
@@ -865,7 +898,7 @@ hjjhjh
   if (n) {
     var testing = lastTypedText;
     debugger;
-    for (var i = 0; i < this.serviceReply.biases.bias_analysis.sentences[index].biases.length; i++) {
+    for (var i = 0; i < this.serviceReply.biases.bias_analysis.sentences[index].length; i++) {
       var test = this.serviceReply.biases.bias_analysis.sentences[index].biases[i].key;
       if (testing.includes(test)) {
         // var re = new RegExp(test, 'gi');
@@ -880,27 +913,154 @@ hjjhjh
         // var implodeSuggestion = suggestionToHtml.join(" ");
         //  var replaceValue = '<span class="dropdown">hello <div class="dropdown-content"><p>Bye World!</p></div></span> ';
         var substrVal = test.substring(0, 3);
-        var color;
+     //   var color;
         // if(this.serviceReply.biases.bias_analysis.sentences[index].biases[i].key) 
-        var replaceValue =
-          "<select  id='" + substrVal + i + "' style='color:"
-          + this.serviceReply.biases.bias_analysis.sentences[index].biases[i].key +
-          "' class='form-ele'> <option>" + test +
-          "</option><option>test</option></select> ";
+        // var replaceValue =
+        //   "<select  id='" + substrVal + i + "' style='color:"
+        //   + this.serviceReply.biases.bias_analysis.sentences[index].biases[i].key +
+        //   "' class='form-ele'> <option>" + test +
+        //   "</option><option>test</option></select> ";
         //  if(testRegex == false){
-        testing = testing.replace(re, replaceValue);
+        // testing = testing.replace(re, replaceValue);
         // testing = testing.replace('.','');
         //}
 
       }
     }
-    this.ad_body = this.buildJobContentAfterServiceCall(testing);
+    //this.ad_body = this.buildJobContentAfterServiceCall(testing);
 
       //console.log(this.ad_body);
 
   }
 }
 
+afterServiceProcessData(){
+  var index = 0;
+  //your code
+  // console.log("Spacebar fired");
+  var finalReplacementSetArr = [] ;
+  var lastTypedText: any = this.fetchLastTextTyped();
+  var textToBeReplaced = lastTypedText;
+  console.log(lastTypedText);
+  if(lastTypedText != ""){
+  var n = this.ad_body.includes(".");
+  if (n) {
+    var testing = lastTypedText;
+    
+    if(this.serviceReply!=undefined){
+    if(Object.keys(this.serviceReply.biases.bias_analysis).length > 0   ){
+    for (var i = 0; i < this.serviceReply.biases.bias_analysis.sentences.length; i++) {
+      var getPhrase =this.serviceReply.biases.bias_analysis.sentences[index].phrases;
+          for(var j = 0 ; j < getPhrase.length; j++){
+            var resultOfProcess =   this.processReplacableHtmlStructure(i,j);
+              finalReplacementSetArr.push(resultOfProcess);
+
+          }
+          
+         if(finalReplacementSetArr.length > 0){ 
+       for(var frsa=0;frsa < finalReplacementSetArr.length;frsa++){
+        textToBeReplaced = textToBeReplaced.replace(finalReplacementSetArr[frsa].key,finalReplacementSetArr[frsa].value);
+       }
+
+       this.ad_body = this.buildJobContentAfterServiceCall(textToBeReplaced)+".";
+      //  this.ad_body = textToBeReplaced+".";
+       console.log(textToBeReplaced);
+       this.spinner.hide();
+       this.loadingJquery()
+
+
+      }
+    }
+  }
+  else{
+    console.log("biasis analysis empty");
+
+    this.spinner.hide();
+
+  }
+}
+  }
+    //this.ad_body = this.buildJobContentAfterServiceCall(testing);
+
+      //console.log(this.ad_body);
+
+  }
+  
+}
+
+
+processReplacableHtmlStructure(sentenceIndex,phraseIndex){
+  var resultArr = [];
+ var data =  this.serviceReply.biases.bias_analysis.sentences[sentenceIndex].phrases[phraseIndex];
+ var phraseKey = this.serviceReply.biases.bias_analysis.sentences[sentenceIndex].phrases[phraseIndex].key;  //"key": "a motivated individual we are"
+ var phraseKey_cp = phraseKey;
+ var phraseBiases = this.serviceReply.biases.bias_analysis.sentences[sentenceIndex].phrases[phraseIndex].biases;
+
+ var secondLevelBiases = [];
+ for(var k = 0; k < phraseBiases.length ; k++){
+   var phraseBiases_key = phraseBiases[k].key;  // sentence->phrases->biases->key [part of sentence]  
+/**
+ *                                         "key": "motivated individual",
+ *                                         "key": "we are",
+
+
+ */
+var phraseBiases_key_cp =  phraseBiases[k].key; 
+  var replaceableSubphrase = phraseBiases[k].replaceable_subphrases; // sentence->phrases->biases->replaceable_subphrases
+  for(var l=0;l<replaceableSubphrase.length;l++){
+    var replaceableSubphrase_key = replaceableSubphrase[l].key;// sentence->phrases->biases->replaceable_subphrases->key
+    var re = new RegExp(replaceableSubphrase_key + '(?!([^ ]+)?>)', 'gi');
+    var getPhraseAlternatives = replaceableSubphrase[l].alternatives;  
+    var assignColor ;
+
+    if(replaceableSubphrase[l].biased_towards_female == true){
+      assignColor = "pink";
+    }
+    else{
+      assignColor ="blue";
+    }
+
+    var beginHtml = '<div class="dropdown-ex"> ';
+      beginHtml  += '<button class="openDrp"  style="color:'+assignColor+'" id="'+replaceableSubphrase[l].replaceable_subphrase_id+'">'+replaceableSubphrase_key+'</button> <div class="dropdown" contenteditable="false">';
+      beginHtml  +=  '<ul class="dropdown-select form-ele">';
+
+    var buildAlternatives = getPhraseAlternatives.map(function (data) {
+                return  "<li class='drop' id='"+data.alternative_subphrase_id+"'>"+data.alternative_subphrase+"</li>";
+    });
+    var endHtml = `</ul></div></div>`;
+
+    var joinbuildAlternatives = buildAlternatives.join("");
+
+    var finalHtmlArr = [beginHtml,joinbuildAlternatives,endHtml];
+    var finalHtmlStr = finalHtmlArr.join("");
+    
+    //level 3 replacement 
+    var phraseBiases_key=   phraseBiases_key.replace(re,finalHtmlStr);
+  }
+  secondLevelBiases[phraseBiases_key_cp]=phraseBiases_key;
+ }
+
+
+//  phraseKey = secondLevelBiases.map(function(datax){
+//   return  phraseKey.replace(datax.key,datax.value);
+// });
+
+for(var j  in secondLevelBiases){
+  // phraseKey =  phraseKey.replace(secondLevelBiases[j].key,secondLevelBiases[j].value);
+    console.log(secondLevelBiases[j]);
+      console.log(j);
+      phraseKey =  phraseKey.replace(j,secondLevelBiases[j]);
+}
+
+
+console.log(secondLevelBiases);
+  console.log(phraseKey);
+
+  // resultArr[phraseKey_cp] = phraseKey;
+  // console.log(resultArr);
+  return {key:phraseKey_cp,value:phraseKey};
+
+}
 
   onClick(data) {
     //  console.log("fire");
@@ -1086,9 +1246,8 @@ hjjhjh
   fetchLastTextTyped() {
     var data = this.ad_body.split(".");
     var dataLength = data.length;
-    var getLastIndex = dataLength - 1;
+    var getLastIndex = dataLength - 2;
     //console.log(data);
-    debugger;
     return data[getLastIndex] ;
 
   }
@@ -1096,10 +1255,16 @@ hjjhjh
   //builds job Content
   buildJobContentAfterServiceCall(lastTypedText) {
     var data = this.ad_body.split(".");
+    if(data.length == 2 ){
+      return  lastTypedText;
+
+    }
+    else{
     var dataLength = data.length;
     var getLastIndex = dataLength - 1;
     delete data[getLastIndex];
     return data.join(".") + lastTypedText;
+  }
 
   }
 
