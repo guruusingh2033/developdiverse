@@ -27,6 +27,7 @@ export class JwtService {
    window.localStorage['jwtToken'] = token;
    
       this.cookieService.set( 'jwtToken', token);
+
   }
 
   destroyToken() {

@@ -922,7 +922,6 @@ export class HomeComponent implements OnInit, OnDestroy {
 
     if (event.keyCode == 190) {
       console.log(event)
-      //this.clearOptionWithoutSelectedTag();
       //  var noHTml = this.getNoHtmlContentBody()+".";
       //  this.homeForm.patchValue({ad_body:noHTml});
       console.log("body to be sent");
@@ -944,6 +943,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       this.lastTypedText = this.fetchLastTextTyped() + ".";
 
     }
+
     this.lastTypedText = this.getNoHtmlContent(this.lastTypedText);
     //  setTimeout(function(){
     //    alert("");
@@ -1374,8 +1374,10 @@ export class HomeComponent implements OnInit, OnDestroy {
   /** end from old functionlit */
   //fetched last typed text
   fetchLastTextTyped() {
+    this.clearOptionWithoutSelectedTag();
+    var bodyData =  document.querySelector(".ngx-editor-textarea").innerHTML;
     if (this.isPasted == false) {
-      var data = this.homeForm.value.ad_body.split(".");
+      var data = bodyData.split(".");
       var filterData = data.filter(filt => filt != "");
       var dataLength = filterData.length;
       var getLastIndex = dataLength - 1;

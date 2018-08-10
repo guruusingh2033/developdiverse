@@ -80,6 +80,8 @@ export class UserService {
 
   purgeAuth() {
     debugger;
+    this.cookieService.set( 'jwtToken','',-1);
+
     this.jwtService.destroyToken();
     // Set current user to an empty object
     this.currentUserSubject.next({} as User);
