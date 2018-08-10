@@ -23,6 +23,8 @@ export class NoAuthGuard implements CanActivate {
     const x = this.jwtService.getToken(); 
     if (x) { 
        this.router.navigate(['/dashboard/welcome']); 
+       console.log("jwt token present ...");
+       console.log(this.jwtService.getToken());
     // this.router.navigate(['/profile']); 
 
      } else 

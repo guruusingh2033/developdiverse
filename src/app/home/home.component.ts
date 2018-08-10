@@ -9,6 +9,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { AlertComponent } from 'ngx-bootstrap/alert/alert.component';
 import 'rxjs/add/operator/filter';
 import { ChangeDetectorRef } from '@angular/core';
+import { timeout } from 'q';
 
 
 @Component({
@@ -99,7 +100,7 @@ export class HomeComponent implements OnInit, OnDestroy {
             this.actionState = "add";
           }
         });
-     
+
         if (this.actionState == "update" && this.updateData) {
           this.fetchJobDataById();
           debugger;
@@ -166,6 +167,13 @@ export class HomeComponent implements OnInit, OnDestroy {
 
     $(document).ready(function () {
       $(".dropdown").hide();
+      $(".ngx-editor-textarea").click(function () {
+        $('.dropdown').hide();
+
+      });
+      $(".ngx-editor-textarea").change(function () {
+        alert("ddfd")
+      });
       $(".openDrp").mouseover(function () {
         debugger;
         // alert("hi");
@@ -918,6 +926,9 @@ export class HomeComponent implements OnInit, OnDestroy {
       //  var noHTml = this.getNoHtmlContentBody()+".";
       //  this.homeForm.patchValue({ad_body:noHTml});
       console.log("body to be sent");
+      //console.log( event.target.innerHTML);
+      console.log(event.target.innerText);
+
       this.processJobService();
       // },500);
     }
@@ -930,7 +941,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       this.lastTypedText = this.fetchLastTextTyped();
     }
     else {
-      this.lastTypedText = this.fetchLastTextTyped()+".";
+      this.lastTypedText = this.fetchLastTextTyped() + ".";
 
     }
     this.lastTypedText = this.getNoHtmlContent(this.lastTypedText);
@@ -1040,10 +1051,12 @@ export class HomeComponent implements OnInit, OnDestroy {
 
               var buildBody = this.buildJobContentAfterServiceCall(textToBeReplaced);
               debugger;
-              //  this.ad_body = textToBeReplaced+".";
               this.homeForm.patchValue({ ad_body: buildBody });
-              console.log(textToBeReplaced);
-              //setTimeout( this.loadingJquery(), 3000);
+              // this.ad_body = buildBody;
+
+              let inputFields = document.getElementsByClassName("ngx-editor-textarea")[0];
+              this.placeCaretAtEnd(inputFields);
+              // console.log(textToBeReplaced);
 
               this.spinner.hide();
 
@@ -1052,6 +1065,8 @@ export class HomeComponent implements OnInit, OnDestroy {
           }
         }
         else {
+          let inputFields = document.getElementsByClassName("ngx-editor-textarea")[0];
+          this.placeCaretAtEnd(inputFields);
           console.log("biasis analysis empty");
           this.spinner.hide();
 
@@ -1068,6 +1083,19 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   }
 
+  //focus cursor at end
+  placeCaretAtEnd(el) {
+    el.focus();
+    if (typeof window.getSelection != "undefined"
+      && typeof document.createRange != "undefined") {
+      var range = document.createRange();
+      range.selectNodeContents(el);
+      range.collapse(false);
+      var sel = window.getSelection();
+      sel.removeAllRanges();
+      sel.addRange(range);
+    }
+  }
 
   processReplacableHtmlStructure(sentenceIndex, phraseIndex) {
     var resultArr = [];
@@ -1325,22 +1353,22 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   pasteEvent(data) {
     this.isPasted = true;
-    if(this.homeForm.value.ad_body == ""){
-    console.log(data.clipboardData.getData('text/plain'));
-    this.lastPastedText = data.clipboardData.getData('text/plain');
-    debugger;
-    this.processJobService();
+    if (this.homeForm.value.ad_body == "") {
+      console.log(data.clipboardData.getData('text/plain'));
+      this.lastPastedText = data.clipboardData.getData('text/plain');
+      debugger;
+      this.processJobService();
     }
 
   }
 
-  analyzeAfterServicePopulate(data){
+  analyzeAfterServicePopulate(data) {
     this.isPasted = true;
     var dataPasted = document.querySelector(".ngx-editor-textarea").innerHTML;
     this.lastPastedText = data;
     debugger;
-    if(this.lastPastedText != ""){
-    this.processJobService();
+    if (this.lastPastedText != "") {
+      this.processJobService();
     }
   }
   /** end from old functionlit */
@@ -1348,12 +1376,13 @@ export class HomeComponent implements OnInit, OnDestroy {
   fetchLastTextTyped() {
     if (this.isPasted == false) {
       var data = this.homeForm.value.ad_body.split(".");
-      var dataLength = data.length;
+      var filterData = data.filter(filt => filt != "");
+      var dataLength = filterData.length;
       var getLastIndex = dataLength - 1;
       console.log(data);
       this.updateBodyState();
       debugger;
-      return data[getLastIndex];
+      return filterData[getLastIndex];
     }
     else if (this.isPasted == true) {
       this.updateBodyState();
@@ -1378,10 +1407,10 @@ export class HomeComponent implements OnInit, OnDestroy {
     //replace(/\s+/g,' ').trim();
     if (bodyContent.length > 0) {
       bodyContent.push(lastTypedText);
-      return bodyContent.join(".").replace(/\s+/g,' ').trim();;
+      return bodyContent.join(".").replace(/\s+/g, ' ').trim();;
     }
     else {
-      return lastTypedText.replace(/\s+/g,' ').trim();;
+      return lastTypedText.replace(/\s+/g, ' ').trim();;
     }
     //   }
     //   else{
@@ -1389,7 +1418,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
     //  }
 
-    
+
 
   }
 
