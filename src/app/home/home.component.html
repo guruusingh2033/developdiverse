@@ -16,7 +16,7 @@
           <div class="col-lg-9 col-md-8 col-sm-12 col-xs-12">
             <div class="job-form-inner">
             <div class="form-group">
-              <input  formControlName="ad_title" [readonly]="isReadonly" type="text" class="form-control department" placeholder="Job  Title" [ngClass]="{ 'is-invalid': f.ad_title.touched  && f.ad_title.errors}">
+              <input  formControlName="ad_title" [readonly]="isReadonly" type="text" class="form-control department" placeholder="Job  Title" [ngClass]="{ 'is-invalid':  f.ad_title.errors}" autofocus>
             </div>
             <div class="row">
               <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12 right-padding-none">
@@ -113,9 +113,9 @@
               <div class="gender-wordings">
                 <h5>Gender Wording</h5>
                 <div class="per-count">
-                  <span>{{percBiasedMaleWords}}</span>
+                  <span  *ngIf="percBiasedMaleWords" >{{percBiasedMaleWords}}% </span>
                   <img class="img-fluid" src="../assets/images/gender-icon.png" />
-                  <span>{{percBiasedFemaleWords}}</span>
+                  <span *ngIf="percBiasedFemaleWords">{{percBiasedFemaleWords}}%</span>
                 </div>
               </div>
             </div>

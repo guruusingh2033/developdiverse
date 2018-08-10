@@ -136,7 +136,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   addClass() {
-    if (this.isReadonly == true) {
+    if (this.isReadonly == true || this.f.ad_title.errors) {
       return "readonly editors";
     }
     else {
@@ -166,9 +166,10 @@ export class HomeComponent implements OnInit, OnDestroy {
 
     $(document).ready(function () {
       $(".dropdown").hide();
-      $(".openDrp").click(function () {
+      $(".openDrp").mouseover(function () {
         debugger;
         // alert("hi");
+        $('.dropdown').hide();
         var attrID = $(this).attr('id');
         $($(this).closest('div').children('.dropdown')).toggle()
         //  console.log($("#" +attrID).children('.$(this)'));
@@ -301,9 +302,11 @@ export class HomeComponent implements OnInit, OnDestroy {
     console.log("loaded jquery....");
     $(document).ready(function () {
       $(".dropdown").hide();
-      $(".openDrp").click(function () {
+      $(".openDrp").mouseover(function () {
         debugger;
         // alert("hi");
+        $('.dropdown').hide();
+
         var attrID = $(this).attr('id');
         $($(this).closest('div').children('.dropdown')).toggle()
         //  console.log($("#" +attrID).children('.$(this)'));
@@ -464,7 +467,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       if (!this.createdJobId) {
         var res = this.createJob()
           .then((res: any) => {
-            if (res.status == "true") {
+            if (res.status == true) {
               this.spinner.hide();
               debugger;
               this.templateMsg = "A notification has been sent to your Colleague’s email";
@@ -927,7 +930,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       this.lastTypedText = this.fetchLastTextTyped();
     }
     else {
-      this.lastTypedText = this.fetchLastTextTyped() + ".";
+      this.lastTypedText = this.fetchLastTextTyped()+".";
 
     }
     this.lastTypedText = this.getNoHtmlContent(this.lastTypedText);
@@ -1050,7 +1053,6 @@ export class HomeComponent implements OnInit, OnDestroy {
         }
         else {
           console.log("biasis analysis empty");
-
           this.spinner.hide();
 
         }
@@ -1323,11 +1325,12 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   pasteEvent(data) {
     this.isPasted = true;
+    if(this.homeForm.value.ad_body == ""){
     console.log(data.clipboardData.getData('text/plain'));
     this.lastPastedText = data.clipboardData.getData('text/plain');
     debugger;
     this.processJobService();
-
+    }
 
   }
 
@@ -1372,12 +1375,13 @@ export class HomeComponent implements OnInit, OnDestroy {
     //   data.length = getLastIndex;
     //  if(data.length > 0 ){
     //  bodyContent = data.join(".");
+    //replace(/\s+/g,' ').trim();
     if (bodyContent.length > 0) {
       bodyContent.push(lastTypedText);
-      return bodyContent.join(".");
+      return bodyContent.join(".").replace(/\s+/g,' ').trim();;
     }
     else {
-      return lastTypedText;
+      return lastTypedText.replace(/\s+/g,' ').trim();;
     }
     //   }
     //   else{
@@ -1385,7 +1389,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
     //  }
 
-    ;
+    
 
   }
 
