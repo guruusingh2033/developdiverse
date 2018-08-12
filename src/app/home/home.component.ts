@@ -1122,10 +1122,10 @@ export class HomeComponent implements OnInit, OnDestroy {
         var assignColor;
 
         if (replaceableSubphrase[l].biased_towards_female == true) {
-          assignColor = "pink";
+          assignColor = "#fe08ca";
         }
         else {
-          assignColor = "blue";
+          assignColor = "#50b8ff";
         }
 
         var beginHtml = '<div class="dropdown-ex"> ';
