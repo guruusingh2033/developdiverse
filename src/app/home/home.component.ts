@@ -549,7 +549,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       this.clearOptionWithoutSelectedTag();
 
       var bodyData = this.getNoHtmlContentBody();
-
+       
       var dataForm = {
         "ad_body": bodyData,
         "ad_title": this.homeForm.value.ad_title,
@@ -1194,6 +1194,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     return new Promise(resolve => {
       this.clearOptionWithoutSelectedTag();
       var bodyData = this.getNoHtmlContentBody();
+      bodyData =  bodyData.replace(/\s+/g, ' ').trim()
       var dataForm = {
         "ad_body": bodyData,
         "ad_title": this.homeForm.value.ad_title,
@@ -1266,6 +1267,9 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.savingStatus = "Saving..... ";
     this.clearOptionWithoutSelectedTag();
     var bodyData = this.getNoHtmlContentBody();
+    bodyData =  bodyData.replace(/ \./g, '.').trim();
+    console.log(bodyData);
+    debugger;
     var dataForm = {
       "ad_body": bodyData,
       "ad_title": this.homeForm.value.ad_title,
