@@ -1440,10 +1440,10 @@ export class HomeComponent implements OnInit, OnDestroy {
     //replace(/\s+/g,' ').trim();
     if (bodyContent.length > 0) {
       bodyContent.push(lastTypedText);
-      return bodyContent.join(".").replace(/\s+/g, ' ').trim();;
+      return bodyContent.join(".").replace(/ \./g, '.').trim();
     }
     else {
-      return lastTypedText.replace(/\s+/g, ' ').trim();;
+      return lastTypedText.replace(/ \./g, '.').trim();
     }
     //   }
     //   else{
