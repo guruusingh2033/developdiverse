@@ -549,7 +549,8 @@ export class HomeComponent implements OnInit, OnDestroy {
       this.clearOptionWithoutSelectedTag();
 
       var bodyData = this.getNoHtmlContentBody();
-       
+      bodyData =  bodyData.replace(/ \./g, '.').trim();
+
       var dataForm = {
         "ad_body": bodyData,
         "ad_title": this.homeForm.value.ad_title,
@@ -661,6 +662,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       this.clearOptionWithoutSelectedTag();
 
       var bodyData = this.getNoHtmlContentBody();
+      bodyData =  bodyData.replace(/ \./g, '.').trim();
 
       var dataForm = {
         "ad_body": bodyData,
@@ -752,6 +754,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       this.clearOptionWithoutSelectedTag();
 
       var bodyData = this.getNoHtmlContentBody();
+      bodyData =  bodyData.replace(/ \./g, '.').trim();
 
       var dataForm = {
         "ad_body": bodyData,
