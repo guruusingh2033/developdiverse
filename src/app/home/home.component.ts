@@ -70,6 +70,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   percBiasedMaleWords: any;
   percBiasedFemaleWords: any;
   ddScore: any;
+  ddScoreStatus:any;
   lastTypedText: string;
   lastPastedText: string;
   updatedBodyData: any;
@@ -359,6 +360,26 @@ export class HomeComponent implements OnInit, OnDestroy {
   fire() {
     console.log("fire")
   }
+
+  //return biase level based on dd score
+  getBiaseLevel(dd_score){
+    if(dd_score <= 60 ){
+     return this.ddScoreStatus = "Very Biased";
+    }
+    else if(dd_score <= 70 && dd_score > 60 ){
+    return  this.ddScoreStatus = "Quite Biased";
+    }
+    else if(dd_score <= 80 && dd_score > 70 ){
+      return this.ddScoreStatus = "Low Biased";
+    }
+    else if(dd_score > 80){
+     return  this.ddScoreStatus = "Neutral";
+    }
+    else{
+    return    this.ddScoreStatus = "";
+    }
+  }
+
 
   getUser() {
     this.profileService.get().subscribe(
@@ -904,11 +925,14 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   // this function is used mostly to remove last line content.
   updateBodyState() {
+
     if (this.isPasted == false) {
       var bodyData = this.homeForm.value.ad_body;
+      var lastChar = bodyData[bodyData.length -1];
+      debugger;
       var split = bodyData.split(".");
       var getLength = split.length;
-      var getLastIndex = getLength - 1;
+      var getLastIndex = getLength - 2;
       split.length = getLastIndex;
       this.updatedBodyData = split;
       console.log(this.updatedBodyData);
