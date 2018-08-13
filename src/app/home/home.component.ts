@@ -414,14 +414,14 @@ export class HomeComponent implements OnInit, OnDestroy {
     debugger;
     this.loaderMsg = "Loading..";
 
-    this.spinner.show();
+    //this.spinner.show();
     this.jobService.getJobListById(this.updateData)
       .subscribe(
         (jobList: any) => {
           //response
           this.analyzeAfterServicePopulate(jobList.ad_body);
           console.log(jobList)
-          this.spinner.hide();
+        //  this.spinner.hide();
           this.updatedData = jobList;
           this.statusUpdate();
           this.isOwner = jobList.is_owner;
@@ -489,7 +489,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   openModal2(template: TemplateRef<any>) {
-    this.spinner.show();
+    //this.spinner.show();
 
     if (!this.updateData) {
       debugger;
@@ -497,7 +497,7 @@ export class HomeComponent implements OnInit, OnDestroy {
         var res = this.createJob()
           .then((res: any) => {
             if (res.status == true) {
-              this.spinner.hide();
+             // this.spinner.hide();
               debugger;
               this.templateMsg = "A notification has been sent to your Colleague’s email";
               this.closeFirstModal();
@@ -507,7 +507,7 @@ export class HomeComponent implements OnInit, OnDestroy {
             }
             else {
               debugger;
-              this.spinner.hide();
+              //this.spinner.hide();
               // this.createdJobId = res.jobId;
 
               if (typeof (res.data) == "object") {
@@ -539,7 +539,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
         this.shareJob(this.createdJobId)
           .then((data: any) => {
-            this.spinner.hide();
+           // this.spinner.hide();
             if (data.status) {
               this.closeFirstModal();
               this.templateMsg = "A notification has been sent to your Colleague’s email";
@@ -583,7 +583,7 @@ export class HomeComponent implements OnInit, OnDestroy {
         .then((updatedJobData) => {
           this.shareJob(this.updateData)
             .then((data: any) => {
-              this.spinner.hide();
+             // this.spinner.hide();
               if (data.status) {
                 this.closeFirstModal();
                 this.templateMsg = "A notification has been sent to your Colleague’s email";
@@ -678,7 +678,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   }
   approve(template) {
-    this.spinner.show();
+   // this.spinner.show();
     if (this.selectedJobStatus == 1) {
       this.clearOptionWithoutSelectedTag();
 
@@ -701,12 +701,12 @@ export class HomeComponent implements OnInit, OnDestroy {
           jobList => {
             //response
             //  this.spinner.hide();
-            this.spinner.hide();
+           // this.spinner.hide();
             if (jobList.is_approved == true) {
               this.router.navigateByUrl('/joblisting');
             }
             else {
-              this.spinner.hide();
+             // this.spinner.hide();
               this.templateMsg = "Unable To Approve Job :approve";
               this.modalRef = this.modalService.show(template);
 
@@ -718,7 +718,7 @@ export class HomeComponent implements OnInit, OnDestroy {
           },
           err => {
             //  debugger;
-            this.spinner.hide();
+           // this.spinner.hide();
             this.templateMsg = "Unable To Approve Job : approve";
             this.modalRef = this.modalService.show(template);
 
@@ -739,19 +739,19 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   finish(template) {
-    this.spinner.show();
+   // this.spinner.show();
     if (this.selectedJobStatus == 2) {
       this.jobService.finish({ jobad_id: this.updateData })
         .subscribe(
           jobList => {
             //response
             //  this.spinner.hide();
-            this.spinner.hide();
+           // this.spinner.hide();
             if (jobList.is_finished == true) {
               this.router.navigateByUrl('/joblisting');
             }
             else {
-              this.spinner.hide();
+            //  this.spinner.hide();
               this.templateMsg = "Unable To Finish Job";
               this.modalRef = this.modalService.show(template);
 
@@ -763,7 +763,7 @@ export class HomeComponent implements OnInit, OnDestroy {
           },
           err => {
             //  debugger;
-            this.spinner.hide();
+           // this.spinner.hide();
             this.templateMsg = "Unable To Finish Job";
 
             this.modalRef = this.modalService.show(template);
@@ -791,12 +791,12 @@ export class HomeComponent implements OnInit, OnDestroy {
               jobList => {
                 //response
                 //  this.spinner.hide();
-                this.spinner.hide();
+             //   this.spinner.hide();
                 if (jobList.is_finished == true) {
                   this.router.navigateByUrl('/joblisting');
                 }
                 else {
-                  this.spinner.hide();
+                //  this.spinner.hide();
                   this.templateMsg = "Unable To Finish Job";
                   this.modalRef = this.modalService.show(template);
 
@@ -808,7 +808,7 @@ export class HomeComponent implements OnInit, OnDestroy {
               },
               err => {
                 //  debugger;
-                this.spinner.hide();
+               // this.spinner.hide();
                 this.templateMsg = "Unable To Finish Job";
 
                 this.modalRef = this.modalService.show(template);
@@ -817,7 +817,7 @@ export class HomeComponent implements OnInit, OnDestroy {
             );
         })
         .catch((err) => {
-          this.spinner.hide();
+         // this.spinner.hide();
           this.templateMsg = "Unable To Finish Job";
 
           this.modalRef = this.modalService.show(template);
@@ -830,7 +830,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
 
   shareJobDirect(template) {
-    this.spinner.show();
+    //this.spinner.show();
 
     var email = this.email;
     var shareJob = { jobad_id: this.updateData, recipient: email };
@@ -840,12 +840,12 @@ export class HomeComponent implements OnInit, OnDestroy {
       .subscribe(
         sharedUser => {
           //response
-          this.spinner.hide();
+         // this.spinner.hide();
           this.router.navigateByUrl('/joblisting');
         },
         err => {
           //  debugger;
-          this.spinner.hide();
+          //this.spinner.hide();
           this.modalRef = this.modalService.show(template);
 
         }
@@ -939,8 +939,18 @@ export class HomeComponent implements OnInit, OnDestroy {
       debugger;
     }
     else if (this.isPasted == true) {
-      debugger;
-      this.updatedBodyData = [];
+     // debugger;
+     // this.updatedBodyData = [];
+     var bodyData = this.homeForm.value.ad_body;
+     var lastChar = bodyData[bodyData.length -1];
+     debugger;
+     var split = bodyData.split(".");
+     var getLength = split.length;
+     var getLastIndex = getLength - 1;
+     split.length = getLastIndex;
+     this.updatedBodyData = split;
+     console.log(this.updatedBodyData);
+     debugger;
     }
   }
 
@@ -995,7 +1005,7 @@ export class HomeComponent implements OnInit, OnDestroy {
           //clear and fetch new data
         },
         err => {
-          this.spinner.hide();
+         this.spinner.hide();
           console.log(err)
         }
       );
@@ -1073,7 +1083,9 @@ export class HomeComponent implements OnInit, OnDestroy {
             debugger;
             if (finalReplacementSetArr.length > 0) {
               for (var frsa = 0; frsa < finalReplacementSetArr.length; frsa++) {
-                textToBeReplaced = textToBeReplaced.replace(finalReplacementSetArr[frsa].key, finalReplacementSetArr[frsa].value);
+                var reFrsa = new RegExp(finalReplacementSetArr[frsa].key + '(?!([^ ]+)?>)', 'gi');
+
+                textToBeReplaced = textToBeReplaced.replace(reFrsa, finalReplacementSetArr[frsa].value);
               }
 
               var buildBody = this.buildJobContentAfterServiceCall(textToBeReplaced);
@@ -1125,6 +1137,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   processReplacableHtmlStructure(sentenceIndex, phraseIndex) {
+    debugger;
     var resultArr = [];
     var data = this.serviceReply.biases.bias_analysis.sentences[sentenceIndex].phrases[phraseIndex];
     var phraseKey = this.serviceReply.biases.bias_analysis.sentences[sentenceIndex].phrases[phraseIndex].key;  //"key": "a motivated individual we are"
@@ -1254,7 +1267,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
           },
           err => {
-            this.spinner.hide();
+           // this.spinner.hide();
             // this.alerts.push({
             //   type: 'danger',
             //   msg: this.errors,
@@ -1384,12 +1397,12 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   pasteEvent(data) {
     this.isPasted = true;
-    if (this.homeForm.value.ad_body == "") {
+   // if (this.homeForm.value.ad_body == "") {
       console.log(data.clipboardData.getData('text/plain'));
       this.lastPastedText = data.clipboardData.getData('text/plain');
       debugger;
       this.processJobService();
-    }
+  //  }
 
   }
 
