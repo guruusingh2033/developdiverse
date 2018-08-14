@@ -562,6 +562,7 @@ label{
   margin:0;
   list-style: none;
   display:block;
+  white-space: nowrap;
 }
  .dropdown ul li {
   padding:7px 15px;
