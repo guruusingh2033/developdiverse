@@ -77,6 +77,9 @@ export class HomeComponent implements OnInit, OnDestroy {
   bodyBfrePaste:string="";
 
   isPasted: boolean = false;
+  isReloadedData:boolean=false;
+
+
   constructor(
     private router: Router,
     private route: ActivatedRoute,
@@ -886,6 +889,9 @@ export class HomeComponent implements OnInit, OnDestroy {
     var dom = document.createElement("DIV");
     dom.innerHTML = data;
     var plain_text = (dom.textContent || dom.innerText);
+    if(document.getElementsByClassName("dropdown-ex")[0]){
+    var desi_text =  document.getElementsByClassName("dropdown-ex")[0].textContent ;
+    }
     debugger;
     return this.noHtmlContent = plain_text.replace(/\s+/g, ' ');
 
@@ -900,6 +906,9 @@ export class HomeComponent implements OnInit, OnDestroy {
     var dom = document.createElement("DIV");
     dom.innerHTML = data;
     var plain_text = (dom.textContent || dom.innerText);
+    if(document.getElementsByClassName("dropdown-ex")[0]){
+      var desi_text =  document.getElementsByClassName("dropdown-ex")[0].textContent ;
+      }
     debugger;
     return this.noHtmlContent = plain_text.replace(/\s+/g, ' ');
 
@@ -941,7 +950,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       console.log(this.updatedBodyData);
       debugger;
     }
-    else if (this.isPasted == true) {
+    else if (this.isPasted == true  && this.isReloadedData == false) {
      debugger;
      this.updatedBodyData = [];
      this.updatedBodyData.push(this.bodyBfrePaste);
@@ -955,6 +964,10 @@ export class HomeComponent implements OnInit, OnDestroy {
     //  this.updatedBodyData = split;
     //  console.log(this.updatedBodyData);
     //  debugger;
+    }
+    else if(this.isReloadedData == true){
+      this.updatedBodyData = [];
+      this.isReloadedData = false;
     }
   }
 
@@ -1414,8 +1427,10 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   analyzeAfterServicePopulate(data) {
     this.isPasted = true;
+    this.isReloadedData = true;
     var dataPasted = document.querySelector(".ngx-editor-textarea").innerHTML;
     this.lastPastedText = data;
+    console.log(this.actionState);
     debugger;
     if (this.lastPastedText != "") {
       this.processJobService();
