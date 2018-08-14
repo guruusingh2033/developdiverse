@@ -947,6 +947,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       var getLastIndex = getLength - 2;
       split.length = getLastIndex;
       this.updatedBodyData = split;
+      
       console.log(this.updatedBodyData);
       debugger;
     }
@@ -1322,6 +1323,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   saveJob() {
+    this.spinner.show();
     this.savingStatus = "Saving..... ";
     this.clearOptionWithoutSelectedTag();
     var bodyData = this.getNoHtmlContentBody();
@@ -1340,10 +1342,11 @@ export class HomeComponent implements OnInit, OnDestroy {
         .then((datax: any) => {
           this.savingStatus = "";
           console.log(datax);
-
+          this.spinner.hide();
           this.redirect(this.updateData, this.selectedJobStatus);
         })
         .catch((err) => {
+          this.spinner.hide();
           this.savingStatus = "Error Occured while updating...";
 
         });
@@ -1352,9 +1355,11 @@ export class HomeComponent implements OnInit, OnDestroy {
       this.createOnly(dataForm)
         .then((datax: any) => {
           this.savingStatus = "";
+          this.spinner.hide();
           this.redirect(datax.data.id, 0)
         })
         .catch((data) => {
+           this.spinner.hide();
           this.savingStatus = "Error Occured while creating...";
         });
 
