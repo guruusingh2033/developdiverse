@@ -93,7 +93,7 @@
   width:100%;
   background: #fff;
   border-radius:7px;
-  padding: 50px 25px;
+  padding: 25px;
   margin-top: 15px;
   position: relative;
   height: 495px;
@@ -157,14 +157,14 @@
 }
 .gender-wordings {
   width:100%;
-  margin-top: 30px;
+  margin-top: 9px;
   text-align: center;
 }
 .gender-wordings h5 {
   text-align:center;
   font-size:26px;
   margin-bottom:20px;
-  font-weight:600;
+  font-weight:500;
   color: #0b0b0b;
   display:inline-block;
   text-decoration:underline;
@@ -256,7 +256,7 @@ padding-left:0;
 }
 .graph-caption {
   position: absolute;
-  top: 50%;
+  top: 65%;
   width: 100%;
   text-align: center;
 }
@@ -293,5 +293,37 @@ padding-left:0;
   padding-bottom: 80px;
   box-sizing: border-box;
 }
-
-
+.gender-wordings ul {
+  list-style: none;
+  text-align: left;
+  margin-left: 0;
+  padding: 0;
+  max-width: 160px;
+  width: 100%;
+  margin: auto;
+}
+.gender-wordings li span {
+  font-size: 17px;
+  color: #0b0b0b;
+  background: #25b0ef;
+  padding: 6px 0px;
+  display: inline-block;
+  border-radius: 10px;
+  margin-right: 7px;
+  width: 55px;
+  text-align: center;
+}
+.gender-wordings li {
+  display: list-item;
+  margin-bottom: 5px;
+  font-size: 18px;
+}
+.gender-wordings li:nth-child(2) span {
+background: #f641ff;
+} 
+.gender-wordings li:nth-child(3) span {
+  background:#ed7c31;
+} 
+.gender-wordings li:nth-child(4) span {
+  background:#35b150;
+} 

@@ -516,6 +516,13 @@ label{
   display:list-item;
   padding: 2px 30px;
 }
+.sidebar ul li .drop-dwnmenu li span {
+  font-size:22px;
+  text-align: left;
+  color:#fff;
+  display:list-item;
+  padding: 2px 30px;
+}
 .sidebar ul li .drop-dwnmenu li a span {
   padding-left: 25px;
 }
@@ -569,6 +576,9 @@ label{
   font-size: 16px;
   border-bottom:1px solid #eee;
   list-style: none;
+}
+.dropdown ul li:hover {
+  background-color: rgb(213, 213, 213);
 }
  .dropdown ul li:last-child {
   border-bottom:none;

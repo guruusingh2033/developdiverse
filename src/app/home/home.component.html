@@ -76,10 +76,10 @@
         <div class="upload-height" *ngIf="openScreen">
           <div class="type-upload">
             <div class="upload-text">
-              <h2>Type, Paste or 
+              <h2>Type or 
                 <span class="upload-file">
                   <!-- <input type="file"> -->
-                  <strong (click)="loadJobEditor()">upload</strong>
+                  <strong (click)="loadJobEditor()">paste</strong>
                 </span> your job ad</h2>
             </div>
           </div>
@@ -100,10 +100,10 @@
           <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
             <div class="right-sidebar">
               <div class="score-widget">
-                <h3>
-                  <img src="../assets/images/dd-logo.png" /> Score</h3>
+                <!-- <h3>
+                  <img src="assets/images/dd-logo.png" /> Score</h3> -->
                 <div class="graph">
-                  <img class="img-fluid" src="../assets/images/graph-img.png" />
+                  <img class="img-fluid" src="assets/images/graph-img2.png" />
                   <div class="graph-caption">
                     <h2>{{ddScore}}</h2>
                     <h6 *ngIf="ddScore">{{getBiaseLevel(ddScore)}}</h6>
@@ -111,12 +111,18 @@
                 </div>
               </div>
               <div class="gender-wordings">
-                <h5>Gender Wording</h5>
-                <div class="per-count">
+                <h5>TYPE OF BIASES</h5>
+                <ul>
+                  <li><span class="type1">{{percBiasedMaleWords}} %</span> Male</li>
+                  <li><span class="type1">{{percBiasedFemaleWords}} %</span> Female</li>
+                  <li><span class="type1">5 %</span> Ethnicity</li>
+                  <li><span class="type1">5 %</span> Age</li>
+                </ul>
+                <!-- <div class="per-count">
                   <span  *ngIf="percBiasedMaleWords" >{{percBiasedMaleWords}}% </span>
-                  <img class="img-fluid" src="../assets/images/gender-icon.png" />
+                  <img class="img-fluid" src="assets/images/gender-icon.png" />
                   <span *ngIf="percBiasedFemaleWords">{{percBiasedFemaleWords}}%</span>
-                </div>
+                </div> -->
               </div>
             </div>
           </div>
@@ -158,7 +164,6 @@
         </div>
         <div class="madal-footer">
           <button class="btn btn-success" (click)="openModal2(templates)">Done</button>
-          <button class="btn btn-link">Advanced</button>
         </div>
       </div>
     </div>
@@ -172,14 +177,14 @@
           <h6>Step By Step</h6>
           <ul>
             <li>Fill up the top boxes: Job Title, Department, Organization, City Country</li>
-            <li>Type, paste or upload your job ad behind this pop-up window or
-              <img src="../assets/images/file-icon-black.png"
+            <li>Type or paste your job ad behind this pop-up window or
+              <img src="assets/images/file-icon-black.png"
               />
             </li>
             <li>Send your job ad to your colleague by pressing “Share”</li>
             <li>When the job ad is ready for publishing, press “Approval”</li>
             <li>Copy or download your job ad
-              <img src="../assets/images/download-icon-black.png" />
+              <img src="assets/images/download-icon-black.png" />
             </li>
           </ul>
           <div class="checkbox">
@@ -188,7 +193,7 @@
               Don’t show me again</label>
           </div>
           <a class="close"  (click)="closeFirstModal()">
-            <img src="../assets/images/step-close.png" />
+            <img src="assets/images/step-close.png" />
           </a>
         </div>
       </div>

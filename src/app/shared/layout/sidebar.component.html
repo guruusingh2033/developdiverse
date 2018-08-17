@@ -3,13 +3,11 @@
     <ul>
       <li>
         <a>
-          <img src="../assets/images/file-icon.png" />
+          <img src="assets/images/file-icon.png" (click)="loadJobEditor()"/>
           <div class="drop-dwnmenu">
             <ul>
               <li>
-                <a (click)="loadJobEditor()">New
-                  <!-- <span>Upload</span> -->
-                </a>
+                <span>New</span>
               </li>
             </ul>
           </div>
@@ -18,13 +16,11 @@
       </li>
       <li>
         <a>
-          <img src="../assets/images/download-icon.png" />
+          <img src="assets/images/download-icon.png" (click)="download()"/>
           <div class="drop-dwnmenu">
             <ul>
               <li>
-                <a>
-                  <span (click)="download()" >Download</span>
-                </a>
+                <span (click)="download()">Download</span>
               </li>
             </ul>
           </div>
@@ -33,13 +29,11 @@
       </li>
       <li>
         <a>
-          <img src="../assets/images/list-icon.png" />
+          <img src="assets/images/list-icon.png" [routerLink]="['/joblisting']"/>
           <div class="drop-dwnmenu">
             <ul>
               <li>
-                <a [routerLink]="['/joblisting']">Job Listing
-
-                </a>
+                <span>Job Listing</span>
               </li>
             </ul>
           </div>
@@ -51,13 +45,11 @@
     <ul>
       <li>
         <a>
-          <img src="../assets/images/user-dashboard.png" />
+          <img src="assets/images/user-dashboard.png" [routerLink]="['/profile']"/>
           <div class="drop-dwnmenu">
               <ul>
                 <li>
-                  <a [routerLink]="['/profile']">Profile
-
-                  </a>
+                  <span>Profile</span>
                 </li>
               </ul>
             </div>
@@ -65,7 +57,7 @@
       </li>
       <li>
         <a>
-          <img src="../assets/images/info-icon.png" />
+          <img src="assets/images/info-icon.png" />
           <div class="drop-dwnmenu">
               <ul>
                 <li>

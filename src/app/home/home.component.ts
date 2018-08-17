@@ -67,8 +67,8 @@ export class HomeComponent implements OnInit, OnDestroy {
   isReadonly: boolean = false;
   currentUser: any;
   company: String;
-  percBiasedMaleWords: any;
-  percBiasedFemaleWords: any;
+  percBiasedMaleWords = 0;
+  percBiasedFemaleWords = 0;
   ddScore: any;
   ddScoreStatus:any;
   lastTypedText: string;
@@ -108,7 +108,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
         if (this.actionState == "update" && this.updateData) {
           this.fetchJobDataById();
-          debugger;
+          //debugger;
           console.log("update entered");
           console.log(this.ad_body);
 
@@ -180,7 +180,7 @@ export class HomeComponent implements OnInit, OnDestroy {
         alert("ddfd")
       });
       $(".openDrp").mouseover(function () {
-        debugger;
+        //debugger;
         // alert("hi");
         $('.dropdown').hide();
         var attrID = $(this).attr('id');
@@ -244,7 +244,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
     //this.ad_body = ``;
     this.homeForm.patchValue({ ad_body: "hello" });
-    this.homeForm.patchValue({ ad_title: "test" });
+    // this.homeForm.patchValue({ ad_title: "test" });
 
     //this.ad_body = ``;
 
@@ -316,7 +316,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     $(document).ready(function () {
       $(".dropdown").hide();
       $(".openDrp").mouseover(function () {
-        debugger;
+        //debugger;
         // alert("hi");
         $('.dropdown').hide();
 
@@ -368,19 +368,19 @@ export class HomeComponent implements OnInit, OnDestroy {
   //return biase level based on dd score
   getBiaseLevel(dd_score){
     if(dd_score <= 60 ){
-     return this.ddScoreStatus = "Very Biased";
+      return this.ddScoreStatus = "High Biased";
     }
-    else if(dd_score <= 70 && dd_score > 60 ){
-    return  this.ddScoreStatus = "Quite Biased";
+    else if(dd_score <= 90 && dd_score > 60 ){
+      return this.ddScoreStatus = "Medium Biased";
     }
-    else if(dd_score <= 80 && dd_score > 70 ){
+    // else if(dd_score <= 80 && dd_score > 70 ){
+    //   return this.ddScoreStatus = "Low Biased";
+    // }
+    else if(dd_score > 90){
       return this.ddScoreStatus = "Low Biased";
     }
-    else if(dd_score > 80){
-     return  this.ddScoreStatus = "Neutral";
-    }
     else{
-    return    this.ddScoreStatus = "";
+      return this.ddScoreStatus = "";
     }
   }
 
@@ -396,7 +396,6 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   fetchUrlParams() {
-    debugger;
     this.state = this.route.snapshot.params.id;
     this.route.queryParams
       .filter(params => params.data)
@@ -415,7 +414,6 @@ export class HomeComponent implements OnInit, OnDestroy {
 
 
   fetchJobDataById() {
-    debugger;
     this.loaderMsg = "Loading..";
 
     this.spinner.show();
@@ -496,13 +494,13 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.spinner.show();
 
     if (!this.updateData) {
-      debugger;
+      ;
       if (!this.createdJobId) {
         var res = this.createJob()
           .then((res: any) => {
             if (res.status == true) {
               this.spinner.hide();
-              debugger;
+              ;
               this.templateMsg = "A notification has been sent to your Colleague’s email";
               this.closeFirstModal();
               this.modalRef = this.modalService.show(template);
@@ -510,7 +508,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
             }
             else {
-              debugger;
+              ;
               this.spinner.hide();
               // this.createdJobId = res.jobId;
 
@@ -892,7 +890,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     if(document.getElementsByClassName("dropdown-ex")[0]){
     var desi_text =  document.getElementsByClassName("dropdown-ex")[0].textContent ;
     }
-    debugger;
+    //debugger;
     return this.noHtmlContent = plain_text.replace(/\s+/g, ' ');
 
   }
@@ -909,7 +907,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     if(document.getElementsByClassName("dropdown-ex")[0]){
       var desi_text =  document.getElementsByClassName("dropdown-ex")[0].textContent ;
       }
-    debugger;
+    //debugger;
     return this.noHtmlContent = plain_text.replace(/\s+/g, ' ');
 
   }
@@ -941,18 +939,17 @@ export class HomeComponent implements OnInit, OnDestroy {
     if (this.isPasted == false) {
       var bodyData = this.homeForm.value.ad_body;
       var lastChar = bodyData[bodyData.length -1];
-      debugger;
+      //debugger;
       var split = bodyData.split(".");
       var getLength = split.length;
       var getLastIndex = getLength - 2;
       split.length = getLastIndex;
       this.updatedBodyData = split;
-      
       console.log(this.updatedBodyData);
-      debugger;
+      //debugger;
     }
     else if (this.isPasted == true  && this.isReloadedData == false) {
-     debugger;
+     //debugger;
      this.updatedBodyData = [];
      this.updatedBodyData.push(this.bodyBfrePaste);
     //  var bodyData = this.homeForm.value.ad_body;
@@ -1008,7 +1005,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       jobad_title: this.homeForm.value.ad_title,
       jobad_body: this.lastTypedText
     };
-    debugger;
+    //debugger;
   //  this.spinner.show();
     this.jobService
       .analyzeJob(jobForm)
@@ -1016,8 +1013,8 @@ export class HomeComponent implements OnInit, OnDestroy {
         (updatedJob: any) => {
           console.log(updatedJob);
           this.serviceReply = updatedJob;
-          this.percBiasedMaleWords = updatedJob.percentages.perc_biased_male_words.toFixed(2);
-          this.percBiasedFemaleWords = updatedJob.percentages.perc_biased_female_words.toFixed(2);
+          this.percBiasedMaleWords = updatedJob.percentages.perc_biased_male_words.toFixed(0);
+          this.percBiasedFemaleWords = updatedJob.percentages.perc_biased_female_words.toFixed(0);
           this.ddScore = updatedJob.biases.dd_score;
           this.afterServiceProcessData(this.lastTypedText);
 
@@ -1039,7 +1036,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     var n = this.homeForm.value.ad_body.includes(".");
     if (n) {
       var testing = lastTypedText;
-      debugger;
+      //debugger;
       for (var i = 0; i < this.serviceReply.biases.bias_analysis.sentences[index].length; i++) {
         var test = this.serviceReply.biases.bias_analysis.sentences[index].biases[i].key;
         if (testing.includes(test)) {
@@ -1099,7 +1096,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
             }
             console.log(finalReplacementSetArr);
-            debugger;
+            //debugger;
             if (finalReplacementSetArr.length > 0) {
               for (var frsa = 0; frsa < finalReplacementSetArr.length; frsa++) {
                 var reFrsa = new RegExp(finalReplacementSetArr[frsa].key + '(?!([^ ]+)?>)', 'gi');
@@ -1108,7 +1105,7 @@ export class HomeComponent implements OnInit, OnDestroy {
               }
 
               var buildBody = this.buildJobContentAfterServiceCall(textToBeReplaced);
-              debugger;
+              //debugger;
               this.homeForm.patchValue({ ad_body: buildBody });
               // this.ad_body = buildBody;
 
@@ -1156,7 +1153,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   processReplacableHtmlStructure(sentenceIndex, phraseIndex) {
-    debugger;
+    //debugger;
     var resultArr = [];
     var data = this.serviceReply.biases.bias_analysis.sentences[sentenceIndex].phrases[phraseIndex];
     var phraseKey = this.serviceReply.biases.bias_analysis.sentences[sentenceIndex].phrases[phraseIndex].key;  //"key": "a motivated individual we are"
@@ -1270,7 +1267,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
             this.shareJob(updatedUser.id)
               .then((datax: any) => {
-                debugger;
+                //debugger;
 
                 if (datax.status) {
                   resolve({ status: true, data: datax.data, jobId: datax.jobId });
@@ -1323,13 +1320,12 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   saveJob() {
-    this.spinner.show();
     this.savingStatus = "Saving..... ";
     this.clearOptionWithoutSelectedTag();
     var bodyData = this.getNoHtmlContentBody();
     bodyData =  bodyData.replace(/ \./g, '.');
     console.log(bodyData);
-    debugger;
+    //debugger;
     var dataForm = {
       "ad_body": bodyData,
       "ad_title": this.homeForm.value.ad_title,
@@ -1342,11 +1338,10 @@ export class HomeComponent implements OnInit, OnDestroy {
         .then((datax: any) => {
           this.savingStatus = "";
           console.log(datax);
-          this.spinner.hide();
+
           this.redirect(this.updateData, this.selectedJobStatus);
         })
         .catch((err) => {
-          this.spinner.hide();
           this.savingStatus = "Error Occured while updating...";
 
         });
@@ -1355,11 +1350,9 @@ export class HomeComponent implements OnInit, OnDestroy {
       this.createOnly(dataForm)
         .then((datax: any) => {
           this.savingStatus = "";
-          this.spinner.hide();
           this.redirect(datax.data.id, 0)
         })
         .catch((data) => {
-           this.spinner.hide();
           this.savingStatus = "Error Occured while creating...";
         });
 
@@ -1368,7 +1361,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
 
   shareJob(id) {
-    debugger;
+    //debugger;
     return new Promise(resolve => {
       var email = this.email;
       var shareJob: object = { jobad_id: id, recipient: email };
@@ -1378,7 +1371,7 @@ export class HomeComponent implements OnInit, OnDestroy {
         .subscribe(
           sharedUser => {
             //response
-            debugger;
+            //debugger;
             resolve({ status: true, data: sharedUser, jobId: id });
 
           },
@@ -1393,7 +1386,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   updateJob(formData, id) {
-    debugger;
+    //debugger;
     return new Promise((resolve, reject) => {
 
       this.jobService
@@ -1401,7 +1394,7 @@ export class HomeComponent implements OnInit, OnDestroy {
         .subscribe(
           updateJob => {
             //response
-            debugger;
+            //debugger;
             resolve({ status: true, data: updateJob });
 
           },
@@ -1424,7 +1417,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       console.log(data.clipboardData.getData('text/plain'));
       this.bodyBfrePaste =  document.querySelector(".ngx-editor-textarea").innerHTML; 
       this.lastPastedText = data.clipboardData.getData('text/plain');
-      debugger;
+      //debugger;
       this.processJobService();
   //  }
 
@@ -1436,7 +1429,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     var dataPasted = document.querySelector(".ngx-editor-textarea").innerHTML;
     this.lastPastedText = data;
     console.log(this.actionState);
-    debugger;
+    //debugger;
     if (this.lastPastedText != "") {
       this.processJobService();
     }
@@ -1453,11 +1446,11 @@ export class HomeComponent implements OnInit, OnDestroy {
       var getLastIndex = dataLength - 1;
       console.log(data);
       this.updateBodyState();
-      debugger;
+      //debugger;
       return filterData[getLastIndex];
     }
     else if (this.isPasted == true) {
-      debugger;
+      //debugger;
       this.updateBodyState();
       return this.lastPastedText;
     }
@@ -1468,7 +1461,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     //return lastTypedText;
     var bodyContent = this.updatedBodyData;
     console.log(this.isPasted);
-    debugger;
+    //debugger;
     //  bodyContent = bodyContent.replace(/^./, '');
     //var data =bodyContent.split(".");   
     //   data.splice(-2, 2);
@@ -1557,7 +1550,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   redirect(id, status) {
-    debugger;
+    //debugger;
     this.actionState = "update";
     this.router.navigateByUrl('/dashboard/editor?data=' + id + '&status=' + status);
 

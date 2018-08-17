@@ -7,7 +7,7 @@
         <div class="signin-form">
           <h1 class="text-xs-center">{{ title }}</h1>
           <!-- <a href="#" class="close">
-            <img src="../assets/images/close-icon.png" />
+            <img src="assets/images/close-icon.png" />
           </a> -->
           <p class="text-xs-center">
             <a [routerLink]="['/login']" *ngIf="authType == 'register'">Have an account?</a>
@@ -46,7 +46,7 @@
               </div>
               <button class="btn btn-success" [disabled] ="!authForm.valid" >Log in</button>
               <div class="dont-have-account">
-                <a class="dont-account">Dont’t have an account?</a>
+                <a class="dont-account">Don’t have an account?</a>
                 <a class="btn btn-primary" (click)="redirect()" >Sign Up</a>
               </div>  
               <!-- <button class="btn btn-lg btn-primary pull-xs-right" [disabled]="!authForm.valid" type="submit">
