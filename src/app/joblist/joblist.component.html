@@ -33,7 +33,7 @@
                   <td> {{listData.city}},{{listData.country}}</td>
                   <td>{{listData.last_update | date: 'dd/MM/yyyy' }}</td>
                   <td>{{status(listData.status)}}</td>
-                  <td> {{listData.dd_score}}</td>
+                  <td> {{listData.dd_score.toFixed(0)}}</td>
                 </tr>
              
               </tbody>

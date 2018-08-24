@@ -69,16 +69,21 @@ export class HomeComponent implements OnInit, OnDestroy {
   company: String;
   percBiasedMaleWords = 0;
   percBiasedFemaleWords = 0;
+  percBiasedEthinicityWords = 0;
+  percBiasedAgeWords = 0;
   ddScore: any;
-  ddScoreStatus:any;
+  ddScoreStatus: any;
   lastTypedText: string;
+  lastTypedTextForServer: string;
   lastPastedText: string;
   updatedBodyData: any;
-  bodyBfrePaste:string="";
+  bodyBfrePaste: string = "";
 
   isPasted: boolean = false;
-  isReloadedData:boolean=false;
+  isReloadedData: boolean = false;
 
+  newlyAddedSentence: string;
+  completeJobBody: string;
 
   constructor(
     private router: Router,
@@ -122,6 +127,16 @@ export class HomeComponent implements OnInit, OnDestroy {
           this.isShared = false;
           this.isFinished = false;
           this.isReadonly = false;
+          this.percBiasedMaleWords = 0;
+          this.percBiasedFemaleWords = 0;
+          this.percBiasedEthinicityWords = 0;
+          this.percBiasedAgeWords = 0;
+          this.ddScore = '';
+          this.ddScoreStatus = '';
+          // open normal job add screen
+          if (this.route.snapshot.params.id == 'editor') {
+            this.openScreen = false;
+          }
         }
 
 
@@ -154,18 +169,10 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     //get user data
-
     this.getUser();
 
     //make fields readonly according to status
-    this.dropdownContent = `<div class="dropdown" contenteditable="false">
-    <ul class="dropdown-select">
-      <li class="drop"><a>Data</a></li>
-      <li class="drop" id=""><a>Data1</a></li>
-      <li class="drop" id=""><a>Data2</a></li>
-      <li class="drop" id=""><a>Data3</a></li>
-    </ul>
-    </div>`;
+
     this.alerts = [];
 
     var dropdown = this.dropdownContent;
@@ -185,32 +192,19 @@ export class HomeComponent implements OnInit, OnDestroy {
         $('.dropdown').hide();
         var attrID = $(this).attr('id');
         $($(this).closest('div').children('.dropdown')).toggle()
-        //  console.log($("#" +attrID).children('.$(this)'));
-        //   $(this).append(dropdown);
 
-
-        // var selectBox = document.querySelectorAll('.drop');
-        // console.log(selectBox);
-        // for(var i=0;i<selectBox.length;i++){
-        //   console.log(selectBox[i]);
-        // selectBox[i].addEventListener('click',fire.bind(this),false);
-        //  console.log("binded");
-        // }
       });
 
       $(".drop").click(function () {
-        //   alert("hello");
-        // console.log($(this).attr('id');
+
         var currentSelected = $(this).text();
         console.log(currentSelected);
         var selectedId = $(this).parent();
         console.log(selectedId);
-        //console.log($(this).closest('div'));
         console.log("find closest button");
-        //   console.log($(this).find('button'));
-        // console.log($(this).closest("div").parent("div").children("a").text());
+
         $(this).closest("div").parent("div").children("button").text(currentSelected);
-        $(this).closest("div").parent("div").children("button").css('color', 'green');
+        $(this).closest("div").parent("div").children("button").css('color', 'black');
         $(this).closest('div').toggle();
 
       });
@@ -244,73 +238,12 @@ export class HomeComponent implements OnInit, OnDestroy {
 
     //this.ad_body = ``;
     this.homeForm.patchValue({ ad_body: "hello" });
-    // this.homeForm.patchValue({ ad_title: "test" });
 
-    //this.ad_body = ``;
-
-    //  this.ad_body =`Lorem <span id='ipsum' style='color:red' (click)='call()'>ipsum</span> is a pseudo-Latin text used in web design, typography, layout, and printing in place of English to emphasise design elements over <span id='content' style='color:green' (click)='call()'>content</span>. It's also called placeholder (or filler) text. It's a convenient tool for mock-ups. It helps to outline the visual elements of a document or presentation, eg typography, font, or layout. Lorem <span id='ipsum' style='color:red' (click)='call()'>ipsum</span> is mostly a part of a Latin text by the classical author and philosopher Cicero. Its words and letters have been changed by addition or removal, so to deliberately render its <span id='content' style='color:green' (click)='call()'>content</span> nonsensical; it's not genuine, correct, or comprehensible Latin anymore. While lorem <span id='ipsum' style='color:red' (click)='call()'>ipsum</span>'s still resembles classical Latin, it actually has no meaning whatsoever. As Cicero's text doesn't contain the letters K, W, or Z, alien to latin, these, and others are often inserted randomly to mimic the typographic appearence of European languages, as are digraphs not to be found in the original.  In a professional context it often happens that private or corporate clients corder a publication to be made and presented with the actual <span id='content' style='color:green' (click)='call()'>content</span> still not being ready. Think of a news blog that's filled with <span id='content' style='color:green' (click)='call()'>content</span> hourly on the day of going live. However, reviewers tend to be distracted by comprehensible <span id='content' style='color:green' (click)='call()'>content</span>, say, a random text copied from a newspaper or the internet. The are likely to focus on the text, disregarding the layout and its elements. Besides, random text risks to be unintendedly humorous or offensive, an unacceptable risk in corporate environments. Lorem <span id='ipsum' style='color:red' (click)='call()'>ipsum</span> and its many variants have been employed since the early 1960ies, and quite likely since the sixteenth century.` ; 
     var input = document.getElementById('myInput');
-    this.serviceReply = {
-      "biases": {
-        "dd_score": 5.07,
-        "bias_analysis": {
-          "sentences": [
-            {
-              "key": "I am a motivated individual, I think",
-              "phrases": [
-                {
-                  "key": "a motivated individual",
-                  "biases": [
-                    {
-                      "key": "motivated individual",
-                      "biased_phrase_id": 44,
-                      "replaceable_subphrases": [
-                        {
-                          "key": "motivated",
-                          "replaceable_subphrase_id": 21,
-                          "biased_towards_female": true,
-                          "alternatives": [
-                            {
-                              "alternative_subphrase_id": 148,
-                              "alternative_subphrase": "driven",
-                              "selected_counter": 0
-                            }
-                          ]
-                        },
-                        {
-                          "key": "individual",
-                          "replaceable_subphrase_id": 24,
-                          "biased_towards_female": false,
-                          "alternatives": [
-                            {
-                              "alternative_subphrase_id": 152,
-                              "alternative_subphrase": "person",
-                              "selected_counter": 0
-                            }
-                          ]
-                        }
-                      ]
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
-        }
-      },
-      "percentages": {
-        "num_total_words": 8,
-        "num_biased_male_words": 1,
-        "num_biased_female_words": 1,
-        "perc_biased_male_words": 12.5,
-        "perc_biased_female_words": 12.5
-      }
-    };
-    // console.log(this.serviceReply.biases.biases[0].key);
     this.getApprovalEmail();
   }
 
-
+  //loads jquery
   loadingJquery() {
     console.log("loaded jquery....");
     $(document).ready(function () {
@@ -322,40 +255,30 @@ export class HomeComponent implements OnInit, OnDestroy {
 
         var attrID = $(this).attr('id');
         $($(this).closest('div').children('.dropdown')).toggle()
-        //  console.log($("#" +attrID).children('.$(this)'));
-        //   $(this).append(dropdown);
 
-
-        // var selectBox = document.querySelectorAll('.drop');
-        // console.log(selectBox);
-        // for(var i=0;i<selectBox.length;i++){
-        //   console.log(selectBox[i]);
-        // selectBox[i].addEventListener('click',fire.bind(this),false);
-        //  console.log("binded");
-        // }
       });
 
       $(".drop").click(function () {
-        //   alert("hello");
-        // console.log($(this).attr('id');
         var currentSelected = $(this).text();
         console.log(currentSelected);
         var selectedId = $(this).parent();
         console.log(selectedId);
-        //console.log($(this).closest('div'));
         console.log("find closest button");
-        //   console.log($(this).find('button'));
-        // console.log($(this).closest("div").parent("div").children("a").text());
         $(this).closest("div").parent("div").children("button").text(currentSelected);
-        $(this).closest("div").parent("div").children("button").css('color', 'green');
+        $(this).closest("div").parent("div").children("button").css('color', 'black');
+        var removeMainDiv = $(this).closest("div").parent("div").attr("id");
         selectedId.remove();
+
+        $("#" + removeMainDiv).replaceWith(currentSelected);
+
+
         $(this).closest('div').toggle();
 
       });
 
-      //   $(".dropdown").on("click", "li .drop", function(){
-      //     alert("jkjk");
-      // });
+      $(".ngx-editor-textarea").click(function () {
+        $('.dropdown').hide();
+      });
 
     });
 
@@ -366,20 +289,18 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   //return biase level based on dd score
-  getBiaseLevel(dd_score){
-    if(dd_score <= 60 ){
+  getBiaseLevel(dd_score) {
+    if (dd_score <= 60) {
       return this.ddScoreStatus = "High Biased";
     }
-    else if(dd_score <= 90 && dd_score > 60 ){
+    else if (dd_score <= 90 && dd_score > 60) {
       return this.ddScoreStatus = "Medium Biased";
     }
-    // else if(dd_score <= 80 && dd_score > 70 ){
-    //   return this.ddScoreStatus = "Low Biased";
-    // }
-    else if(dd_score > 90){
+
+    else if (dd_score > 90) {
       return this.ddScoreStatus = "Low Biased";
     }
-    else{
+    else {
       return this.ddScoreStatus = "";
     }
   }
@@ -400,13 +321,9 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.route.queryParams
       .filter(params => params.data)
       .subscribe(params => {
-        // console.log("paramdata---")
-        // console.log(params); // {order: "popular"}
-        // console.log("paramdata-end--")
 
         this.updateData = params.data;
         this.selectedJobStatus = params.status;
-        //  console.log(this.updateData); // popular
       });
 
   }
@@ -421,7 +338,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       .subscribe(
         (jobList: any) => {
           //response
-          this.analyzeAfterServicePopulate(jobList.ad_body);
+          this.analyzeAfterServicePopulate(jobList);
           console.log(jobList)
           this.spinner.hide();
           this.updatedData = jobList;
@@ -429,7 +346,7 @@ export class HomeComponent implements OnInit, OnDestroy {
           this.isOwner = jobList.is_owner;
           //  console.log(this.isOwner);
           this.homeForm.patchValue(jobList);
-          this.ddScore = jobList.dd_score;
+          this.ddScore = jobList.dd_score.toFixed(0);
           this.percBiasedFemaleWords = jobList.female_phrases_percentage;
           //  this.loadingJquery();
         },
@@ -572,7 +489,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       this.clearOptionWithoutSelectedTag();
 
       var bodyData = this.getNoHtmlContentBody();
-      bodyData =  bodyData.replace(/ \./g, '.');
+      bodyData = bodyData.replace(/ \./g, '.');
 
       var dataForm = {
         "ad_body": bodyData,
@@ -660,7 +577,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     }
     else if (button == "ownerfinish") {
       return this.isApproved && this.isOwner && !this.isFinished;
-
+      
     }
     else if (button == "finishread") {
       if (!this.isOwner && this.isShared && this.isApproved && !this.isFinished) {
@@ -685,7 +602,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       this.clearOptionWithoutSelectedTag();
 
       var bodyData = this.getNoHtmlContentBody();
-      bodyData =  bodyData.replace(/ \./g, '.');
+      bodyData = bodyData.replace(/ \./g, '.');
 
       var dataForm = {
         "ad_body": bodyData,
@@ -703,12 +620,12 @@ export class HomeComponent implements OnInit, OnDestroy {
           jobList => {
             //response
             //  this.spinner.hide();
-           this.spinner.hide();
+            this.spinner.hide();
             if (jobList.is_approved == true) {
               this.router.navigateByUrl('/joblisting');
             }
             else {
-             // this.spinner.hide();
+              // this.spinner.hide();
               this.templateMsg = "Unable To Approve Job :approve";
               this.modalRef = this.modalService.show(template);
 
@@ -747,13 +664,13 @@ export class HomeComponent implements OnInit, OnDestroy {
         .subscribe(
           jobList => {
             //response
-              this.spinner.hide();
-           // this.spinner.hide();
+            this.spinner.hide();
+            // this.spinner.hide();
             if (jobList.is_finished == true) {
               this.router.navigateByUrl('/joblisting');
             }
             else {
-             this.spinner.hide();
+              this.spinner.hide();
               this.templateMsg = "Unable To Finish Job";
               this.modalRef = this.modalService.show(template);
 
@@ -777,7 +694,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       this.clearOptionWithoutSelectedTag();
 
       var bodyData = this.getNoHtmlContentBody();
-      bodyData =  bodyData.replace(/ \./g, '.');
+      bodyData = bodyData.replace(/ \./g, '.');
 
       var dataForm = {
         "ad_body": bodyData,
@@ -879,38 +796,122 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
 
-  getNoHtmlContentBody() {
+  // getNoHtmlContentBody() {
 
+  //   var data = document.querySelector(".ngx-editor-textarea").innerHTML;
+  //   // console.log(data);
+  //   // var html=this.ad_body;
+  //   var dom = document.createElement("DIV");
+  //   dom.innerHTML = data;
+  //   var plain_text = (dom.textContent || dom.innerText);
+  //   if (document.getElementsByClassName("dropdown-ex")[0]) {
+  //     var desi_text = document.getElementsByClassName("dropdown-ex")[0].textContent;
+  //   }
+  //   //debugger;
+  //   return this.noHtmlContent = plain_text.replace(/\s+/g, ' ');
+
+  // }
+
+
+  getNoHtmlContentBody() {
+    debugger;
     var data = document.querySelector(".ngx-editor-textarea").innerHTML;
     // console.log(data);
     // var html=this.ad_body;
-    var dom = document.createElement("DIV");
-    dom.innerHTML = data;
-    var plain_text = (dom.textContent || dom.innerText);
-    if(document.getElementsByClassName("dropdown-ex")[0]){
-    var desi_text =  document.getElementsByClassName("dropdown-ex")[0].textContent ;
-    }
-    //debugger;
-    return this.noHtmlContent = plain_text.replace(/\s+/g, ' ');
+    // var dom = document.createElement("DIV");
+    //  dom.innerHTML = data;
+    //  var plain_text = (dom.textContent || dom.innerText);
 
+    var getClass = document.getElementsByClassName("dropdown-ex");
+    var length = getClass.length;
+    var replArr = [];
+    for (var k = 0; k < length; k++) {
+      debugger;
+      var getID = document.getElementsByClassName('dropdown-ex')[k].getAttribute("id");
+      var getText = document.getElementsByClassName('dropdown-ex')[k].textContent;
+      replArr.push({ id: getID, value: getText });
+    }
+
+    replArr.map((key) => {
+      $("#" + key.id).replaceWith(key.value);
+    });
+
+    //  return this.noHtmlContent = plain_text.replace(/\s+/g, ' ');
+    return document.querySelector(".ngx-editor-textarea").innerHTML;
   }
 
 
-  getNoHtmlContent(content) {
+  // getNoHtmlContent(content) {
 
+  //   var data = content;
+  //   // console.log(data);
+  //   // var html=this.ad_body;
+  //   var dom = document.createElement("DIV");
+  //   dom.innerHTML = data;
+  //   var plain_text = (dom.textContent || dom.innerText);
+  //   if(document.getElementsByClassName("dropdown-ex")[0]){
+  //     var desi_text =  document.getElementsByClassName("dropdown-ex")[0].textContent ;
+  //     }
+  //   //debugger;
+  //   return this.noHtmlContent = plain_text.replace(/\s+/g, ' ');
+
+  // }
+
+
+  getNoHtmlContent(content) {
+    debugger;
     var data = content;
     // console.log(data);
     // var html=this.ad_body;
     var dom = document.createElement("DIV");
     dom.innerHTML = data;
-    var plain_text = (dom.textContent || dom.innerText);
-    if(document.getElementsByClassName("dropdown-ex")[0]){
-      var desi_text =  document.getElementsByClassName("dropdown-ex")[0].textContent ;
+    var replArr = [];
+
+    var getClass = dom.getElementsByClassName("dropdown-ex");
+    if (getClass.length > 0) {
+      for (var b = 0; b < getClass.length; b++) {
+        var getID = dom.getElementsByClassName('dropdown-ex')[b].getAttribute("id");
+        var getText = dom.getElementsByClassName('dropdown-ex')[b].textContent;
+        replArr.push({ id: getID, value: getText });
       }
-    //debugger;
+
+
+      replArr.map((key) => {
+        $("#" + key.id).replaceWith(key.value);
+      });
+      return dom.innerHTML;
+
+    }
+
+    return content;
+
+    //  console.log(getClass);
+    //  debugger;
+    // var plain_text = (dom.textContent || dom.innerText);
+
+    // return this.noHtmlContent = plain_text.replace(/\s+/g, ' ');
+
+  }
+
+
+  getNoHtmlContentServer(content) {
+    content = content.replace(/<br\s*\/?>/gi, ' ');
+    var data = content;
+    // console.log(data);
+    // var html=this.ad_body;
+    var dom = document.createElement("DIV");
+    dom.innerHTML = data;
+
+    //  console.log(getClass);
+    //  debugger;
+    var plain_text = (dom.textContent || dom.innerText);
+
     return this.noHtmlContent = plain_text.replace(/\s+/g, ' ');
 
   }
+
+
+
   clearOptionWithoutSelectedTag() {
     var selectBoxes = document.querySelectorAll(".form-ele");
     console.log(selectBoxes);
@@ -935,10 +936,10 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   // this function is used mostly to remove last line content.
   updateBodyState() {
-
+    debugger;
     if (this.isPasted == false) {
       var bodyData = this.homeForm.value.ad_body;
-      var lastChar = bodyData[bodyData.length -1];
+      var lastChar = bodyData[bodyData.length - 1];
       //debugger;
       var split = bodyData.split(".");
       var getLength = split.length;
@@ -948,65 +949,55 @@ export class HomeComponent implements OnInit, OnDestroy {
       console.log(this.updatedBodyData);
       //debugger;
     }
-    else if (this.isPasted == true  && this.isReloadedData == false) {
-     //debugger;
-     this.updatedBodyData = [];
-     this.updatedBodyData.push(this.bodyBfrePaste);
-    //  var bodyData = this.homeForm.value.ad_body;
-    //  var lastChar = bodyData[bodyData.length -1];
-    //  debugger;
-    //  var split = bodyData.split(".");
-    //  var getLength = split.length;
-    //  var getLastIndex = getLength - 1;
-    //  split.length = getLastIndex;
-    //  this.updatedBodyData = split;
-    //  console.log(this.updatedBodyData);
-    //  debugger;
+    else if (this.isPasted == true && this.isReloadedData == false) {
+      //debugger;
+      this.updatedBodyData = [];
+      this.updatedBodyData.push(this.bodyBfrePaste);
     }
-    else if(this.isReloadedData == true){
+    else if (this.isReloadedData == true) {
       this.updatedBodyData = [];
       this.isReloadedData = false;
     }
   }
 
+  //records dot press event
   onKeydown(event) {
-
-    if (event.keyCode == 190) {
+    if (event.keyCode == 190 || event.keyCode == 191 || event.keyCode == 49) {
+      this.completeJobBody = document.querySelector(".ngx-editor-textarea").innerHTML;
+      console.log(this.completeJobBody);
       this.isPasted = false;
-
-      console.log(event)
-      //  var noHTml = this.getNoHtmlContentBody()+".";
-      //  this.homeForm.patchValue({ad_body:noHTml});
       console.log("body to be sent");
-      //console.log( event.target.innerHTML);
-      console.log(event.target.innerText);
+      console.log(event);
+      if (this.isPasted) {
+        this.lastTypedText = this.fetchLastTextTyped();
+      }
+      else {
+        this.lastTypedText = this.fetchLastTextTyped();
 
+      }
+      debugger;
       this.processJobService();
       // },500);
     }
   }
 
 
+  //Filter and hits analyze service
   processJobService() {
-    //  console.log(this.ad_body);
-    if (this.isPasted) {
-      this.lastTypedText = this.fetchLastTextTyped();
-    }
-    else {
-      this.lastTypedText = this.fetchLastTextTyped() + ".";
+    debugger;
 
-    }
-
+    console.log(this.lastTypedText);
     this.lastTypedText = this.getNoHtmlContent(this.lastTypedText);
-    //  setTimeout(function(){
-    //    alert("");
+    // this.lastTypedText = this.lastTypedText.replace(/  +/g, ' ');
+    debugger;
+    this.lastTypedTextForServer = this.getNoHtmlContentServer(this.lastTypedText);
 
     var jobForm = {
       jobad_title: this.homeForm.value.ad_title,
-      jobad_body: this.lastTypedText
+      jobad_body: this.lastTypedTextForServer
     };
     //debugger;
-  //  this.spinner.show();
+    //  this.spinner.show();
     this.jobService
       .analyzeJob(jobForm)
       .subscribe(
@@ -1015,65 +1006,37 @@ export class HomeComponent implements OnInit, OnDestroy {
           this.serviceReply = updatedJob;
           this.percBiasedMaleWords = updatedJob.percentages.perc_biased_male_words.toFixed(0);
           this.percBiasedFemaleWords = updatedJob.percentages.perc_biased_female_words.toFixed(0);
-          this.ddScore = updatedJob.biases.dd_score;
+          this.percBiasedEthinicityWords = updatedJob.percentages.perc_biased_ethnicity_words.toFixed(0);
+          this.percBiasedAgeWords = updatedJob.percentages.perc_biased_age_words.toFixed(0);
+          this.ddScore = updatedJob.biases.dd_score.toFixed(0);
           this.afterServiceProcessData(this.lastTypedText);
 
           //clear and fetch new data
         },
         err => {
-         this.spinner.hide();
+          this.spinner.hide();
           console.log(err)
         }
       );
 
   }
 
-  afterServiceProcess(lastTypedText) {
-    var index = 0;
-    //your code
-    // console.log("Spacebar fired");
-    console.log(lastTypedText);
-    var n = this.homeForm.value.ad_body.includes(".");
-    if (n) {
-      var testing = lastTypedText;
-      //debugger;
-      for (var i = 0; i < this.serviceReply.biases.bias_analysis.sentences[index].length; i++) {
-        var test = this.serviceReply.biases.bias_analysis.sentences[index].biases[i].key;
-        if (testing.includes(test)) {
-          // var re = new RegExp(test, 'gi');
-          var re = new RegExp(test + '(?!([^ ]+)?>)', 'gi');
-          //   var optionregEx = '^(<option value="([^"]+).*?(?:selected="selected")?.*)$';
-          // var matchIfOption =  new RegExp("<option>"+test+"</option>");
-          //   var testRegex =  matchIfOption.test(testing);
-          // var suggestions = this.serviceReply.biases.bias_analysis.sentences[index].biases[i].suggestions;
-          // var suggestionToHtml = suggestions.map(function (data) {
-          //   return '<option>' + data.alternative_phrase + '</option>';
-          // });
-          // var implodeSuggestion = suggestionToHtml.join(" ");
-          //  var replaceValue = '<span class="dropdown">hello <div class="dropdown-content"><p>Bye World!</p></div></span> ';
-          var substrVal = test.substring(0, 3);
-          //   var color;
-          // if(this.serviceReply.biases.bias_analysis.sentences[index].biases[i].key) 
-          // var replaceValue =
-          //   "<select  id='" + substrVal + i + "' style='color:"
-          //   + this.serviceReply.biases.bias_analysis.sentences[index].biases[i].key +
-          //   "' class='form-ele'> <option>" + test +
-          //   "</option><option>test</option></select> ";
-          //  if(testRegex == false){
-          // testing = testing.replace(re, replaceValue);
-          // testing = testing.replace('.','');
-          //}
 
-        }
-      }
-      //this.ad_body = this.buildJobContentAfterServiceCall(testing);
-
-      //console.log(this.ad_body);
-
+  //generate random string
+  makeid() {
+    var text = "";
+    var char_list = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    for (var i = 0; i < 5; i++) {
+      text += char_list.charAt(Math.floor(Math.random() * char_list.length));
     }
+    return text.toLowerCase();
   }
 
+
+
+
   afterServiceProcessData(lastTypedText) {
+    debugger;
     var index = 0;
     //your code
     // console.log("Spacebar fired");
@@ -1099,31 +1062,35 @@ export class HomeComponent implements OnInit, OnDestroy {
             //debugger;
             if (finalReplacementSetArr.length > 0) {
               for (var frsa = 0; frsa < finalReplacementSetArr.length; frsa++) {
-                var reFrsa = new RegExp(finalReplacementSetArr[frsa].key + '(?!([^ ]+)?>)', 'gi');
+                var reFrsa = new RegExp(finalReplacementSetArr[frsa].key, 'gi');
 
                 textToBeReplaced = textToBeReplaced.replace(reFrsa, finalReplacementSetArr[frsa].value);
               }
 
-              var buildBody = this.buildJobContentAfterServiceCall(textToBeReplaced);
-              //debugger;
-              this.homeForm.patchValue({ ad_body: buildBody });
-              // this.ad_body = buildBody;
-
-              let inputFields = document.getElementsByClassName("ngx-editor-textarea")[0];
-              this.placeCaretAtEnd(inputFields);
               // console.log(textToBeReplaced);
 
-             // this.spinner.hide();
+              // this.spinner.hide();
 
 
             }
           }
+
+
+          var buildBody = this.buildJobContentAfterServiceCall(textToBeReplaced, lastTypedText);
+          //debugger;
+          this.homeForm.patchValue({ ad_body: buildBody });
+          // this.ad_body = buildBody;
+
+          let inputFields = document.getElementsByClassName("ngx-editor-textarea")[0];
+          this.placeCaretAtEnd(inputFields);
         }
         else {
+          // var buildBody = this.buildJobContentAfterServiceCall(textToBeReplaced);
+          this.homeForm.patchValue({ ad_body: this.completeJobBody });
           let inputFields = document.getElementsByClassName("ngx-editor-textarea")[0];
           this.placeCaretAtEnd(inputFields);
           console.log("biasis analysis empty");
-        //  this.spinner.hide();
+          //  this.spinner.hide();
 
         }
 
@@ -1178,13 +1145,23 @@ export class HomeComponent implements OnInit, OnDestroy {
         var assignColor;
 
         if (replaceableSubphrase[l].biased_towards_female == true) {
-          assignColor = "#fe08ca";
+          assignColor = "#f641ff";
+        }
+        else if (replaceableSubphrase[l].biased_towards_male == true) {
+          assignColor = "#25b0ef";
+        }
+        else if (replaceableSubphrase[l].biased_towards_ethnicity == true) {
+          assignColor = "#ed7c31";
         }
         else {
-          assignColor = "#50b8ff";
+          assignColor = "#35b150"
         }
 
-        var beginHtml = '<div class="dropdown-ex"> ';
+        var d = new Date();
+        var n = d.getMilliseconds();
+        var makeID = this.makeid() + '' + n;
+
+        var beginHtml = '<div class="dropdown-ex"  id="' + makeID + '"> ';
         beginHtml += '<button class="openDrp"  style="color:' + assignColor + '" id="' + replaceableSubphrase[l].replaceable_subphrase_id + '">' + replaceableSubphrase_key + '</button> <div class="dropdown" contenteditable="false">';
         beginHtml += '<ul class="dropdown-select form-ele">';
 
@@ -1226,31 +1203,13 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   }
 
-  onClick(data) {
-    //  console.log("fire");
-    //  console.log(data);
-
-    //  console.log("fire");
-    //  var selectBoxes = document.querySelectorAll(".form-control");
-    //  console.log(selectBoxes);
-    //  Object.keys(selectBoxes).map(function (key) {
-    //    console.log(selectBoxes[key].selectedIndex);
-    //    selectBoxes[key].setAttribute("class","true");
-    //  //   for (var i = 0; i < selectBoxes[key].options.length; i++) {
-    //  //     selectBoxes[key].options[i].setAttribute
-    //  //   //   if (selectBoxes[key].options[i].index != selectBoxes[key].selectedIndex)
-    //  //   //     selectBoxes[key].remove(i);
-    //  //   //  }
-    //   })
-  }
-
 
 
   createJob() {
     return new Promise(resolve => {
       this.clearOptionWithoutSelectedTag();
       var bodyData = this.getNoHtmlContentBody();
-      bodyData =  bodyData.replace(/\s+/g, ' ');
+      bodyData = bodyData.replace(/\s+/g, ' ');
       var dataForm = {
         "ad_body": bodyData,
         "ad_title": this.homeForm.value.ad_title,
@@ -1283,7 +1242,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
           },
           err => {
-           this.spinner.hide();
+            this.spinner.hide();
             // this.alerts.push({
             //   type: 'danger',
             //   msg: this.errors,
@@ -1323,7 +1282,8 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.savingStatus = "Saving..... ";
     this.clearOptionWithoutSelectedTag();
     var bodyData = this.getNoHtmlContentBody();
-    bodyData =  bodyData.replace(/ \./g, '.');
+    bodyData = bodyData.replace(/ \./g, '.');
+    debugger;
     console.log(bodyData);
     //debugger;
     var dataForm = {
@@ -1413,86 +1373,82 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   pasteEvent(data) {
     this.isPasted = true;
-   // if (this.homeForm.value.ad_body == "") {
-      console.log(data.clipboardData.getData('text/plain'));
-      this.bodyBfrePaste =  document.querySelector(".ngx-editor-textarea").innerHTML; 
-      this.lastPastedText = data.clipboardData.getData('text/plain');
-      //debugger;
-      this.processJobService();
-  //  }
+    // if (this.homeForm.value.ad_body == "") {
+    console.log(data.clipboardData.getData('text/html'));
+    this.lastPastedText = data.clipboardData.getData('text/plain');
+    this.completeJobBody = document.querySelector(".ngx-editor-textarea").innerHTML + ' ' + this.lastPastedText;
+
+    //debugger;
+    this.lastTypedText = this.fetchLastTextTyped();
+
+    this.processJobService();
+    //  }
 
   }
 
   analyzeAfterServicePopulate(data) {
     this.isPasted = true;
     this.isReloadedData = true;
-    var dataPasted = document.querySelector(".ngx-editor-textarea").innerHTML;
-    this.lastPastedText = data;
+    this.homeForm.patchValue({ ad_title: data.ad_title });
+    // this.completeJobBody = document.querySelector(".ngx-editor-textarea").innerHTML;
+    this.completeJobBody = data.ad_body.replace(/  +/g, ' ');
+
+    this.lastPastedText = data.ad_body.replace(/&nbsp;/g, '').replace(/  +/g, ' ');
+    debugger;
+    this.lastTypedText = this.fetchLastTextTyped();
+
     console.log(this.actionState);
-    //debugger;
+    debugger;
     if (this.lastPastedText != "") {
       this.processJobService();
     }
   }
   /** end from old functionlit */
+
   //fetched last typed text
   fetchLastTextTyped() {
-    this.clearOptionWithoutSelectedTag();
-    var bodyData =  this.getNoHtmlContent(document.querySelector(".ngx-editor-textarea").innerHTML);
+    debugger;
+    var bodyData = this.getNoHtmlContentServer(this.completeJobBody);
+
     if (this.isPasted == false) {
-      var data = bodyData.split(".");
-      var filterData = data.filter(filt => filt != "");
-      var dataLength = filterData.length;
-      var getLastIndex = dataLength - 1;
-      console.log(data);
-      this.updateBodyState();
-      //debugger;
-      return filterData[getLastIndex];
+      var periodOccurence = this.countPeriod(bodyData, "\\.");
+      debugger;
+      if (periodOccurence == 1) {
+        return bodyData;
+      }
+      else {
+        var data = bodyData.split(".");
+        var filterData = data.filter(filt => filt != "");
+        var dataLength = filterData.length;
+        var getLastIndex = dataLength - 1;
+        console.log(data);
+        return filterData[getLastIndex] + ".";
+      }
     }
     else if (this.isPasted == true) {
-      //debugger;
-      this.updateBodyState();
+      debugger;
       return this.lastPastedText;
     }
   }
 
+
+  //count numbr of dots
+  countPeriod(s1, letter) {
+    return (s1.match(RegExp(letter, 'g')) || []).length;
+  }
+
   //builds job Content
-  buildJobContentAfterServiceCall(lastTypedText) {
-    //return lastTypedText;
-    var bodyContent = this.updatedBodyData;
-    console.log(this.isPasted);
-    //debugger;
-    //  bodyContent = bodyContent.replace(/^./, '');
-    //var data =bodyContent.split(".");   
-    //   data.splice(-2, 2);
-    // var dataLength = data.length;
-    // var getLastIndex = dataLength - 1;
-    //    console.log(data);
-    //   data.length = getLastIndex;
-    //  if(data.length > 0 ){
-    //  bodyContent = data.join(".");
-    //replace(/\s+/g,' ').trim();
-    if (bodyContent.length > 0 &&  this.isPasted == false ) {
-      bodyContent.push(lastTypedText);
-      return bodyContent.join(".").replace(/ \./g, '.');
+  buildJobContentAfterServiceCall(textToBeReplaced, lastTypedText) {
+    debugger;
+    lastTypedText = lastTypedText.trim();
+    var getBodyText = this.completeJobBody.replace(/&nbsp;/g, '').replace(/  +/g, ' ');;
+    if (getBodyText == "") {
+      return textToBeReplaced;
     }
-    else if(this.isPasted == true){
-      bodyContent.push(lastTypedText);
-
-      return bodyContent.join("");
-
+    else {
+      var finalHtml = getBodyText.replace(new RegExp(lastTypedText, "gi"), textToBeReplaced);
+      return finalHtml;
     }
-      else {
-      return lastTypedText.replace(/ \./g, '.');
-    }
-    //   }
-    //   else{
-    //   return lastTypedText ;
-
-    //  }
-
-
-
   }
 
   toggleDropdown() {
