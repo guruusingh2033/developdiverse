@@ -328,3 +328,7 @@ background: #f641ff;
 .gender-wordings li:nth-child(4) span {
   background:#35b150;
 } 
+
+.ngx-editor-textarea div {
+  display: none;
+}

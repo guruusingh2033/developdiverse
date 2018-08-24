@@ -82,8 +82,9 @@ export class HomeComponent implements OnInit, OnDestroy {
   isPasted: boolean = false;
   isReloadedData: boolean = false;
 
-  newlyAddedSentence: string;
+  newlyAddedSentence: string = "";
   completeJobBody: string;
+  charPressed: string = "";
 
   constructor(
     private router: Router,
@@ -133,10 +134,6 @@ export class HomeComponent implements OnInit, OnDestroy {
           this.percBiasedAgeWords = 0;
           this.ddScore = '';
           this.ddScoreStatus = '';
-          // open normal job add screen
-          if (this.route.snapshot.params.id == 'editor') {
-            this.openScreen = false;
-          }
         }
 
 
@@ -168,6 +165,8 @@ export class HomeComponent implements OnInit, OnDestroy {
   get f() { return this.homeForm.controls; }
 
   ngOnInit() {
+    this.openScreen = false;
+
     //get user data
     this.getUser();
 
@@ -191,7 +190,7 @@ export class HomeComponent implements OnInit, OnDestroy {
         // alert("hi");
         $('.dropdown').hide();
         var attrID = $(this).attr('id');
-        $($(this).closest('div').children('.dropdown')).toggle()
+        $($(this).closest('span').children('.dropdown')).toggle()
 
       });
 
@@ -203,16 +202,11 @@ export class HomeComponent implements OnInit, OnDestroy {
         console.log(selectedId);
         console.log("find closest button");
 
-        $(this).closest("div").parent("div").children("button").text(currentSelected);
-        $(this).closest("div").parent("div").children("button").css('color', 'black');
-        $(this).closest('div').toggle();
+        $(this).closest("span").parent("span").children("button").text(currentSelected);
+        $(this).closest("span").parent("span").children("button").css('color', 'black');
+        $(this).closest('span').toggle();
 
       });
-
-      //   $(".dropdown").on("click", "li .drop", function(){
-      //     alert("jkjk");
-      // });
-
     });
 
     this.fetchUrlParams();
@@ -249,12 +243,12 @@ export class HomeComponent implements OnInit, OnDestroy {
     $(document).ready(function () {
       $(".dropdown").hide();
       $(".openDrp").mouseover(function () {
-        //debugger;
+        debugger;
         // alert("hi");
         $('.dropdown').hide();
 
         var attrID = $(this).attr('id');
-        $($(this).closest('div').children('.dropdown')).toggle()
+        $($(this).closest('span').children('.dropdown')).toggle()
 
       });
 
@@ -264,20 +258,20 @@ export class HomeComponent implements OnInit, OnDestroy {
         var selectedId = $(this).parent();
         console.log(selectedId);
         console.log("find closest button");
-        $(this).closest("div").parent("div").children("button").text(currentSelected);
-        $(this).closest("div").parent("div").children("button").css('color', 'black');
-        var removeMainDiv = $(this).closest("div").parent("div").attr("id");
+        $(this).closest("span").parent("span").children("button").text(currentSelected);
+        $(this).closest("span").parent("span").children("button").css('color', 'black');
+        var removeMainDiv = $(this).closest("span").parent("span").attr("id");
         selectedId.remove();
 
         $("#" + removeMainDiv).replaceWith(currentSelected);
 
 
-        $(this).closest('div').toggle();
+        $(this).closest('span').toggle();
 
       });
-
       $(".ngx-editor-textarea").click(function () {
         $('.dropdown').hide();
+
       });
 
     });
@@ -305,7 +299,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     }
   }
 
-
+  //fetches user data
   getUser() {
     this.profileService.get().subscribe(
       (userData) => {
@@ -316,6 +310,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     );
   }
 
+  //fetches params data from url
   fetchUrlParams() {
     this.state = this.route.snapshot.params.id;
     this.route.queryParams
@@ -329,7 +324,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
 
-
+  //fetches job data by id
   fetchJobDataById() {
     this.loaderMsg = "Loading..";
 
@@ -357,6 +352,8 @@ export class HomeComponent implements OnInit, OnDestroy {
       );
   }
 
+
+  //for hide /show selection of different buttons
   statusUpdate() {
 
     if (this.updateData) {
@@ -384,34 +381,40 @@ export class HomeComponent implements OnInit, OnDestroy {
     }
   }
 
+  //loads job editor data
   loadJobEditor() {
     this.openScreen = false;
     this.router.navigateByUrl('/dashboard/editor');
   }
 
+
   ngAfterViewInit() {
-    if (this.openScreen) {
-      let element: HTMLElement = document.getElementById("modal") as HTMLElement;
-      element.click();
-    }
+    // if (this.openScreen) {
+    let element: HTMLElement = document.getElementById("modal") as HTMLElement;
+    element.click();
+    //   }
     console.log("view checked");
+
   }
+
 
   ngAfterViewChecked() {
     this.dialogRemember = "";
     this.cdRef.detectChanges();
   }
 
-
+  //opens dialog  modal
   openModal(template: TemplateRef<any>) {
     this.modalRef = this.modalService.show(template);
+
   }
 
+  //open dialog status notifiction modal & save /update data ,this is called on "Done" click 
   openModal2(template: TemplateRef<any>) {
     this.spinner.show();
 
     if (!this.updateData) {
-      ;
+
       if (!this.createdJobId) {
         var res = this.createJob()
           .then((res: any) => {
@@ -540,13 +543,15 @@ export class HomeComponent implements OnInit, OnDestroy {
     }
   }
 
+  //welcome modal
   openModal3(template: TemplateRef<any>) {
     if (localStorage.getItem("dialogOff") != "true") {
       this.modalRef = this.modalService.show(template);
+      localStorage.setItem("dialogOff", "true");
     }
   }
 
-
+  //closes recently open modal
   closeFirstModal() {
     this.modalRef.hide();
     this.modalRef = null;
@@ -554,8 +559,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
 
-
-
+  //decides which button to display depending upon state of job
   displayButton(button) {
     if (button == "create") {
       return (this.isOwner && !this.isDraft) || !this.updateData;
@@ -577,7 +581,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     }
     else if (button == "ownerfinish") {
       return this.isApproved && this.isOwner && !this.isFinished;
-      
+
     }
     else if (button == "finishread") {
       if (!this.isOwner && this.isShared && this.isApproved && !this.isFinished) {
@@ -596,6 +600,9 @@ export class HomeComponent implements OnInit, OnDestroy {
 
 
   }
+
+
+  //approves a job
   approve(template) {
     this.spinner.show();
     if (this.selectedJobStatus == 1) {
@@ -612,51 +619,52 @@ export class HomeComponent implements OnInit, OnDestroy {
         "country": this.homeForm.value.country
       };
 
-      // this.updateJob(dataForm, this.updateData)
-      //   .then((dataUpdate) => {
-      // start of approve job
-      this.jobService.approve({ jobad_id: this.updateData })
-        .subscribe(
-          jobList => {
-            //response
-            //  this.spinner.hide();
-            this.spinner.hide();
-            if (jobList.is_approved == true) {
-              this.router.navigateByUrl('/joblisting');
-            }
-            else {
-              // this.spinner.hide();
-              this.templateMsg = "Unable To Approve Job :approve";
-              this.modalRef = this.modalService.show(template);
+      this.updateJob(dataForm, this.updateData)
+        .then((dataUpdate) => {
+          // start of approve job
+          this.jobService.approve({ jobad_id: this.updateData })
+            .subscribe(
+              jobList => {
+                //response
+                //  this.spinner.hide();
+                this.spinner.hide();
+                if (jobList.is_approved == true) {
+                  this.router.navigateByUrl('/joblisting');
+                }
+                else {
+                  // this.spinner.hide();
+                  this.templateMsg = "Unable To Approve Job :approve";
+                  this.modalRef = this.modalService.show(template);
 
-            }
+                }
 
-            //  this.isOwner = !jobList.is_owner;
-            //  console.log(this.isOwner);
-            //   this.homeForm.patchValue(jobList);
-          },
-          err => {
-            //  debugger;
-            this.spinner.hide();
-            this.templateMsg = "Unable To Approve Job : approve";
-            this.modalRef = this.modalService.show(template);
+                //  this.isOwner = !jobList.is_owner;
+                //  console.log(this.isOwner);
+                //   this.homeForm.patchValue(jobList);
+              },
+              err => {
+                //  debugger;
+                this.spinner.hide();
+                this.templateMsg = "Unable To Approve Job : approve";
+                this.modalRef = this.modalService.show(template);
 
-          }
-        );
-      //end of approve job
-      // })
-      // .catch((err) => {
-      //   this.spinner.hide();
-      //   this.templateMsg = "Unable To Approve Job : update issue";
+              }
+            );
+          //end of approve job
+        })
+        .catch((err) => {
+          this.spinner.hide();
+          this.templateMsg = "Unable To Approve Job : update issue";
 
-      //   this.modalRef = this.modalService.show(template);
-      // })
+          this.modalRef = this.modalService.show(template);
+        })
 
     }
 
 
   }
 
+  //finishes job
   finish(template) {
     this.spinner.show();
     if (this.selectedJobStatus == 2) {
@@ -747,7 +755,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   }
 
-
+  //shares job
   shareJobDirect(template) {
     this.spinner.show();
 
@@ -774,27 +782,6 @@ export class HomeComponent implements OnInit, OnDestroy {
 
 
 
-  /** from old  functionality   */
-
-  dropdownSelect() {
-    var selectBox = this.elRef.nativeElement.querySelectorAll('.openDrp');
-    // console.log(selectBox);
-    for (var i = 0; i < selectBox.length; i++) {
-
-      selectBox[i].addEventListener('click', this.fire.bind(this));
-      // console.log("binded");
-    }
-  }
-
-  modelChanged(data) {
-
-    // console.log("fire");
-    //this.dropdownSelect();
-  }
-  magic() {
-    // console.log(this.ad_body);
-  }
-
 
   // getNoHtmlContentBody() {
 
@@ -813,6 +800,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   // }
 
 
+  // removes only dropdown content tags with text and does not modifies rest html
   getNoHtmlContentBody() {
     debugger;
     var data = document.querySelector(".ngx-editor-textarea").innerHTML;
@@ -835,9 +823,10 @@ export class HomeComponent implements OnInit, OnDestroy {
     replArr.map((key) => {
       $("#" + key.id).replaceWith(key.value);
     });
-
+    console.log(document.querySelector(".ngx-editor-textarea").innerHTML);
     //  return this.noHtmlContent = plain_text.replace(/\s+/g, ' ');
-    return document.querySelector(".ngx-editor-textarea").innerHTML;
+
+    return document.querySelector(".ngx-editor-textarea").innerHTML.replace(/\s+/g, ' ');
   }
 
 
@@ -857,7 +846,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   // }
 
-
+  //replace only dropdown html  to text
   getNoHtmlContent(content) {
     debugger;
     var data = content;
@@ -872,13 +861,22 @@ export class HomeComponent implements OnInit, OnDestroy {
       for (var b = 0; b < getClass.length; b++) {
         var getID = dom.getElementsByClassName('dropdown-ex')[b].getAttribute("id");
         var getText = dom.getElementsByClassName('dropdown-ex')[b].textContent;
-        replArr.push({ id: getID, value: getText });
+        var replaceDom = dom.getElementsByClassName('dropdown-ex')[b];
+        console.log(replaceDom);
+
+        replArr.push({ id: getID, value: getText, dom: replaceDom });
       }
 
 
       replArr.map((key) => {
+        console.log(key.id + "" + key.value);
         $("#" + key.id).replaceWith(key.value);
+        console.log("get jquery id" + $("#" + key.id).text());
+        debugger;
       });
+
+      console.log(dom.innerHTML);
+      debugger;
       return dom.innerHTML;
 
     }
@@ -893,8 +891,9 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   }
 
-
+  //removes compelte html to serve server
   getNoHtmlContentServer(content) {
+    debugger;
     content = content.replace(/<br\s*\/?>/gi, ' ');
     var data = content;
     // console.log(data);
@@ -906,19 +905,21 @@ export class HomeComponent implements OnInit, OnDestroy {
     //  debugger;
     var plain_text = (dom.textContent || dom.innerText);
 
-    return this.noHtmlContent = plain_text.replace(/\s+/g, ' ');
+    return plain_text.replace(/\s+/g, ' ');
 
   }
 
 
-
+  //removes options from dropdown
   clearOptionWithoutSelectedTag() {
+    debugger;
     var selectBoxes = document.querySelectorAll(".form-ele");
     console.log(selectBoxes);
     for (var i = 0; i < selectBoxes.length; i++) {
       selectBoxes[i].remove();
     }
     var selectBoxes = document.querySelectorAll(".form-ele");
+    console.log(selectBoxes);
 
   }
 
@@ -934,7 +935,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
 
 
-  // this function is used mostly to remove last line content.
+  // this function is used mostly to remove last line content.[not in use]
   updateBodyState() {
     debugger;
     if (this.isPasted == false) {
@@ -963,7 +964,23 @@ export class HomeComponent implements OnInit, OnDestroy {
   //records dot press event
   onKeydown(event) {
     if (event.keyCode == 190 || event.keyCode == 191 || event.keyCode == 49) {
+
+      if (event.keyCode == 190) {
+        this.charPressed = ".";
+      }
+      else if (event.keyCode == 191) {
+        this.charPressed = "?"
+      }
+      else if (event.key == 49) {
+        this.charPressed = "!";
+      }
+      console.log(event.currentTarget.onselectstart);
       this.completeJobBody = document.querySelector(".ngx-editor-textarea").innerHTML;
+      //   var myTextArea = $("#mytextarea");
+
+      // myTextArea.keyup(function () {
+      //         console.log("The last typed character is at: ", myTextArea.get(0).onselectStart - 1);
+      //   });
       console.log(this.completeJobBody);
       this.isPasted = false;
       console.log("body to be sent");
@@ -982,12 +999,12 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
 
-  //Filter and hits analyze service
+  //Filter and hits analyze service (called after event like paste or press)
   processJobService() {
     debugger;
 
     console.log(this.lastTypedText);
-    this.lastTypedText = this.getNoHtmlContent(this.lastTypedText);
+    this.lastTypedText = this.getNoHtmlContent(this.newlyAddedSentence);
     // this.lastTypedText = this.lastTypedText.replace(/  +/g, ' ');
     debugger;
     this.lastTypedTextForServer = this.getNoHtmlContentServer(this.lastTypedText);
@@ -1034,7 +1051,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
 
 
-
+  // called by processJobService after services has finished processing
   afterServiceProcessData(lastTypedText) {
     debugger;
     var index = 0;
@@ -1062,6 +1079,10 @@ export class HomeComponent implements OnInit, OnDestroy {
             //debugger;
             if (finalReplacementSetArr.length > 0) {
               for (var frsa = 0; frsa < finalReplacementSetArr.length; frsa++) {
+                debugger;
+                if (finalReplacementSetArr[frsa].key.includes("?")) {
+                  finalReplacementSetArr[frsa].key = finalReplacementSetArr[frsa].key.replace("?", "\\?");
+                }
                 var reFrsa = new RegExp(finalReplacementSetArr[frsa].key, 'gi');
 
                 textToBeReplaced = textToBeReplaced.replace(reFrsa, finalReplacementSetArr[frsa].value);
@@ -1078,11 +1099,16 @@ export class HomeComponent implements OnInit, OnDestroy {
 
           var buildBody = this.buildJobContentAfterServiceCall(textToBeReplaced, lastTypedText);
           //debugger;
-          this.homeForm.patchValue({ ad_body: buildBody });
+          //    this.homeForm.patchValue({ ad_body: buildBody });
+          document.querySelector(".ngx-editor-textarea").innerHTML = buildBody;
+
           // this.ad_body = buildBody;
 
           let inputFields = document.getElementsByClassName("ngx-editor-textarea")[0];
           this.placeCaretAtEnd(inputFields);
+          if (this.isReloadedData) {
+            $(".ngx-editor-textarea").blur();
+          }
         }
         else {
           // var buildBody = this.buildJobContentAfterServiceCall(textToBeReplaced);
@@ -1090,6 +1116,9 @@ export class HomeComponent implements OnInit, OnDestroy {
           let inputFields = document.getElementsByClassName("ngx-editor-textarea")[0];
           this.placeCaretAtEnd(inputFields);
           console.log("biasis analysis empty");
+          if (this.isReloadedData) {
+            $(".ngx-editor-textarea").blur();
+          }
           //  this.spinner.hide();
 
         }
@@ -1119,8 +1148,9 @@ export class HomeComponent implements OnInit, OnDestroy {
     }
   }
 
+  //called by afterServiceProcessData to process service data 
   processReplacableHtmlStructure(sentenceIndex, phraseIndex) {
-    //debugger;
+    debugger;
     var resultArr = [];
     var data = this.serviceReply.biases.bias_analysis.sentences[sentenceIndex].phrases[phraseIndex];
     var phraseKey = this.serviceReply.biases.bias_analysis.sentences[sentenceIndex].phrases[phraseIndex].key;  //"key": "a motivated individual we are"
@@ -1161,14 +1191,14 @@ export class HomeComponent implements OnInit, OnDestroy {
         var n = d.getMilliseconds();
         var makeID = this.makeid() + '' + n;
 
-        var beginHtml = '<div class="dropdown-ex"  id="' + makeID + '"> ';
-        beginHtml += '<button class="openDrp"  style="color:' + assignColor + '" id="' + replaceableSubphrase[l].replaceable_subphrase_id + '">' + replaceableSubphrase_key + '</button> <div class="dropdown" contenteditable="false">';
+        var beginHtml = '<span class="dropdown-ex"  id="' + makeID + '"> ';
+        beginHtml += '<button class="openDrp"  style="color:' + assignColor + '" id="' + replaceableSubphrase[l].replaceable_subphrase_id + '">' + replaceableSubphrase_key + '</button> <span class="dropdown" contenteditable="false">';
         beginHtml += '<ul class="dropdown-select form-ele">';
 
         var buildAlternatives = getPhraseAlternatives.map(function (data) {
           return "<li class='drop' id='" + data.alternative_subphrase_id + "'>" + data.alternative_subphrase + "</li>";
         });
-        var endHtml = `</ul></div></div>`;
+        var endHtml = `</ul></span></span>`;
 
         var joinbuildAlternatives = buildAlternatives.join("");
 
@@ -1176,7 +1206,7 @@ export class HomeComponent implements OnInit, OnDestroy {
         var finalHtmlStr = finalHtmlArr.join("");
 
         //level 3 replacement 
-        var phraseBiases_key = phraseBiases_key.replace(re, finalHtmlStr);
+        var phraseBiases_key = phraseBiases_key.replace(new RegExp(re, "gi"), finalHtmlStr);
       }
       secondLevelBiases[phraseBiases_key_cp] = phraseBiases_key;
     }
@@ -1190,7 +1220,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       // phraseKey =  phraseKey.replace(secondLevelBiases[j].key,secondLevelBiases[j].value);
       console.log(secondLevelBiases[j]);
       console.log(j);
-      phraseKey = phraseKey.replace(j, secondLevelBiases[j]);
+      phraseKey = phraseKey.replace(new RegExp(j, "gi"), secondLevelBiases[j]);
     }
 
 
@@ -1204,7 +1234,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
 
-
+  // creates a job
   createJob() {
     return new Promise(resolve => {
       this.clearOptionWithoutSelectedTag();
@@ -1256,7 +1286,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
 
-
+  // creates job with promise
   createOnly(createData) {
     return new Promise((resolve, reject) => {
       this.jobService
@@ -1273,11 +1303,13 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   }
 
+  //check whether to save 
   saveState() {
-    return !this.homeForm.valid || this.isFinished || this.isApproved || this.isShared;
+    return !this.homeForm.valid || this.isFinished || this.isApproved;
 
   }
 
+  //saves a job
   saveJob() {
     this.savingStatus = "Saving..... ";
     this.clearOptionWithoutSelectedTag();
@@ -1319,7 +1351,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     }
   }
 
-
+  //share a job 
   shareJob(id) {
     //debugger;
     return new Promise(resolve => {
@@ -1345,6 +1377,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   }
 
+  //update a job
   updateJob(formData, id) {
     //debugger;
     return new Promise((resolve, reject) => {
@@ -1369,15 +1402,20 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
 
-
+  //fire paste event.
 
   pasteEvent(data) {
+    debugger;
     this.isPasted = true;
     // if (this.homeForm.value.ad_body == "") {
     console.log(data.clipboardData.getData('text/html'));
     this.lastPastedText = data.clipboardData.getData('text/plain');
-    this.completeJobBody = document.querySelector(".ngx-editor-textarea").innerHTML + ' ' + this.lastPastedText;
+    if (this.lastPastedText == "") {
+      this.lastPastedText = data.clipboardData.getData('text/plain');
 
+    }
+    this.completeJobBody = document.querySelector(".ngx-editor-textarea").innerHTML + ' ' + this.lastPastedText;
+    this.completeJobBody = this.completeJobBody.replace(/<[\/]{0,1}(style|STYLE)[^><]*>/g, "");
     //debugger;
     this.lastTypedText = this.fetchLastTextTyped();
 
@@ -1386,14 +1424,16 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   }
 
+  //called when data needs to be populated on update and need to be analyzed.
   analyzeAfterServicePopulate(data) {
     this.isPasted = true;
     this.isReloadedData = true;
     this.homeForm.patchValue({ ad_title: data.ad_title });
     // this.completeJobBody = document.querySelector(".ngx-editor-textarea").innerHTML;
-    this.completeJobBody = data.ad_body.replace(/  +/g, ' ');
-
-    this.lastPastedText = data.ad_body.replace(/&nbsp;/g, '').replace(/  +/g, ' ');
+    //this.completeJobBody = data.ad_body.replace(/  +/g, ' ');
+    this.completeJobBody = data.ad_body;
+    // this.lastPastedText = data.ad_body.replace(/&nbsp;/g, '').replace(/  +/g, ' ');
+    this.lastPastedText = data.ad_body;
     debugger;
     this.lastTypedText = this.fetchLastTextTyped();
 
@@ -1409,57 +1449,169 @@ export class HomeComponent implements OnInit, OnDestroy {
   fetchLastTextTyped() {
     debugger;
     var bodyData = this.getNoHtmlContentServer(this.completeJobBody);
+    var bodyDataHtml = this.completeJobBody;
 
     if (this.isPasted == false) {
-      var periodOccurence = this.countPeriod(bodyData, "\\.");
+
+      var periodOccurence = this.countPeriod(bodyData, "\\" + this.charPressed);
       debugger;
       if (periodOccurence == 1) {
+
+        this.newlyAddedSentence = bodyDataHtml;
+
         return bodyData;
+
       }
       else {
-        var data = bodyData.split(".");
-        var filterData = data.filter(filt => filt != "");
-        var dataLength = filterData.length;
-        var getLastIndex = dataLength - 1;
-        console.log(data);
-        return filterData[getLastIndex] + ".";
+        //with html
+        // var dataHtml = bodyDataHtml.split(".");
+        // var filterDataHtml = dataHtml.filter(filt => filt != "");
+        // var dataLengthHtml = filterDataHtml.length;
+        // var getLastIndexHtml = dataLengthHtml - 2;
+        // console.log(data);
+        // this.newlyAddedSentence =  filterDataHtml[getLastIndexHtml]+".";
+        //   console.log("newlyAddedSentence"+this.newlyAddedSentence);
+        //  //without html 
+        // var data = bodyData.split(".");
+        // var filterData = data.filter(filt => filt != "");
+        // var dataLength = filterData.length;
+        // var getLastIndex = dataLength - 1;
+        // console.log(data);
+        // return filterData[getLastIndex]+".";
+
+        // this.newlyAddedSentence = this.getRecentlyTypedText(bodyDataHtml,periodOccurence);
+        this.newlyAddedSentence = this.findLastOccurence(bodyDataHtml);
+        return this.newlyAddedSentence + "" + this.charPressed;
+
       }
     }
     else if (this.isPasted == true) {
       debugger;
+      this.newlyAddedSentence = this.lastPastedText;
       return this.lastPastedText;
     }
   }
 
 
+  /** get data between two char */
+  //not in use
+  findNearesSpecialCharToLast() {
+    var charTyped = this.charPressed;
+
+
+  }
+  //find last typed text
+  findLastOccurence(str) {
+    var lastCharLengthDot = str.lastIndexOf(".");
+    var lastCharLengthExc = str.lastIndexOf("!");
+    var lastCharLengthQues = str.lastIndexOf("?");
+
+    var searchMax = Math.max(lastCharLengthDot, lastCharLengthExc, lastCharLengthQues);
+    for (var j = searchMax - 1; j >= 0; j--) {
+      if (str.charAt(j) == "!" || str.charAt(j) == "?" || str.charAt(j) == ".") {
+        console.log(j);
+        console.log(str.slice(j + 1, searchMax));
+        return str.slice(j + 1, searchMax);
+      }
+
+    }
+
+
+
+  }
+
+  /** end  */
+  /********* get data between two same char  [not in use ]*/
+
+  getRecentlyTypedText(str, charLength) {
+    debugger;
+    var getoccurence = this.nth_occurrence(str, this.charPressed, charLength - 1);
+    return this.getDataBetweenTwoChar(str, getoccurence, this.charPressed);
+  }
+
+
+  getDataBetweenTwoChar(str, getoccurence, char) {
+    var mySubString = str.substring(
+      getoccurence + 1,
+      str.lastIndexOf(char));
+    return mySubString;
+  }
+
+
+
+  nth_occurrence(string, char, nth) {
+
+    var first_index = string.indexOf(char);
+    var length_up_to_first_index = first_index + 1;
+
+    if (nth == 1) {
+      return first_index;
+    } else {
+      var string_after_first_occurrence = string.slice(length_up_to_first_index);
+      var next_occurrence = this.nth_occurrence(string_after_first_occurrence, char, nth - 1);
+
+      if (next_occurrence === -1) {
+        return -1;
+      } else {
+        return length_up_to_first_index + next_occurrence;
+      }
+    }
+  }
+
+
+  /** end data between two char  **/
+
+
   //count numbr of dots
   countPeriod(s1, letter) {
-    return (s1.match(RegExp(letter, 'g')) || []).length;
+    return (s1.match(new RegExp(letter, 'g')) || []).length;
   }
 
   //builds job Content
   buildJobContentAfterServiceCall(textToBeReplaced, lastTypedText) {
     debugger;
     lastTypedText = lastTypedText.trim();
-    var getBodyText = this.completeJobBody.replace(/&nbsp;/g, '').replace(/  +/g, ' ');;
+    var getBodyText = this.completeJobBody;
     if (getBodyText == "") {
       return textToBeReplaced;
     }
     else {
-      var finalHtml = getBodyText.replace(new RegExp(lastTypedText, "gi"), textToBeReplaced);
+      if (getBodyText.includes(lastTypedText)) {
+        console.log("matched");
+      }
+      // if(lastTypedText.includes("?")){
+      //   lastTypedText =  lastTypedText.replace(new RegExp("?","g"),"\\?");
+      // }
+
+      if (getBodyText == lastTypedText) {
+        finalHtml = textToBeReplaced;
+      }
+      else {
+
+        if (lastTypedText.includes("?")) {
+          lastTypedText = lastTypedText.replace(new RegExp('\\?', 'gi'), '\\?');
+        }
+
+        var finalHtml = getBodyText.replace(new RegExp(lastTypedText, "gi"), textToBeReplaced);
+      }
+      if (finalHtml.includes("?")) {
+        finalHtml = finalHtml.replace(new RegExp("\\?\\?", 'g'), '?');
+      }
       return finalHtml;
     }
   }
 
+  //toggles suggestion dropdown
   toggleDropdown() {
     this.showDropdown = !this.showDropdown;
   }
 
-
+  //part of alert not using
   onClosed(dismissedAlert: AlertComponent): void {
     this.alerts = this.alerts.filter(alert => alert !== dismissedAlert);
   }
 
+  //closes all unwanted modal
   closeAllModal() {
     if (this.modalRef) {
       this.modalRef.hide();
@@ -1475,6 +1627,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     }
   }
 
+  //fetches approval's email
   getApprovalEmail() {
     this.jobService
       .getApprovalEmails()
@@ -1491,6 +1644,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       );
   }
 
+  //destroy activities
   ngOnDestroy() {
     //   console.log("desroyed called");
     // delete  this.updateData;
@@ -1502,9 +1656,10 @@ export class HomeComponent implements OnInit, OnDestroy {
       this.navigationSubscription.unsubscribe();
     }
     this.actionState = "add";
-
+    this.isReloadedData = false;
   }
 
+  //use to redirect with dynamic params
   redirect(id, status) {
     //debugger;
     this.actionState = "update";
@@ -1513,7 +1668,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 }
 
-
+//dummy test
 function fire() {
   alert("ddf")
   $(".dropdown").hide();
