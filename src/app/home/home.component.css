@@ -6,24 +6,6 @@
   cursor: pointer;
 }
 
-#content {
-  width: auto;
-  background: #1a233e;
-  position: relative;
-  margin-left: 80px;
-  padding:91px 20px 20px;
-}
-
-#content:after {
-  content: "";
-  width: 100%;
-  background: #1a233e;
-  position: fixed;
-  height: 100%;
-  left: 0;
-  top: 0;
-  z-index: -2;
-}
 
 
 .job-form {
@@ -260,6 +242,7 @@ padding-left:0;
   width: 100%;
   text-align: center;
   right: 5%;
+
 }
 .graph {
   position: relative;

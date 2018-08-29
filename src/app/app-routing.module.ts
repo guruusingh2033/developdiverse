@@ -18,6 +18,10 @@ const routes: Routes = [
     path:'signup',
     loadChildren:'./signup/signup.module#SignupModule'
   },
+  {
+    path:'faq',
+    loadChildren:'./faq/faq.module#FaqModule'
+  },
   {path: '**', redirectTo: '/'}
 ];
 

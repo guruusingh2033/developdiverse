@@ -4,6 +4,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppComponent } from './app.component';
 import { AuthModule } from './auth/auth.module';
 import { HomeModule } from './home/home.module';
+import {FaqModule} from './faq/faq.module';
 import {
   FooterComponent,
   HeaderComponent,
@@ -16,6 +17,7 @@ import { AlertModule } from 'ngx-bootstrap';
 import { ModalModule } from 'ngx-bootstrap';
 import { CookieService } from 'ngx-cookie-service';
 import {NgxPaginationModule} from 'ngx-pagination'; // <-- import the module
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 // import { SignupComponent } from './signup/signup.component';
 
@@ -27,10 +29,13 @@ import {NgxPaginationModule} from 'ngx-pagination'; // <-- import the module
     SharedModule,
     HomeModule,
     AuthModule,
+    FaqModule,
     AppRoutingModule,
     ModalModule.forRoot(),
     AlertModule.forRoot(),
     NgxPaginationModule,
+    BrowserAnimationsModule
+  
     
   ],
   providers: [CookieService],

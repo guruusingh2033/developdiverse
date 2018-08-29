@@ -125,7 +125,10 @@ export class JobService {
       var jobid = job.jobad_id ;
     // Process the file downloaded
     this.http.post(url,job, options).subscribe(res => {
-        const fileName = "jobad_"+jobid+".docx";
+        //const fileName = "jobad_"+jobid+".docx";
+        var date = new Date();
+         var currentDate = date.getFullYear().toString() + date.getMonth().toString() + date.getDate().toString() + "_" + date.getHours().toString() + date.getMinutes().toString() + date.getSeconds().toString();
+         const fileName = "Job" + jobid + "_" + currentDate + ".docx";
         saveFile(res.blob(), fileName);
     });
 }
