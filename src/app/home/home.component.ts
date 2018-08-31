@@ -94,6 +94,8 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   editorClass:any="";
   ddScoreText:string ="";
+  prevPositionOfCaret:number;
+
 
   constructor(
     private router: Router,
@@ -166,7 +168,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     if (this.isReadonly == true || this.f.ad_title.errors) {
       this.editorClass = "readonly editors";
       $(".ngx-editor-textarea").blur();
-      
+
     }
     else {
       this.editorClass = "editors";
@@ -210,7 +212,7 @@ export class HomeComponent implements OnInit, OnDestroy {
         alert("ddfd")
       });
       $(".openDrp").mouseover(function () {
-       
+
         $('.dropdown').hide();
         var attrID = $(this).attr('id');
         $($(this).closest('span').children('.dropdown')).toggle()
@@ -231,7 +233,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
       });
 
-
+      
 
     });
 
@@ -254,15 +256,27 @@ export class HomeComponent implements OnInit, OnDestroy {
       }
     );
 
-   
+
     var input = document.getElementById('myInput');
     this.getApprovalEmail();
-
-    setInterval(function(this){
+    console.log("before interval");
+    // setInterval(function(){
+    //   console.log("I am fired every 2 sec");
+    // },2000);
+    var waitInterval = this.waitInterval;
+    console.log (this.serviceCallStatus);
+      console.log(this.hasModalChange);
+    setInterval(function(){
+      var serviceCallStatus = this.serviceCallStatus;
+      var hasModalChange = this.hasModalChange;
       if( this.serviceCallStatus == false && this.hasModalChange){
+       debugger;
         this.intervalJobProcess();
-    }}.bind(this),this.waitInterval);
+    }
   
+  }.bind(this),waitInterval);
+    console.log("after interval");
+
   }
 
   intervalJobProcess(){
@@ -271,11 +285,11 @@ export class HomeComponent implements OnInit, OnDestroy {
       this.spinner.show();
     }
     this.hasModalChange = false;
-    this.completeJobBody = document.querySelector(".ngx-editor-textarea").innerHTML;    
-     this.completeJobBody =  this.completeJobBody.replace(/(<p[^>]+?>|<p>)/img, "").replace(new RegExp('</p>',"gi"),"</br>").replace(new RegExp("&nbsp;",'g'),'');
-                                                                                                                                
+    this.completeJobBody = document.querySelector(".ngx-editor-textarea").innerHTML;
+    this.completeJobBody =  this.completeJobBody.replace(/(<p[^>]+?>|<p>)/img, "").replace(new RegExp('</p>',"gi"),"</br>").replace(new RegExp("&nbsp;",'g'),'');
+
      document.querySelector(".ngx-editor-textarea").innerHTML =  this.completeJobBody;
-  
+
      if(this.completeJobBody != "" ){
      this.isPasted = false;
      console.log("body to be sent");
@@ -292,8 +306,9 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   }
 
-  
+
   modelChanged(e){
+    debugger;
     this.hasModalChange = true;
   }
 
@@ -304,8 +319,10 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   //function loads jquery whenever some analyze change happens
   loadingJquery() {
+    var self = this;
     console.log("loaded jquery....");
     $(document).ready(function () {
+
       $(".dropdown").hide();
       $(".openDrp").mouseover(function () {
         debugger;
@@ -317,10 +334,10 @@ export class HomeComponent implements OnInit, OnDestroy {
 
       });
 
-      $(".drop").click(function () {     
+      $(".drop").click(function () {
         var currentSelected = $(this).text();
         console.log(currentSelected);
-        var selectedId = $(this).parent();          
+        var selectedId = $(this).parent();
         var removeMainDiv = $(this).closest("span").parent("span").attr("id");
         var da = $(this).parent();
           $($(this).closest("span").parent("span")[0]).replaceWith(currentSelected);
@@ -329,13 +346,34 @@ export class HomeComponent implements OnInit, OnDestroy {
         $(this).closest('span').toggle();
 
       });
-      $(".ngx-editor-textarea").click(function () {
-        $('.dropdown').hide();
+      var prevPositionOfCaret:number ;
 
+      $(".ngx-editor-textarea").click( () => {
+        $('.dropdown').hide();
+        // prevPositionOfCaret = 0;
+        prevPositionOfCaret =   getCaretPosition() ;
+        console.log("last caret position"+prevPositionOfCaret);
+        self.fillLastCaretPosition(prevPositionOfCaret);
+        console.log("last caret positio wn"+prevPositionOfCaret);
+
+      });
+
+      $(".ngx-editor-textarea").focus( () => {
+        // prevPositionOfCaret =   getCaretPosition() ;
+        // console.log("last caret position"+prevPositionOfCaret);
+        // self.fillLastCaretPosition(prevPositionOfCaret);
+        // console.log("last caret positio wn"+prevPositionOfCaret);
       });
 
     });
 
+
+
+  }
+
+  fillLastCaretPosition(pos){
+    debugger;
+    this.prevPositionOfCaret =  pos;
   }
 
   fire() {
@@ -436,7 +474,7 @@ export class HomeComponent implements OnInit, OnDestroy {
         this.isShared = true;
         this.isApproved = true;
         this.isFinished = true;
-        this.isReadonly = true;
+       // this.isReadonly = true;
       }
     }
   }
@@ -454,7 +492,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     element.click();
     //   }
     this.titleChange();
-  
+
   }
 
 
@@ -469,7 +507,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   }
 
-  //open dialog status notifiction modal & save /update data ,this is called on "Done" click 
+  //open dialog status notifiction modal & save /update data ,this is called on "Done" click
   openModal2(template: TemplateRef<any>) {
     this.spinner.show();
 
@@ -633,6 +671,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     else if (button == "finish") {
       if (this.isApproved && this.isOwner && !this.isFinished) {
         //this.isReadonly = true;
+
       }
       return !this.isShared && this.isDraft && this.isOwner && !this.isFinished;
     }
@@ -738,7 +777,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
             }
 
-           
+
           },
           err => {
             //  debugger;
@@ -781,7 +820,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
                 }
 
-              
+
               },
               err => {
                 //  debugger;
@@ -836,7 +875,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   getNoHtmlContentBody() {
     debugger;
     var data = document.querySelector(".ngx-editor-textarea").innerHTML;
- 
+
     var getClass = document.getElementsByClassName("dropdown-ex");
     var length = getClass.length;
     var replArr = [];
@@ -851,8 +890,8 @@ export class HomeComponent implements OnInit, OnDestroy {
       $("#" + key.id).replaceWith(key.value);
     });
     console.log(document.querySelector(".ngx-editor-textarea").innerHTML);
-  
-    
+
+
 //  Put the filtered html(without drop downs) in a result variable
     var result =  document.querySelector(".ngx-editor-textarea").innerHTML.replace(/\s+/g, ' ');
     //  Put back the original body in editor
@@ -860,6 +899,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     //  Position the curson at the end.
     let inputFields = document.getElementsByClassName("ngx-editor-textarea")[0];
     this.placeCaretAtEnd(inputFields);
+    // setCaretPosition(inputFields,this.prevPositionOfCaret);
     // return result
     return result;
   }
@@ -868,19 +908,23 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   //removes suggestion options from dropdown
   clearOptionWithoutSelectedTag() {
-    debugger;
     var selectBoxes = document.querySelectorAll(".form-ele");
+    debugger;
+    
     console.log(selectBoxes);
     for (var i = 0; i < selectBoxes.length; i++) {
-      selectBoxes[i].remove();
+    selectBoxes[i].remove();  
+        //var getUlAtrr = selectBoxes[i].removeChild(selectBoxes[i].childNodes[0]);
+      
     }
     var selectBoxes = document.querySelectorAll(".form-ele");
     console.log(selectBoxes);
+    debugger;
 
   }
 
   //sets welcome dialog to be displayed or not
-  setDialogState(e) {   
+  setDialogState(e) {
     if (e == true) {
       localStorage.setItem("dialogOff", "true");
     }
@@ -892,14 +936,17 @@ export class HomeComponent implements OnInit, OnDestroy {
 
 
 
-
   //records  press event [left for future use]
   onKeydown(event) {
-    
+    debugger;
+    this.hasModalChange = true;
   }
 
 
-  //Filter and hits analyze service 
+
+
+
+  //Filter and hits analyze service
   processJobService() {
     this.serviceCallStatus = true;
 
@@ -907,12 +954,12 @@ export class HomeComponent implements OnInit, OnDestroy {
 
     console.log(this.lastTypedText);
     this.lastTypedText = this.getNoHtmlContentBody();
-   
+
     var jobForm = {
       jobad_title: this.homeForm.value.ad_title,
       jobad_body: this.lastTypedText
     };
- 
+
     this.jobService
       .analyzeJob(jobForm)
       .subscribe(
@@ -959,13 +1006,13 @@ export class HomeComponent implements OnInit, OnDestroy {
   afterServiceProcessData(lastTypedText) {
     debugger;
     var index = 0;
-  
+
     var finalReplacementSetArr = [];
-   
+
     var textToBeReplaced = lastTypedText;
     console.log(lastTypedText);
     if (lastTypedText != "") {
-    
+
       var testing = lastTypedText;
 
       if (this.serviceReply != undefined) {
@@ -979,7 +1026,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
             }
             // console.log(finalReplacementSetArr);
-           
+
             // if (finalReplacementSetArr.length > 0) {
             //   for (var frsa = 0; frsa < finalReplacementSetArr.length; frsa++) {
             //     debugger;
@@ -1012,7 +1059,7 @@ export class HomeComponent implements OnInit, OnDestroy {
           $(".ngx-editor-textarea").blur();
 
           var buildBody = this.buildJobContentAfterServiceCall(textToBeReplaced, lastTypedText);
-         
+
           $(".ngx-editor-textarea").animate({ scrollTop: $(document).height() },0);
 
           document.querySelector(".ngx-editor-textarea").innerHTML = buildBody;
@@ -1022,7 +1069,11 @@ export class HomeComponent implements OnInit, OnDestroy {
 
 
           let inputFields = document.getElementsByClassName("ngx-editor-textarea")[0];
-          this.placeCaretAtEnd(inputFields);
+          //this.placeCaretAtEnd(inputFields);
+          console.log("after service"+this.prevPositionOfCaret);
+          //let inField =  document.querySelector(".ngx-editor-textarea");
+          //setCaretPosition(inputFields,this.prevPositionOfCaret);
+          debugger;
           if (this.isReloadedData) {
             this.spinner.hide();
             $(".ngx-editor-textarea").blur();
@@ -1041,18 +1092,20 @@ export class HomeComponent implements OnInit, OnDestroy {
            this.editorClass = "editors";
           let inputFields = document.getElementsByClassName("ngx-editor-textarea")[0];
           this.placeCaretAtEnd(inputFields);
+          //setCaretPosition(inputFieldsaa,this.prevPositionOfCaret);
+
           console.log("biasis analysis empty");
           if (this.isReloadedData) {
             $(".ngx-editor-textarea").blur();
           }
-        
+
           this.serviceCallStatus = false;
 
         }
         //loads jquery needed for dom operations
         this.loadingJquery();
       }
-     
+
 
     }
 
@@ -1071,6 +1124,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   //focus cursor at end of html content
   placeCaretAtEnd(el) {
+    debugger;
     el.focus();
     if (typeof window.getSelection != "undefined"
       && typeof document.createRange != "undefined") {
@@ -1083,7 +1137,10 @@ export class HomeComponent implements OnInit, OnDestroy {
     }
   }
 
-  //called by afterServiceProcessData to process service data 
+
+  
+
+  //called by afterServiceProcessData to process service data
   processReplacableHtmlStructure(sentenceIndex, phraseIndex) {
     debugger;
     var resultArr = [];
@@ -1094,12 +1151,12 @@ export class HomeComponent implements OnInit, OnDestroy {
 
     var secondLevelBiases = [];
     for (var k = 0; k < phraseBiases.length; k++) {
-      var phraseBiases_key = phraseBiases[k].key;  // sentence->phrases->biases->key [part of sentence]  
+      var phraseBiases_key = phraseBiases[k].key;  // sentence->phrases->biases->key [part of sentence]
       /**
        *                                         "key": "motivated individual",
        *                                         "key": "we are",
-      
-      
+
+
        */
       var phraseBiases_key_cp = phraseBiases[k].key;
       var replaceableSubphrase = phraseBiases[k].replaceable_subphrases; // sentence->phrases->biases->replaceable_subphrases
@@ -1140,7 +1197,7 @@ export class HomeComponent implements OnInit, OnDestroy {
         var finalHtmlArr = [beginHtml, joinbuildAlternatives, endHtml];
         var finalHtmlStr = finalHtmlArr.join("");
 
-        //level 3 replacement 
+        //level 3 replacement
         var phraseBiases_key = phraseBiases_key.replace(new RegExp(re, "gi"), finalHtmlStr);
       }
       secondLevelBiases[phraseBiases_key_cp] = phraseBiases_key;
@@ -1201,7 +1258,7 @@ export class HomeComponent implements OnInit, OnDestroy {
           },
           err => {
             this.spinner.hide();
-           
+
             this.isSubmitting = false;
             resolve({ status: false, data: err });
           }
@@ -1284,7 +1341,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       this.jobService
         .shareJob(shareJob)
         .subscribe(
-          sharedUser => {            
+          sharedUser => {
             resolve({ status: true, data: sharedUser, jobId: id });
 
           },
@@ -1305,7 +1362,7 @@ export class HomeComponent implements OnInit, OnDestroy {
         .update(formData, id)
         .subscribe(
           updateJob => {
-         
+
             resolve({ status: true, data: updateJob });
 
           },
@@ -1328,7 +1385,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   fetchLastTextTyped() {
       this.newlyAddedSentence = this.lastPastedText;
       return this.lastPastedText;
-    
+
   }
 
 
@@ -1464,8 +1521,8 @@ export class HomeComponent implements OnInit, OnDestroy {
     //   console.log("desroyed called");
     // delete  this.updateData;
     this.closeAllModal();
-    // avoid memory leaks here by cleaning up after ourselves. If we  
-    // don't then we will continue to run our initialiseInvites()   
+    // avoid memory leaks here by cleaning up after ourselves. If we
+    // don't then we will continue to run our initialiseInvites()
     // method on every navigationEnd event.
     if (this.navigationSubscription) {
       this.navigationSubscription.unsubscribe();
@@ -1481,4 +1538,62 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   }
 }
+    // Create Element.remove() function if not exist
+    if (!('remove' in <any>Element.prototype)) {
+      Element.prototype.remove = function() {
+          if (this.parentNode) {
+              this.parentNode.removeChild(this);
+          }
+      };
+    }
 
+    function setCaretPosition(ctrla, pos) {
+      // // Modern browsers
+      // debugger;
+      // if (ctrl.setSelectionRange) {
+      //   ctrl.focus();
+      //   ctrl.setSelectionRange(pos, pos);
+      
+      // // IE8 and below
+      // } else if (ctrl.createTextRange) {
+      //   var range = ctrl.createTextRange();
+      //   range.collapse(true);
+      //   range.moveEnd('character', pos);
+      //   range.moveStart('character', pos);
+      //   range.select();
+      // }
+
+      ctrla.focus();
+var textNode = ctrla.firstChild;
+debugger;
+var caret = pos; // insert caret after the 10th character say
+var range = document.createRange();
+range.setStart(textNode, caret);
+range.setEnd(textNode, caret);
+var sel = window.getSelection();
+sel.removeAllRanges();
+sel.addRange(range);
+    }
+    
+
+    function getCaretPosition() {
+      //debugger;
+      if (window.getSelection && window.getSelection().getRangeAt) {
+        var range = window.getSelection().getRangeAt(0);
+        var selectedObj = window.getSelection();
+        var rangeCount = 0;
+        var childNodes:any = selectedObj.anchorNode.parentNode.childNodes;
+        for (var i = 0; i < childNodes.length; i++) {
+          if (childNodes[i] == selectedObj.anchorNode) {
+            break;
+          }
+          if (childNodes[i].outerHTML)
+            rangeCount += childNodes[i].outerHTML.length;
+          else if (childNodes[i].nodeType == 3) {
+            rangeCount += childNodes[i].textContent.length;
+          }
+        }
+        return range.startOffset + rangeCount;
+      }
+      return -1;
+    }
