@@ -255,10 +255,9 @@
 }
 
 .ngx-editor-textarea {
-  min-height: 347px !important;
   overflow-y: scroll !important;
-  height: 341px !important;
   position: initial !important;
+  height: calc(100vh - 350px) !important;
 }
 
 .ngx-editor-grippie {
@@ -625,4 +624,17 @@ app-ngx-editor.readonly:read-only {
   left: 0;
   top: 0;
   z-index: -2;
+}
+.all-pages-height {
+  overflow-x: hidden;
+  overflow-y: scroll;
+}
+.bottom-padding-margin {
+padding-bottom: 0 !important;
+}
+.home-editor-height {
+  height: calc(100vh - 220px);
+}
+.all-pages-height {
+  height: calc(100vh - 197px);
 }

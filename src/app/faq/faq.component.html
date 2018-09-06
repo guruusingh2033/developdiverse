@@ -1,33 +1,32 @@
 <div class="home-page">
 
-        <div id="content">
-         
-          <div class="right-side">
-            <!-- Job Listing Page start here -->
-      
-            <div class="job-listing-heading">
-              <h2>FAQ</h2>
-            </div>
-      
-            <div class="content-all">
-                    <mat-accordion>
-                            <mat-expansion-panel *ngFor="let faq of faqs;">
-                              <mat-expansion-panel-header>
-                                <mat-panel-title>
-                                    {{faq.ques}}
-                                </mat-panel-title>
-                              </mat-expansion-panel-header>
-                          
-                            {{faq.ans}}
+  <div id="content">
+   
+    <div class="right-side">
+      <!-- Job Listing Page start here -->
 
-                            </mat-expansion-panel>
-                          
-                          </mat-accordion>
-                          
-            </div>
-           
-          </div>
-        </div>
-      
-       
-      
+      <div class="job-listing-heading">
+        <h2>FAQ</h2>
+      </div>
+
+      <div class="content-all all-pages-height">
+              <mat-accordion>
+                      <mat-expansion-panel *ngFor="let faq of faqs;">
+                        <mat-expansion-panel-header>
+                          <mat-panel-title>
+                              {{faq.ques}}
+                          </mat-panel-title>
+                        </mat-expansion-panel-header>
+                    
+                      {{faq.ans}}
+
+                      </mat-expansion-panel>
+                    
+                    </mat-accordion>
+                    
+      </div>
+     
+    </div>
+  </div>
+
+ 

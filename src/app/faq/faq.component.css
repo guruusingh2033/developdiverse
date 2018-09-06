@@ -1,454 +1,454 @@
 .nav-link {
-    cursor: pointer;
-  }
-  
-  .tag-pill {
-    cursor: pointer;
-  }
-  
-  #content {
-    width: auto;
-    background: #1a233e;
-    position: relative;
-    margin-left: 80px;
-    padding: 91px 20px 20px;
-  }
-  
-  #content:after {
-    content: "";
-    width: 100%;
-    background: #1a233e;
-    position: fixed;
-    height: 100%;
-    left: 0;
-    top: 0;
-    z-index: -2;
-  }
-  
-  .sidebar {
-    width: 80px;
-    position: fixed;
-    left: 0;
-    height: calc(100% - 80px);
-    border-radius: 0;
-    padding-top: 80px;
-    background: none;
-    padding-left: 20px;
-    padding-right: 20px;
-    text-align: center;
-    z-index: 99;
-  }
-  
-  .sidebar .top-dashboard-link {
-    width: 100%;
-    position: absolute;
-    top: 25%;
-    left: 0;
-  }
-  
-  .sidebar .top-dashboard-link ul {
-    display: block;
-    padding: 0;
-    margin: 0;
-    list-style: none;
-  }
-  
-  .sidebar .top-dashboard-link ul li {
-    display: list-item;
-    position: relative;
-  }
-  
-  .sidebar .top-dashboard-link ul li a {
-    display: list-item;
-    cursor: pointer;
-    margin-bottom: 35px;
-    transition: all 0.5s;
-  }
-  
-  .sidebar .top-dashboard-link ul li a img {
-    opacity: 0.5;
-    transition: all 0.5s;
-  }
-  
-  .sidebar .top-dashboard-link ul li a:hover img {
-    opacity: 1;
-  }
-  
-  .sidebar .bottom-dashboard-link {
-    width: 100%;
-    position: absolute;
-    left: 0;
-    bottom: 0;
-  }
-  
-  .sidebar .bottom-dashboard-link ul {
-    display: block;
-    padding: 0;
-    margin: 0;
-    list-style: none;
-  }
-  
-  .sidebar .bottom-dashboard-link ul li {
-    display: list-item;
-    position: relative;
-  }
-  
-  .sidebar .bottom-dashboard-link ul li a {
-    display: list-item;
-    cursor: pointer;
-    margin-bottom: 35px;
-    transition: all 0.5s;
-  }
-  
-  .sidebar .bottom-dashboard-link ul li a img {
-    opacity: 0.5;
-    transition: all 0.5s;
-  }
-  
-  .sidebar .bottom-dashboard-link ul li a:hover img {
-    opacity: 1;
-  }
-  
-  .sidebar ul li .drop-dwnmenu {
-    position: absolute;
-    background: #151e39;
-    left: 60px;
-    display: none;
-    top: 0;
-    width: 232px;
-    box-shadow: -5px 0px 3px -1px rgba(0, 0, 0, 0.5);
-    height: 40px;
-    z-index: 9;
-  }
-  
-  .sidebar ul li:hover .drop-dwnmenu {
-    display: block;
-  }
-  
-  .sidebar ul li .drop-dwnmenu li {
-    font-size: 22px;
-    text-align: left;
-  }
-  
-  .sidebar ul li .drop-dwnmenu li a {
-    font-size: 22px;
-    text-align: left;
-    color: #fff;
-    display: list-item;
-    padding: 2px 30px;
-  }
-  
-  .sidebar ul li .drop-dwnmenu li a span {
-    padding-left: 25px;
-  }
-  
-  .job-form {
-    width: 100%;
-  }
-  
-  .job-form input[type="text"] {
-    height: 34px;
-    font-size: 17px;
-    border-radius: 5px;
-  }
-  
-  .job-form input[type="text"].department {
-    height: 45px;
-    font-size: 24px;
-    border-radius: 5px;
-  }
-  
-  .job-form .form-group {
-    margin-bottom: 7px;
-  }
-  
-  .right-padding-none {
-    padding-right: 0;
-  }
-  
-  .small-padding {
-    padding-left: 10px;
-  }
-  
-  .job-form .btn-primary {
-    width: 100%;
-    /* max-width: 140px; */
-    background: url("../../assets/images/share-icon.png") no-repeat 0 0 #d5d5d5;
-    height: 39px;
-    border: none;
-    text-align: center;
-    font-size: 18px;
-    font-weight: bold;
-    transition: all 0.5s;
-    background-position: 88% 9px;
-  }
-  
-  .job-form .btn-primary:hover {
-    background: url("../../assets/images/share-icon.png") no-repeat 0 0 #d33f24;
-    background-position: 88% -23px;
-    color: #fff;
-  }
-  
-  .job-form .btn-success {
-    width: 100%;
-    /* max-width: 140px; */
-    background: url("../../assets/images/tick-icon.png") no-repeat 0 0 #d5d5d5;
-    height: 39px;
-    border: none;
-    text-align: center;
-    font-size: 18px;
-    font-weight: bold;
-    transition: all 0.5s;
-    background-position: 88% 9px;
-  }
-  
-  .job-form .btn-success:hover {
-    background: url("../../assets/images/tick-icon.png") no-repeat 0 0 #d33f24;
-    background-position: 88% -23px;
-    color: #fff;
-  }
-  
-  .job-form .btn-primary img {
-    margin-left: 5px;
-    margin-top: -6px;
-  }
-  
-  .content-all {
-    width: 100%;
-    background: #fff;
-    border-radius: 7px;
-    padding: 50px 25px;
-    margin-top: 15px;
-    position: relative;
-  }
-  
-  .content-all .step-by-step {
-    max-width: 603px;
-    width: 100%;
-    margin: auto;
-    border: 2px solid #838383;
-    padding: 20px;
-    border-radius: 5px;
-    position: relative;
-    display: none;
-  }
-  
-  .content-all .step-by-step h6 {
-    color: #22201b;
-    text-transform: uppercase;
-    font-weight: bold;
-    font-size: 19px;
-  }
-  
-  .content-all .step-by-step ul {
-    padding: 0;
-    margin: 0;
-    display: block;
-    list-style: none;
-  }
-  
-  .content-all .step-by-step ul li {
-    list-style: decimal inside;
-    font-size: 17px;
-    margin-bottom: 9px;
-  }
-  
-  .content-all .step-by-step .close {
-    position: absolute;
-    top: -15px;
-    right: -16px;
-    opacity: 1;
-  }
-  
-  .content-all .step-by-step img {
-    margin-left: 7px;
-  }
-  
-  .content-all .step-by-step .checkbox {
-    margin-top: 25px;
-  }
-  
-  .content-all .step-by-step input[type="checkbox"] {
-    margin-right: 7px;
-    vertical-align: top;
-    margin-top: 6px;
-  }
-  
-  .right-sidebar {
-    width: 100%;
-  }
-  
-  .right-sidebar .score-widget {
-    width: 100%;
-  }
-  
-  .right-sidebar .score-widget h3 {
-    text-align: center;
-    font-size: 30px;
-    font-style: italic;
-    margin-bottom: 20px;
-  }
-  
-  .gender-wordings {
-    width: 100%;
-    margin-top: 30px;
-    text-align: center;
-  }
-  
-  .gender-wordings h5 {
-    text-align: center;
-    font-size: 26px;
-    margin-bottom: 20px;
-    font-weight: 600;
-    color: #0b0b0b;
-    display: inline-block;
-    text-decoration: underline;
-  }
-  
-  .gender-wordings span {
-    font-size: 28px;
-    color: #0b0b0b;
-  }
-  
-  .gender-wordings img {
-    display: inline-block;
-    max-width: 52px;
-    width: 100%;
-    margin: 0 20px;
-  }
-  
-  .scored-five {
-    width: 100%;
-    margin-top: 10px;
-    text-align: center;
-    position: relative;
-  }
-  
-  .scored-five .btn-success {
-    background: #dc482d;
-    border-radius: 5px;
-    border: 2px solid #dc482d;
-    color: #fff;
-    text-shadow: 0 2px 2px rgba(0, 0, 0, 0.75);
-    /* font-weight: bold; */
-    font-size: 21px;
-    padding: 8px 33px;
-    float: left;
-    transition: all 0.5s;
-    position: absolute;
-    left: 0;
-  }
-  
-  .scored-five .btn-success:hover {
-    background: none;
-    border: 2px solid #dc482d;
-  }
-  
-  .scored-five h5 {
-    color: #fff;
-    text-align: center;
-    margin-top: 17px;
-    display: inline-block;
-    font-size: 20px;
-  }
-  
-  .type-upload {
-    display: table;
-    height: 100%;
-    width: 100%;
-  }
-  
-  .type-upload .upload-text {
-    display: table-cell;
-    vertical-align: middle;
-    text-align: center;
-  }
-  
-  .upload-height {
-    height: 350px;
-  }
-  
-  .type-upload .upload-text h2 {
-    color: #9b9b9b;
-  }
-  
-  .upload-text .upload-file {
-    position: relative;
-  }
-  
-  .upload-text .upload-file input[type="file"] {
-    width: 100px;
-    opacity: 0;
-    position: relative;
-    z-index: 9;
-  }
-  
-  .upload-text .upload-file strong {
-    position: absolute;
-    left: 0;
-    font-weight: normal;
-    top: 4px;
-    text-decoration: underline;
-  }
-  
-  .job-listing-heading {
-    width: 100%;
-    margin-bottom: 30px;
-  }
-  
-  .job-listing-heading h2 {
-    background: #fff;
-    border-radius: 7px;
-    text-align: center;
-    text-transform: uppercase;
-    padding: 10px 0;
-  }
-  
-  .job-title-table {
-    max-width: 850px;
-    width: 100%;
-    margin: 80px auto;
-    display: block;
-  }
-  
-  .job-title-table table th {
-    background: #f46044;
-    border: none;
-    color: #fff;
-    font-weight: normal;
-    font-size: 20px;
-    padding-bottom: 10px;
-    padding-top: 10px;
-    border-right: 2px solid #fff;
-    border-radius: 5px 5px 0 0;
-    text-align: center;
-  }
-  
-  .job-title-table table td {
-    background: #f8f8f9;
-    border-bottom: none;
-    border-top: none;
-    border-right: 2px solid #fff;
-    font-size: 18px;
-    padding: 10px 26px;
-  }
-  
-  .job-title-table table td a {
-    text-decoration: underline;
-    color: #4161a0;
-    cursor: pointer;
-  }
-  
-  .job-title-table table td a:hover {
-    text-decoration: none;
-  }
-  
-  .pagination{
-    width: 100%;
-    text-align:center;
-  }
-  .pagination ul {
-    display: inline-block;
-    margin: 0;
-    padding: 0;
-  }
+  cursor: pointer;
+}
+
+.tag-pill {
+  cursor: pointer;
+}
+
+#content {
+  width: auto;
+  background: #1a233e;
+  position: relative;
+  margin-left: 80px;
+  padding: 91px 20px 20px;
+}
+
+#content:after {
+  content: "";
+  width: 100%;
+  background: #1a233e;
+  position: fixed;
+  height: 100%;
+  left: 0;
+  top: 0;
+  z-index: -2;
+}
+
+.sidebar {
+  width: 80px;
+  position: fixed;
+  left: 0;
+  height: calc(100% - 80px);
+  border-radius: 0;
+  padding-top: 80px;
+  background: none;
+  padding-left: 20px;
+  padding-right: 20px;
+  text-align: center;
+  z-index: 99;
+}
+
+.sidebar .top-dashboard-link {
+  width: 100%;
+  position: absolute;
+  top: 25%;
+  left: 0;
+}
+
+.sidebar .top-dashboard-link ul {
+  display: block;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.sidebar .top-dashboard-link ul li {
+  display: list-item;
+  position: relative;
+}
+
+.sidebar .top-dashboard-link ul li a {
+  display: list-item;
+  cursor: pointer;
+  margin-bottom: 35px;
+  transition: all 0.5s;
+}
+
+.sidebar .top-dashboard-link ul li a img {
+  opacity: 0.5;
+  transition: all 0.5s;
+}
+
+.sidebar .top-dashboard-link ul li a:hover img {
+  opacity: 1;
+}
+
+.sidebar .bottom-dashboard-link {
+  width: 100%;
+  position: absolute;
+  left: 0;
+  bottom: 0;
+}
+
+.sidebar .bottom-dashboard-link ul {
+  display: block;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.sidebar .bottom-dashboard-link ul li {
+  display: list-item;
+  position: relative;
+}
+
+.sidebar .bottom-dashboard-link ul li a {
+  display: list-item;
+  cursor: pointer;
+  margin-bottom: 35px;
+  transition: all 0.5s;
+}
+
+.sidebar .bottom-dashboard-link ul li a img {
+  opacity: 0.5;
+  transition: all 0.5s;
+}
+
+.sidebar .bottom-dashboard-link ul li a:hover img {
+  opacity: 1;
+}
+
+.sidebar ul li .drop-dwnmenu {
+  position: absolute;
+  background: #151e39;
+  left: 60px;
+  display: none;
+  top: 0;
+  width: 232px;
+  box-shadow: -5px 0px 3px -1px rgba(0, 0, 0, 0.5);
+  height: 40px;
+  z-index: 9;
+}
+
+.sidebar ul li:hover .drop-dwnmenu {
+  display: block;
+}
+
+.sidebar ul li .drop-dwnmenu li {
+  font-size: 22px;
+  text-align: left;
+}
+
+.sidebar ul li .drop-dwnmenu li a {
+  font-size: 22px;
+  text-align: left;
+  color: #fff;
+  display: list-item;
+  padding: 2px 30px;
+}
+
+.sidebar ul li .drop-dwnmenu li a span {
+  padding-left: 25px;
+}
+
+.job-form {
+  width: 100%;
+}
+
+.job-form input[type="text"] {
+  height: 34px;
+  font-size: 17px;
+  border-radius: 5px;
+}
+
+.job-form input[type="text"].department {
+  height: 45px;
+  font-size: 24px;
+  border-radius: 5px;
+}
+
+.job-form .form-group {
+  margin-bottom: 7px;
+}
+
+.right-padding-none {
+  padding-right: 0;
+}
+
+.small-padding {
+  padding-left: 10px;
+}
+
+.job-form .btn-primary {
+  width: 100%;
+  /* max-width: 140px; */
+  background: url("../../assets/images/share-icon.png") no-repeat 0 0 #d5d5d5;
+  height: 39px;
+  border: none;
+  text-align: center;
+  font-size: 18px;
+  font-weight: bold;
+  transition: all 0.5s;
+  background-position: 88% 9px;
+}
+
+.job-form .btn-primary:hover {
+  background: url("../../assets/images/share-icon.png") no-repeat 0 0 #d33f24;
+  background-position: 88% -23px;
+  color: #fff;
+}
+
+.job-form .btn-success {
+  width: 100%;
+  /* max-width: 140px; */
+  background: url("../../assets/images/tick-icon.png") no-repeat 0 0 #d5d5d5;
+  height: 39px;
+  border: none;
+  text-align: center;
+  font-size: 18px;
+  font-weight: bold;
+  transition: all 0.5s;
+  background-position: 88% 9px;
+}
+
+.job-form .btn-success:hover {
+  background: url("../../assets/images/tick-icon.png") no-repeat 0 0 #d33f24;
+  background-position: 88% -23px;
+  color: #fff;
+}
+
+.job-form .btn-primary img {
+  margin-left: 5px;
+  margin-top: -6px;
+}
+
+.content-all {
+  width: 100%;
+  background: #fff;
+  border-radius: 7px;
+  padding: 50px 25px;
+  margin-top: 15px;
+  position: relative;
+}
+
+.content-all .step-by-step {
+  max-width: 603px;
+  width: 100%;
+  margin: auto;
+  border: 2px solid #838383;
+  padding: 20px;
+  border-radius: 5px;
+  position: relative;
+  display: none;
+}
+
+.content-all .step-by-step h6 {
+  color: #22201b;
+  text-transform: uppercase;
+  font-weight: bold;
+  font-size: 19px;
+}
+
+.content-all .step-by-step ul {
+  padding: 0;
+  margin: 0;
+  display: block;
+  list-style: none;
+}
+
+.content-all .step-by-step ul li {
+  list-style: decimal inside;
+  font-size: 17px;
+  margin-bottom: 9px;
+}
+
+.content-all .step-by-step .close {
+  position: absolute;
+  top: -15px;
+  right: -16px;
+  opacity: 1;
+}
+
+.content-all .step-by-step img {
+  margin-left: 7px;
+}
+
+.content-all .step-by-step .checkbox {
+  margin-top: 25px;
+}
+
+.content-all .step-by-step input[type="checkbox"] {
+  margin-right: 7px;
+  vertical-align: top;
+  margin-top: 6px;
+}
+
+.right-sidebar {
+  width: 100%;
+}
+
+.right-sidebar .score-widget {
+  width: 100%;
+}
+
+.right-sidebar .score-widget h3 {
+  text-align: center;
+  font-size: 30px;
+  font-style: italic;
+  margin-bottom: 20px;
+}
+
+.gender-wordings {
+  width: 100%;
+  margin-top: 30px;
+  text-align: center;
+}
+
+.gender-wordings h5 {
+  text-align: center;
+  font-size: 26px;
+  margin-bottom: 20px;
+  font-weight: 600;
+  color: #0b0b0b;
+  display: inline-block;
+  text-decoration: underline;
+}
+
+.gender-wordings span {
+  font-size: 28px;
+  color: #0b0b0b;
+}
+
+.gender-wordings img {
+  display: inline-block;
+  max-width: 52px;
+  width: 100%;
+  margin: 0 20px;
+}
+
+.scored-five {
+  width: 100%;
+  margin-top: 10px;
+  text-align: center;
+  position: relative;
+}
+
+.scored-five .btn-success {
+  background: #dc482d;
+  border-radius: 5px;
+  border: 2px solid #dc482d;
+  color: #fff;
+  text-shadow: 0 2px 2px rgba(0, 0, 0, 0.75);
+  /* font-weight: bold; */
+  font-size: 21px;
+  padding: 8px 33px;
+  float: left;
+  transition: all 0.5s;
+  position: absolute;
+  left: 0;
+}
+
+.scored-five .btn-success:hover {
+  background: none;
+  border: 2px solid #dc482d;
+}
+
+.scored-five h5 {
+  color: #fff;
+  text-align: center;
+  margin-top: 17px;
+  display: inline-block;
+  font-size: 20px;
+}
+
+.type-upload {
+  display: table;
+  height: 100%;
+  width: 100%;
+}
+
+.type-upload .upload-text {
+  display: table-cell;
+  vertical-align: middle;
+  text-align: center;
+}
+
+.upload-height {
+  height: 350px;
+}
+
+.type-upload .upload-text h2 {
+  color: #9b9b9b;
+}
+
+.upload-text .upload-file {
+  position: relative;
+}
+
+.upload-text .upload-file input[type="file"] {
+  width: 100px;
+  opacity: 0;
+  position: relative;
+  z-index: 9;
+}
+
+.upload-text .upload-file strong {
+  position: absolute;
+  left: 0;
+  font-weight: normal;
+  top: 4px;
+  text-decoration: underline;
+}
+
+.job-listing-heading {
+  width: 100%;
+  margin-bottom: 30px;
+}
+
+.job-listing-heading h2 {
+  background: #fff;
+  border-radius: 7px;
+  text-align: center;
+  text-transform: uppercase;
+  padding: 10px 0;
+}
+
+.job-title-table {
+  max-width: 850px;
+  width: 100%;
+  margin: 80px auto;
+  display: block;
+}
+
+.job-title-table table th {
+  background: #f46044;
+  border: none;
+  color: #fff;
+  font-weight: normal;
+  font-size: 20px;
+  padding-bottom: 10px;
+  padding-top: 10px;
+  border-right: 2px solid #fff;
+  border-radius: 5px 5px 0 0;
+  text-align: center;
+}
+
+.job-title-table table td {
+  background: #f8f8f9;
+  border-bottom: none;
+  border-top: none;
+  border-right: 2px solid #fff;
+  font-size: 18px;
+  padding: 10px 26px;
+}
+
+.job-title-table table td a {
+  text-decoration: underline;
+  color: #4161a0;
+  cursor: pointer;
+}
+
+.job-title-table table td a:hover {
+  text-decoration: none;
+}
+
+.pagination{
+  width: 100%;
+  text-align:center;
+}
+.pagination ul {
+  display: inline-block;
+  margin: 0;
+  padding: 0;
+}

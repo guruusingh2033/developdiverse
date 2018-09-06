@@ -11,6 +11,7 @@ import 'rxjs/add/operator/filter';
 import { ChangeDetectorRef } from '@angular/core';
 import { timeout } from 'q';
 import { ReplaySubject } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 
 @Component({
@@ -50,7 +51,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   isOwner: boolean = false;
   loaderMsg: string = "Saving...";
   createdJobId: any;
-  dialogRemember: any ;
+  dialogRemember: any;
   navigationSubscription;
 
   customSelected: string;
@@ -83,18 +84,18 @@ export class HomeComponent implements OnInit, OnDestroy {
   isReloadedData: boolean = false;
 
   newlyAddedSentence: any = "";
-  lastJobBody:any= "";
-  completeJobBody:any = "";
+  lastJobBody: any = "";
+  completeJobBody: any = "";
   charPressed: string = "";
-  serviceCallStatus:boolean=false;
+  serviceCallStatus: boolean = false;
 
-  stopInterval:boolean=false;
-  hasModalChange:boolean = false;
-  waitInterval:number = 8000;
+  stopInterval: boolean = false;
+  hasModalChange: boolean = false;
+  waitInterval: number = 8000;
 
-  editorClass:any="";
-  ddScoreText:string ="";
-  prevPositionOfCaret:number;
+  editorClass: any = "";
+  ddScoreText: string = "";
+  prevPositionOfCaret: number;
 
 
   constructor(
@@ -164,7 +165,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   }
 
-  titleChange(){
+  titleChange() {
     if (this.isReadonly == true || this.f.ad_title.errors) {
       this.editorClass = "readonly editors";
       $(".ngx-editor-textarea").blur();
@@ -233,7 +234,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
       });
 
-      
+
 
     });
 
@@ -264,56 +265,56 @@ export class HomeComponent implements OnInit, OnDestroy {
     //   console.log("I am fired every 2 sec");
     // },2000);
     var waitInterval = this.waitInterval;
-    console.log (this.serviceCallStatus);
-      console.log(this.hasModalChange);
-    setInterval(function(){
+    console.log(this.serviceCallStatus);
+    console.log(this.hasModalChange);
+    setInterval(function () {
       var serviceCallStatus = this.serviceCallStatus;
       var hasModalChange = this.hasModalChange;
-      if( this.serviceCallStatus == false && this.hasModalChange){
-       debugger;
+      if (this.serviceCallStatus == false && this.hasModalChange) {
+        debugger;
         this.intervalJobProcess();
-    }
-  
-  }.bind(this),waitInterval);
+      }
+
+    }.bind(this), waitInterval);
     console.log("after interval");
 
   }
 
-  intervalJobProcess(){
+  intervalJobProcess() {
     debugger;
-    if(this.isReloadedData){
+    if (this.isReloadedData) {
       this.spinner.show();
     }
     this.hasModalChange = false;
     this.completeJobBody = document.querySelector(".ngx-editor-textarea").innerHTML;
-    this.completeJobBody =  this.completeJobBody.replace(/(<p[^>]+?>|<p>)/img, "").replace(new RegExp('</p>',"gi"),"</br>").replace(new RegExp("&nbsp;",'g'),'');
+    this.completeJobBody = this.completeJobBody.replace(/(<p[^>]+?>|<p>)/img, "").replace(new RegExp('</p>', "gi"), "</br>").replace(new RegExp("&nbsp;", 'g'), '');
 
-     document.querySelector(".ngx-editor-textarea").innerHTML =  this.completeJobBody;
+    document.querySelector(".ngx-editor-textarea").innerHTML = this.completeJobBody;
 
-     if(this.completeJobBody != "" ){
-     this.isPasted = false;
-     console.log("body to be sent");
-    if (this.isPasted) {
-       this.lastTypedText = this.fetchLastTextTyped();
-     }
-     else {
-       this.lastTypedText = this.fetchLastTextTyped();
+    if (this.completeJobBody != "") {
+      this.isPasted = false;
+      console.log("body to be sent");
+      if (this.isPasted) {
+        this.lastTypedText = this.fetchLastTextTyped();
+      }
+      else {
+        this.lastTypedText = this.fetchLastTextTyped();
 
-     }
-     debugger;
-     this.processJobService();
-   }
+      }
+      debugger;
+      this.processJobService();
+    }
 
   }
 
 
-  modelChanged(e){
+  modelChanged(e) {
     debugger;
     this.hasModalChange = true;
   }
 
-  stopInt(){
-    this.stopInterval =  !this.stopInterval;
+  stopInt() {
+    this.stopInterval = !this.stopInterval;
   }
 
 
@@ -340,25 +341,25 @@ export class HomeComponent implements OnInit, OnDestroy {
         var selectedId = $(this).parent();
         var removeMainDiv = $(this).closest("span").parent("span").attr("id");
         var da = $(this).parent();
-          $($(this).closest("span").parent("span")[0]).replaceWith(currentSelected);
+        $($(this).closest("span").parent("span")[0]).replaceWith(currentSelected);
 
 
         $(this).closest('span').toggle();
 
       });
-      var prevPositionOfCaret:number ;
+      var prevPositionOfCaret: number;
 
-      $(".ngx-editor-textarea").click( () => {
+      $(".ngx-editor-textarea").click(() => {
         $('.dropdown').hide();
         // prevPositionOfCaret = 0;
-        prevPositionOfCaret =   getCaretPosition() ;
-        console.log("last caret position"+prevPositionOfCaret);
+        prevPositionOfCaret = getCaretPosition();
+        console.log("last caret position" + prevPositionOfCaret);
         self.fillLastCaretPosition(prevPositionOfCaret);
-        console.log("last caret positio wn"+prevPositionOfCaret);
+        console.log("last caret positio wn" + prevPositionOfCaret);
 
       });
 
-      $(".ngx-editor-textarea").focus( () => {
+      $(".ngx-editor-textarea").focus(() => {
         // prevPositionOfCaret =   getCaretPosition() ;
         // console.log("last caret position"+prevPositionOfCaret);
         // self.fillLastCaretPosition(prevPositionOfCaret);
@@ -371,9 +372,9 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   }
 
-  fillLastCaretPosition(pos){
+  fillLastCaretPosition(pos) {
     debugger;
-    this.prevPositionOfCaret =  pos;
+    this.prevPositionOfCaret = pos;
   }
 
   fire() {
@@ -474,7 +475,7 @@ export class HomeComponent implements OnInit, OnDestroy {
         this.isShared = true;
         this.isApproved = true;
         this.isFinished = true;
-       // this.isReadonly = true;
+        // this.isReadonly = true;
       }
     }
   }
@@ -641,7 +642,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   //opens welcome modal
   openModal3(template: TemplateRef<any>) {
     if (localStorage.getItem("dialogOff") != "true") {
-      this.modalRef = this.modalService.show(template);
+      // this.modalRef = this.modalService.show(template);
       localStorage.setItem("dialogOff", "true");
     }
   }
@@ -768,7 +769,9 @@ export class HomeComponent implements OnInit, OnDestroy {
             this.spinner.hide();
             // this.spinner.hide();
             if (jobList.is_finished == true) {
-              this.router.navigateByUrl('/joblisting');
+              // this.router.navigateByUrl('/joblisting');
+              this.selectedJobStatus = 3;
+              this.statusUpdate();
             }
             else {
               this.spinner.hide();
@@ -811,7 +814,9 @@ export class HomeComponent implements OnInit, OnDestroy {
                 //  this.spinner.hide();
                 this.spinner.hide();
                 if (jobList.is_finished == true) {
-                  this.router.navigateByUrl('/joblisting');
+                  // this.router.navigateByUrl('/joblisting');
+                  this.selectedJobStatus = 3;
+                  this.statusUpdate();
                 }
                 else {
                   this.spinner.hide();
@@ -892,8 +897,8 @@ export class HomeComponent implements OnInit, OnDestroy {
     console.log(document.querySelector(".ngx-editor-textarea").innerHTML);
 
 
-//  Put the filtered html(without drop downs) in a result variable
-    var result =  document.querySelector(".ngx-editor-textarea").innerHTML.replace(/\s+/g, ' ');
+    //  Put the filtered html(without drop downs) in a result variable
+    var result = document.querySelector(".ngx-editor-textarea").innerHTML.replace(/\s+/g, ' ');
     //  Put back the original body in editor
     document.querySelector(".ngx-editor-textarea").innerHTML = data;
     //  Position the curson at the end.
@@ -910,12 +915,12 @@ export class HomeComponent implements OnInit, OnDestroy {
   clearOptionWithoutSelectedTag() {
     var selectBoxes = document.querySelectorAll(".form-ele");
     debugger;
-    
+
     console.log(selectBoxes);
     for (var i = 0; i < selectBoxes.length; i++) {
-    selectBoxes[i].remove();  
-        //var getUlAtrr = selectBoxes[i].removeChild(selectBoxes[i].childNodes[0]);
-      
+      selectBoxes[i].remove();
+      //var getUlAtrr = selectBoxes[i].removeChild(selectBoxes[i].childNodes[0]);
+
     }
     var selectBoxes = document.querySelectorAll(".form-ele");
     console.log(selectBoxes);
@@ -972,7 +977,8 @@ export class HomeComponent implements OnInit, OnDestroy {
           this.percBiasedAgeWords = updatedJob.percentages.perc_biased_age_words.toFixed(0);
           this.ddScore = updatedJob.biases.dd_score.toFixed(0);
           this.ddScoreText = updatedJob.biases.dd_score_text;
-         // this.lastTypedText = this.getNoHtmlContentBody();
+          // fetch latest body again
+          this.lastTypedText = this.getNoHtmlContentBody();
 
           this.afterServiceProcessData(this.lastTypedText);
 
@@ -987,7 +993,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   }
 
-  pasteEvent(e){
+  pasteEvent(e) {
 
   }
   //generate random string
@@ -1041,7 +1047,7 @@ export class HomeComponent implements OnInit, OnDestroy {
             // }
           }
           console.log(finalReplacementSetArr);
-           debugger;
+          debugger;
           if (finalReplacementSetArr.length > 0) {
             for (var frsa = 0; frsa < finalReplacementSetArr.length; frsa++) {
               debugger;
@@ -1049,7 +1055,7 @@ export class HomeComponent implements OnInit, OnDestroy {
                 finalReplacementSetArr[frsa].key = finalReplacementSetArr[frsa].key.replace("?", "\\?");
               }
               var reFrsa = new RegExp(finalReplacementSetArr[frsa].key, 'gi');
-              var getProcessedValue =  this.getReplaceValue( finalReplacementSetArr[frsa].value,frsa);
+              var getProcessedValue = this.getReplaceValue(finalReplacementSetArr[frsa].value, frsa);
               textToBeReplaced = textToBeReplaced.replace(reFrsa, getProcessedValue);
             }
 
@@ -1060,17 +1066,17 @@ export class HomeComponent implements OnInit, OnDestroy {
 
           var buildBody = this.buildJobContentAfterServiceCall(textToBeReplaced, lastTypedText);
 
-          $(".ngx-editor-textarea").animate({ scrollTop: $(document).height() },0);
+          // $(".ngx-editor-textarea").animate({ scrollTop: $(document).height() }, 0);
 
           document.querySelector(".ngx-editor-textarea").innerHTML = buildBody;
 
           this.lastJobBody = buildBody;
-           this.editorClass = "editors";
+          this.editorClass = "editors";
 
 
           let inputFields = document.getElementsByClassName("ngx-editor-textarea")[0];
-          //this.placeCaretAtEnd(inputFields);
-          console.log("after service"+this.prevPositionOfCaret);
+          this.placeCaretAtEnd(inputFields);
+          console.log("after service" + this.prevPositionOfCaret);
           //let inField =  document.querySelector(".ngx-editor-textarea");
           //setCaretPosition(inputFields,this.prevPositionOfCaret);
           debugger;
@@ -1084,12 +1090,12 @@ export class HomeComponent implements OnInit, OnDestroy {
           this.editorClass = "readonly editors";
           $(".ngx-editor-textarea").blur();
 
-          $(".ngx-editor-textarea").animate({ scrollTop: $(document).height() },0);
+          // $(".ngx-editor-textarea").animate({ scrollTop: $(document).height() }, 0);
 
           this.homeForm.patchValue({ ad_body: this.completeJobBody });
 
-          this.lastJobBody =  this.completeJobBody;
-           this.editorClass = "editors";
+          this.lastJobBody = this.completeJobBody;
+          this.editorClass = "editors";
           let inputFields = document.getElementsByClassName("ngx-editor-textarea")[0];
           this.placeCaretAtEnd(inputFields);
           //setCaretPosition(inputFieldsaa,this.prevPositionOfCaret);
@@ -1112,14 +1118,14 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
 
-//replaces value with id
-    getReplaceValue(value,loop){
-           let oldValue  =  '<span class="dropdown-ex">';
-            let makeID = this.makeid()+''+loop;
-            let  targetValue = '<span class="dropdown-ex"  id="' + makeID + '">';
-            let newValue =  value.replace(new RegExp(oldValue,"g"),targetValue);
-            return newValue;
-    }
+  //replaces value with id
+  getReplaceValue(value, loop) {
+    let oldValue = '<span class="dropdown-ex">';
+    let makeID = this.makeid() + '' + loop;
+    let targetValue = '<span class="dropdown-ex"  id="' + makeID + '">';
+    let newValue = value.replace(new RegExp(oldValue, "g"), targetValue);
+    return newValue;
+  }
 
 
   //focus cursor at end of html content
@@ -1138,7 +1144,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
 
-  
+
 
   //called by afterServiceProcessData to process service data
   processReplacableHtmlStructure(sentenceIndex, phraseIndex) {
@@ -1167,16 +1173,16 @@ export class HomeComponent implements OnInit, OnDestroy {
         var assignColor;
 
         if (replaceableSubphrase[l].biased_towards_female == true) {
-          assignColor = "#f641ff";
+          assignColor = environment.female_color;
         }
         else if (replaceableSubphrase[l].biased_towards_male == true) {
-          assignColor = "#25b0ef";
+          assignColor = environment.male_color;
         }
         else if (replaceableSubphrase[l].biased_towards_ethnicity == true) {
-          assignColor = "#ed7c31";
+          assignColor = environment.ethnicity_color;
         }
         else {
-          assignColor = "#35b150"
+          assignColor = environment.age_color
         }
 
         var d = new Date();
@@ -1286,7 +1292,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   //check whether to enable save  button
   saveState() {
-    return !this.homeForm.valid || this.isFinished ;
+    return !this.homeForm.valid || this.isFinished;
 
   }
 
@@ -1378,13 +1384,13 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   //called when data needs to be populated on update and need to be analyzed.
   analyzeAfterServicePopulate(data) {
-     this.intervalJobProcess();
+    this.intervalJobProcess();
   }
 
   //fetched last typed text
   fetchLastTextTyped() {
-      this.newlyAddedSentence = this.lastPastedText;
-      return this.lastPastedText;
+    this.newlyAddedSentence = this.lastPastedText;
+    return this.lastPastedText;
 
   }
 
@@ -1415,8 +1421,8 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   }
 
-  replaceCharFromStr(str,base,target){
-    var str =  str.replace(new RegExp(base,"gi"),target);
+  replaceCharFromStr(str, base, target) {
+    var str = str.replace(new RegExp(base, "gi"), target);
     return str;
   }
 
@@ -1538,62 +1544,62 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   }
 }
-    // Create Element.remove() function if not exist
-    if (!('remove' in <any>Element.prototype)) {
-      Element.prototype.remove = function() {
-          if (this.parentNode) {
-              this.parentNode.removeChild(this);
-          }
-      };
+// Create Element.remove() function if not exist
+if (!('remove' in <any>Element.prototype)) {
+  Element.prototype.remove = function () {
+    if (this.parentNode) {
+      this.parentNode.removeChild(this);
     }
+  };
+}
 
-    function setCaretPosition(ctrla, pos) {
-      // // Modern browsers
-      // debugger;
-      // if (ctrl.setSelectionRange) {
-      //   ctrl.focus();
-      //   ctrl.setSelectionRange(pos, pos);
-      
-      // // IE8 and below
-      // } else if (ctrl.createTextRange) {
-      //   var range = ctrl.createTextRange();
-      //   range.collapse(true);
-      //   range.moveEnd('character', pos);
-      //   range.moveStart('character', pos);
-      //   range.select();
-      // }
+function setCaretPosition(ctrla, pos) {
+  // // Modern browsers
+  // debugger;
+  // if (ctrl.setSelectionRange) {
+  //   ctrl.focus();
+  //   ctrl.setSelectionRange(pos, pos);
 
-      ctrla.focus();
-var textNode = ctrla.firstChild;
-debugger;
-var caret = pos; // insert caret after the 10th character say
-var range = document.createRange();
-range.setStart(textNode, caret);
-range.setEnd(textNode, caret);
-var sel = window.getSelection();
-sel.removeAllRanges();
-sel.addRange(range);
-    }
-    
+  // // IE8 and below
+  // } else if (ctrl.createTextRange) {
+  //   var range = ctrl.createTextRange();
+  //   range.collapse(true);
+  //   range.moveEnd('character', pos);
+  //   range.moveStart('character', pos);
+  //   range.select();
+  // }
 
-    function getCaretPosition() {
-      //debugger;
-      if (window.getSelection && window.getSelection().getRangeAt) {
-        var range = window.getSelection().getRangeAt(0);
-        var selectedObj = window.getSelection();
-        var rangeCount = 0;
-        var childNodes:any = selectedObj.anchorNode.parentNode.childNodes;
-        for (var i = 0; i < childNodes.length; i++) {
-          if (childNodes[i] == selectedObj.anchorNode) {
-            break;
-          }
-          if (childNodes[i].outerHTML)
-            rangeCount += childNodes[i].outerHTML.length;
-          else if (childNodes[i].nodeType == 3) {
-            rangeCount += childNodes[i].textContent.length;
-          }
-        }
-        return range.startOffset + rangeCount;
+  ctrla.focus();
+  var textNode = ctrla.firstChild;
+  debugger;
+  var caret = pos; // insert caret after the 10th character say
+  var range = document.createRange();
+  range.setStart(textNode, caret);
+  range.setEnd(textNode, caret);
+  var sel = window.getSelection();
+  sel.removeAllRanges();
+  sel.addRange(range);
+}
+
+
+function getCaretPosition() {
+  //debugger;
+  if (window.getSelection && window.getSelection().getRangeAt) {
+    var range = window.getSelection().getRangeAt(0);
+    var selectedObj = window.getSelection();
+    var rangeCount = 0;
+    var childNodes: any = selectedObj.anchorNode.parentNode.childNodes;
+    for (var i = 0; i < childNodes.length; i++) {
+      if (childNodes[i] == selectedObj.anchorNode) {
+        break;
       }
-      return -1;
+      if (childNodes[i].outerHTML)
+        rangeCount += childNodes[i].outerHTML.length;
+      else if (childNodes[i].nodeType == 3) {
+        rangeCount += childNodes[i].textContent.length;
+      }
     }
+    return range.startOffset + rangeCount;
+  }
+  return -1;
+}
