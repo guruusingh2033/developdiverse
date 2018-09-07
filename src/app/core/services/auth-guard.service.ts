@@ -22,7 +22,12 @@ export class AuthGuard implements CanActivate {
   ): Observable<boolean> {
 
     const x = this.jwtService.getToken(); 
-    if (!x) { this.router.navigate(['/']);  } else 
+    if (!x) { 
+      var ifJobListing =  state.url.split("/");
+      if(ifJobListing[1] == "dashboard"){
+          localStorage.setItem("lastUrl",state.url);
+      }
+      this.router.navigate(['/']);  } else 
     { return new BehaviorSubject<boolean>(true); 
     }
     //return this.userService.isAuthenticated.pipe(take(1));

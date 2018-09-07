@@ -104,7 +104,17 @@ export class AuthComponent implements OnInit {
         data => {
          // console.log(data); 
           this.spinner.hide();
-           this.router.navigateByUrl('/joblisting')
+          var getLastUrlIf  = localStorage.getItem("lastUrl");
+          if(getLastUrlIf != "false"){
+            localStorage.setItem("lastUrl","false");
+
+           this.router.navigateByUrl(getLastUrlIf);
+
+          }
+          else{
+            this.router.navigateByUrl("/joblisting");
+          }
+
         //  this.router.navigateByUrl('/profile')
 
         },
