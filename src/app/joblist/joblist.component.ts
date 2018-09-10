@@ -11,17 +11,19 @@ import { JobService, Job } from '../core';
   styleUrls: ['./joblist.component.css']
 })
 export class JoblistComponent implements OnInit {
+  //stores job list data
   joblist: any;
   joblistForm: FormGroup;
   joblistForm2: FormGroup;
   errors: Object = {};
+  //changes boolean status depending on whether for submitted or in progress.
   isSubmitting = false;
-  submit = false;
   alerts: any;
   alert1: any;
   p: number = 1;
   jobType=["Draft","Shared","Approved","Finished"];
   term:any;
+  
   constructor(
     private router: Router,
     private jobService: JobService,
@@ -29,6 +31,7 @@ export class JoblistComponent implements OnInit {
 
   ) {}
 
+  // sets job status
   status(id){
     return this.jobType[id];
   }
@@ -43,19 +46,17 @@ export class JoblistComponent implements OnInit {
         //response
         this.spinner.hide();
 
-       // console.log(jobList);
         this.joblist = jobList;
         this.joblist = this.joblist.reverse();
        },
       err => {
-        //  debugger;
         
       }
     );
 
   }
 
-
+// helps in redirection
   redirect(id,status){
     this.router.navigateByUrl('/dashboard/editor?data='+id+'&status='+status);
 

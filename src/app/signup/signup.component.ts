@@ -50,6 +50,7 @@ export class SignupComponent implements OnInit {
     // convenience getter for easy access to form fields
     get f() { return this.authForm.controls; }
 
+// submit a form
   submitForm() {
     this.submit = true;
     this.spinner.show();
@@ -89,7 +90,7 @@ export class SignupComponent implements OnInit {
   }
 
 
-
+//confirms password
   confirmPassword(control: AbstractControl) {
     if (!control.parent || !control) {
       return;
@@ -112,6 +113,7 @@ export class SignupComponent implements OnInit {
     }
   }
 
+  // fires event on alert closed
   onClosed(dismissedAlert: AlertComponent): void {
     this.alerts = this.alerts.filter(alert => alert !== dismissedAlert);
   }

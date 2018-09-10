@@ -17,8 +17,9 @@ export class ProfileComponent implements OnInit {
   profileForm2:FormGroup;
   errors: Object = {};
   isSubmitting = false;
-  submit = false;
+  // alert array 2
   alerts: any;
+  // alert array 1
   alert1:any;
 
   constructor(
@@ -121,7 +122,7 @@ export class ProfileComponent implements OnInit {
     
   }
 
-
+// use to change password
   changePassword(){
     this.isSubmitting = true;
     this.spinner.show();
@@ -167,6 +168,7 @@ export class ProfileComponent implements OnInit {
     );
   }
 
+  // updates user data
   updateUser(values: Object) {
     Object.assign(this.user, values);
   }

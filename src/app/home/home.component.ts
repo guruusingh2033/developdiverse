@@ -20,81 +20,105 @@ import { environment } from '../../environments/environment';
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit, OnDestroy {
+  
+  //properties describes the modal state
   modalRef: BsModalRef;
   modalRef2: BsModalRef;
   modalRef3: BsModalRef;
+  //choose to open editor/welcome page [now only editor ,state always false]
   openScreen: boolean = true;
   state: string = '';
+  //choose  whether to update data
   updateData: any;
-
-  authType: String = '';
-  title: String = '';
-  errors: Object = {};
+  //changes boolean status depending on whether for submitted or in progress.
   isSubmitting = false;
+  // homeform  variable
   homeForm: FormGroup;
-  submit: boolean = false;
+  //triggers alert
   alerts: any;
-  message: string = '';
-
+  //defines job body data
   ad_body: any;
+  //stores serviceReply data
   serviceReply: any;
-  options: any;
-  noHtmlContent: any;
   isAuthenticated: boolean;
-  colorObj: {} = { male: "blue", female: "pink", corrected: "green" };
-
+  //display/hide dropdown suggestion menu
   showDropdown: boolean = true;
   dropdownContent: any;
+  //stores email of target 
   email: string;
+  //shows error 
   dialogErr: string = "";
+  //sets job  in add or edit mode
   actionState: string = "add";
+  //check whether person logged in is job owner
   isOwner: boolean = false;
+  //sets loader msg
   loaderMsg: string = "Saving...";
+  //stores created job id
   createdJobId: any;
+  //remembers dialog state
   dialogRemember: any;
+  //navigation subscription
   navigationSubscription;
 
-  customSelected: string;
   statesComplex: any[] = [{}];
+  //declared predefined job type data
   jobType = ["Draft", "Shared", "Approved", "Finished"];
+  //stores update job data
   updatedData: any;
+  // sets whether job is approved or not
   isApproved: boolean = false;
+  // sets whether job is shared or not
   isShared: boolean = false;
+  // sets whether job is drafted 
   isDraft: boolean = false;
+  // sets whether job is finished
   isFinished: boolean = false;
+  //selects job status code
   selectedJobStatus: any;
+  //sets the message to be shown in dialog
   templateMsg: String;
-
+  //sets the saving state[future use]
   savingStatus: String;
+  //checks whether state is readonly
   isReadonly: boolean = false;
+  //get current user data
   currentUser: any;
+  //stores company data
   company: String;
+  //stores % of different category
   percBiasedMaleWords = 0;
   percBiasedFemaleWords = 0;
   percBiasedEthinicityWords = 0;
   percBiasedAgeWords = 0;
+  //stores dd score and status
   ddScore: any;
   ddScoreStatus: any;
+  // stores the complete job body now 
   lastTypedText: string;
   lastPastedText: string;
-  updatedBodyData: any;
-  bodyBfrePaste: string = "";
-
+  //checks whether the content is pasted
   isPasted: boolean = false;
   isReloadedData: boolean = false;
-
+  //stored  job data
   newlyAddedSentence: any = "";
+  //remember last job body build
   lastJobBody: any = "";
+  // sores complete html job body
   completeJobBody: any = "";
+  // records char pressed [might be usable in future]
   charPressed: string = "";
+  //checks whetherservice call is completed
   serviceCallStatus: boolean = false;
-
-  stopInterval: boolean = false;
+  // set status flag when model changes
   hasModalChange: boolean = false;
+  // sets wait interval
   waitInterval: number = 8000;
-
+  //sets job editor class dynamically [to make editor readonly or not]
   editorClass: any = "";
+  //sets dd score text
   ddScoreText: string = "";
+  // sets previous position of caret
   prevPositionOfCaret: number;
 
 
@@ -113,6 +137,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   ) {
 
+    // listens for navigation changes
     this.navigationSubscription = this.router.events.subscribe((e: any) => {
       // If it is a NavigationEnd event re-initalise the component
       if (e instanceof NavigationEnd) {
@@ -123,7 +148,7 @@ export class HomeComponent implements OnInit, OnDestroy {
             this.actionState = "add";
           }
         });
-
+        //fetches job data when the editor is in update mode
         if (this.actionState == "update" && this.updateData) {
           this.fetchJobDataById();
           //debugger;
@@ -132,6 +157,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
         }
         else {
+          // reset all data when navigated and editor is in add mode
           this.homeForm.reset({ company: this.company });
           this.createdJobId = false;
           this.updateData = false;
@@ -152,6 +178,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       }
     });
 
+    // form values 
     this.homeForm = this.fb.group({
       'ad_title': ['', Validators.required],
       'ad_body': ['', Validators.required],
@@ -165,6 +192,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   }
 
+
   titleChange() {
     if (this.isReadonly == true || this.f.ad_title.errors) {
       this.editorClass = "readonly editors";
@@ -176,6 +204,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     }
   }
 
+  // adds class on editor conditionally whether to make editor readonly or not
   addClass() {
     if (this.isReadonly == true || this.f.ad_title.errors) {
       this.editorClass = "readonly editors";
@@ -220,6 +249,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
       });
 
+      // event to b fired when suggestions are clicked.
       $(".drop").click(function () {
 
         var currentSelected = $(this).text();
@@ -238,6 +268,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
     });
 
+    //fetches url params
     this.fetchUrlParams();
 
 
@@ -259,14 +290,11 @@ export class HomeComponent implements OnInit, OnDestroy {
 
 
     var input = document.getElementById('myInput');
+    // fetches approval email
     this.getApprovalEmail();
-    console.log("before interval");
-    // setInterval(function(){
-    //   console.log("I am fired every 2 sec");
-    // },2000);
+  
     var waitInterval = this.waitInterval;
-    console.log(this.serviceCallStatus);
-    console.log(this.hasModalChange);
+    //hit api and gets formatted new html job body after every specified seconds
     setInterval(function () {
       var serviceCallStatus = this.serviceCallStatus;
       var hasModalChange = this.hasModalChange;
@@ -276,12 +304,12 @@ export class HomeComponent implements OnInit, OnDestroy {
       }
 
     }.bind(this), waitInterval);
-    console.log("after interval");
 
   }
 
+  // this function is called by setInterval and its primarily called on every fresh interval run
+  // fetched body text and send to process job service
   intervalJobProcess() {
-    debugger;
     if (this.isReloadedData) {
       this.spinner.show();
     }
@@ -293,7 +321,6 @@ export class HomeComponent implements OnInit, OnDestroy {
 
     if (this.completeJobBody != "") {
       this.isPasted = false;
-      console.log("body to be sent");
       if (this.isPasted) {
         this.lastTypedText = this.fetchLastTextTyped();
       }
@@ -301,21 +328,18 @@ export class HomeComponent implements OnInit, OnDestroy {
         this.lastTypedText = this.fetchLastTextTyped();
 
       }
-      debugger;
+    
       this.processJobService();
     }
 
   }
 
-
+// listens to every modal change.
   modelChanged(e) {
     debugger;
     this.hasModalChange = true;
   }
 
-  stopInt() {
-    this.stopInterval = !this.stopInterval;
-  }
 
 
   //function loads jquery whenever some analyze change happens
@@ -372,14 +396,12 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   }
 
+  // fills last cursor/caret position
   fillLastCaretPosition(pos) {
-    debugger;
     this.prevPositionOfCaret = pos;
   }
 
-  fire() {
-    console.log("fire")
-  }
+  
 
   //return biase level based on dd score
   getBiaseLevel(dd_score) {
@@ -511,10 +533,11 @@ export class HomeComponent implements OnInit, OnDestroy {
   //open dialog status notifiction modal & save /update data ,this is called on "Done" click
   openModal2(template: TemplateRef<any>) {
     this.spinner.show();
-
+    // if form is not in update state
     if (!this.updateData) {
-
+      // if job id is not set in the url
       if (!this.createdJobId) {
+        // creates a new  job
         var res = this.createJob()
           .then((res: any) => {
             if (res.status == true) {
@@ -527,7 +550,6 @@ export class HomeComponent implements OnInit, OnDestroy {
 
             }
             else {
-              ;
               this.spinner.hide();
               if (typeof (res.data) == "object") {
                 this.createdJobId = res.jobId;
@@ -554,7 +576,7 @@ export class HomeComponent implements OnInit, OnDestroy {
           });
       }
       else {
-
+        // shares a job if already created 
         this.shareJob(this.createdJobId)
           .then((data: any) => {
             this.spinner.hide();
@@ -585,8 +607,9 @@ export class HomeComponent implements OnInit, OnDestroy {
       }
     }
     else {
+      // removes html tags that plays role in job suggestions
       this.clearOptionWithoutSelectedTag();
-
+      // gets final html content body without suggestion tags
       var bodyData = this.getNoHtmlContentBody();
       bodyData = bodyData.replace(/ \./g, '.');
 
@@ -597,6 +620,8 @@ export class HomeComponent implements OnInit, OnDestroy {
         "city": this.homeForm.value.city,
         "country": this.homeForm.value.country
       };
+
+      // updates a job
       this.updateJob(dataForm, this.updateData)
         .then((updatedJobData) => {
           this.shareJob(this.updateData)
@@ -702,6 +727,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   //approves a job
   approve(template) {
     this.spinner.show();
+    // 
     if (this.selectedJobStatus == 1) {
       this.clearOptionWithoutSelectedTag();
 
@@ -950,7 +976,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
 
 
-
+  // called by intervalJobProcess
   //Filter and hits analyze service
   processJobService() {
     this.serviceCallStatus = true;
@@ -993,9 +1019,11 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   }
 
+  // not in use / for future use
   pasteEvent(e) {
 
   }
+
   //generate random string
   makeid() {
     var text = "";
@@ -1047,10 +1075,8 @@ export class HomeComponent implements OnInit, OnDestroy {
             // }
           }
           console.log(finalReplacementSetArr);
-          debugger;
           if (finalReplacementSetArr.length > 0) {
             for (var frsa = 0; frsa < finalReplacementSetArr.length; frsa++) {
-              debugger;
               if (finalReplacementSetArr[frsa].key.includes("?")) {
                 finalReplacementSetArr[frsa].key = finalReplacementSetArr[frsa].key.replace("?", "\\?");
               }
@@ -1079,7 +1105,6 @@ export class HomeComponent implements OnInit, OnDestroy {
           console.log("after service" + this.prevPositionOfCaret);
           //let inField =  document.querySelector(".ngx-editor-textarea");
           //setCaretPosition(inputFields,this.prevPositionOfCaret);
-          debugger;
           if (this.isReloadedData) {
             this.spinner.hide();
             $(".ngx-editor-textarea").blur();
@@ -1247,7 +1272,6 @@ export class HomeComponent implements OnInit, OnDestroy {
 
             this.shareJob(updatedUser.id)
               .then((datax: any) => {
-                //debugger;
 
                 if (datax.status) {
                   resolve({ status: true, data: datax.data, jobId: datax.jobId });
@@ -1401,6 +1425,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     var charTyped = this.charPressed;
 
   }
+  
   //find last typed text
   findLastOccurence(str) {
     var lastCharLengthDot = str.lastIndexOf(".");
@@ -1420,53 +1445,6 @@ export class HomeComponent implements OnInit, OnDestroy {
 
 
   }
-
-  replaceCharFromStr(str, base, target) {
-    var str = str.replace(new RegExp(base, "gi"), target);
-    return str;
-  }
-
-  /** end  */
-
-  /********* get data between two same char  [not in use ]*/
-
-  getRecentlyTypedText(str, charLength) {
-    debugger;
-    var getoccurence = this.nth_occurrence(str, this.charPressed, charLength - 1);
-    return this.getDataBetweenTwoChar(str, getoccurence, this.charPressed);
-  }
-
-
-  getDataBetweenTwoChar(str, getoccurence, char) {
-    var mySubString = str.substring(
-      getoccurence + 1,
-      str.lastIndexOf(char));
-    return mySubString;
-  }
-
-
-
-  nth_occurrence(string, char, nth) {
-
-    var first_index = string.indexOf(char);
-    var length_up_to_first_index = first_index + 1;
-
-    if (nth == 1) {
-      return first_index;
-    } else {
-      var string_after_first_occurrence = string.slice(length_up_to_first_index);
-      var next_occurrence = this.nth_occurrence(string_after_first_occurrence, char, nth - 1);
-
-      if (next_occurrence === -1) {
-        return -1;
-      } else {
-        return length_up_to_first_index + next_occurrence;
-      }
-    }
-  }
-
-
-  /** end data between two char  **/
 
 
   //count numbr of dots
@@ -1553,21 +1531,8 @@ if (!('remove' in <any>Element.prototype)) {
   };
 }
 
+// sets a cursor position 
 function setCaretPosition(ctrla, pos) {
-  // // Modern browsers
-  // debugger;
-  // if (ctrl.setSelectionRange) {
-  //   ctrl.focus();
-  //   ctrl.setSelectionRange(pos, pos);
-
-  // // IE8 and below
-  // } else if (ctrl.createTextRange) {
-  //   var range = ctrl.createTextRange();
-  //   range.collapse(true);
-  //   range.moveEnd('character', pos);
-  //   range.moveStart('character', pos);
-  //   range.select();
-  // }
 
   ctrla.focus();
   var textNode = ctrla.firstChild;
@@ -1581,7 +1546,7 @@ function setCaretPosition(ctrla, pos) {
   sel.addRange(range);
 }
 
-
+// gets cursor position
 function getCaretPosition() {
   //debugger;
   if (window.getSelection && window.getSelection().getRangeAt) {

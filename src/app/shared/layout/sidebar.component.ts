@@ -29,6 +29,7 @@ export class SidebarComponent implements OnInit {
     );
   }
 
+  // download a docs job file
   download(){
 
     this.route.queryParams
@@ -57,10 +58,9 @@ export class SidebarComponent implements OnInit {
    // this.router.navigateByUrl('/');
   }
 
-
+  // loads job editor
   loadJobEditor() {
    // this.router.navigate(['/']);
-
     this.router.navigate(['/dashboard/editor']);
     
   }

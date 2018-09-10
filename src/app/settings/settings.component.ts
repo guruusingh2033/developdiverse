@@ -38,9 +38,7 @@ export class SettingsComponent implements OnInit {
     this.settingsForm.patchValue(this.user);
   }
 
-  logout() {
-      }
-
+ 
   submitForm() {
     this.isSubmitting = true;
 
@@ -58,6 +56,7 @@ export class SettingsComponent implements OnInit {
     );
   }
 
+  // updates a user data
   updateUser(values: Object) {
     Object.assign(this.user, values);
   }

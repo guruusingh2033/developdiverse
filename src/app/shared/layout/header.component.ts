@@ -27,7 +27,7 @@ export class HeaderComponent implements OnInit {
     );
   }
 
-
+  // logs user out
   logout() {
     debugger;
     this.spinner.show();
