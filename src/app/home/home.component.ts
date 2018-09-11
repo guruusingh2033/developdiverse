@@ -934,7 +934,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     document.querySelector(".ngx-editor-textarea").innerHTML = data;
     //  Position the curson at the end.
     let inputFields = document.getElementsByClassName("ngx-editor-textarea")[0];
-    //this.placeCaretAtEnd(inputFields);
+    this.placeCaretAtEnd(inputFields);
     // return result
    // setCurrentCursorPosition(this.prevPositionOfCaret);
     console.log(result);
