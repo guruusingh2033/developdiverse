@@ -904,34 +904,35 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   // removes only dropdown content tags with text and does not modifies rest html
   getNoHtmlContentBody() {
-    debugger;
     var data = document.querySelector(".ngx-editor-textarea").innerHTML;
 
     var getClass = document.getElementsByClassName("dropdown-ex");
     var length = getClass.length;
     var replArr = [];
     for (var k = 0; k < length; k++) {
-      debugger;
-      var getID = document.getElementsByClassName('dropdown-ex')[k].getAttribute("id");
+     // debugger;
+      var getID = document.getElementsByClassName('dropdown-ex')[k];
       var getText = document.getElementsByClassName('dropdown-ex')[k].textContent;
+
       replArr.push({ id: getID, value: getText });
     }
 
     replArr.map((key) => {
-      $("#" + key.id).replaceWith(key.value);
+      $(key.id).replaceWith(key.value);
     });
     console.log(document.querySelector(".ngx-editor-textarea").innerHTML);
 
 
-    //  Put the filtered html(without drop downs) in a result variable
-    var result = document.querySelector(".ngx-editor-textarea").innerHTML.replace(/\s+/g, ' ');
+//  Put the filtered html(without drop downs) in a result variable
+    var result =  document.querySelector(".ngx-editor-textarea").innerHTML.replace(/\s+/g, ' ');
     //  Put back the original body in editor
     document.querySelector(".ngx-editor-textarea").innerHTML = data;
     //  Position the curson at the end.
     let inputFields = document.getElementsByClassName("ngx-editor-textarea")[0];
-    this.placeCaretAtEnd(inputFields);
-    // setCaretPosition(inputFields,this.prevPositionOfCaret);
+    //this.placeCaretAtEnd(inputFields);
     // return result
+   // setCurrentCursorPosition(this.prevPositionOfCaret);
+    console.log(result);
     return result;
   }
 
@@ -1081,8 +1082,9 @@ export class HomeComponent implements OnInit, OnDestroy {
                 finalReplacementSetArr[frsa].key = finalReplacementSetArr[frsa].key.replace("?", "\\?");
               }
               var reFrsa = new RegExp(finalReplacementSetArr[frsa].key, 'gi');
-              var getProcessedValue = this.getReplaceValue(finalReplacementSetArr[frsa].value, frsa);
-              textToBeReplaced = textToBeReplaced.replace(reFrsa, getProcessedValue);
+
+              textToBeReplaced = textToBeReplaced.replace(reFrsa, finalReplacementSetArr[frsa].value);
+              
             }
 
           }
@@ -1214,7 +1216,7 @@ export class HomeComponent implements OnInit, OnDestroy {
         var n = d.getMilliseconds();
         var makeID = this.makeid() + '' + n;
 
-        var beginHtml = '<span class="dropdown-ex">';
+        var beginHtml = '<span class="dropdown-ex" id="' + makeID + '">';
         beginHtml += '<button class="openDrp"  style="color:' + assignColor + '" id="' + replaceableSubphrase[l].replaceable_subphrase_id + '">' + replaceableSubphrase_key + '</button> <span class="dropdown" contenteditable="false" style="display:none">';
         beginHtml += '<ul class="dropdown-select form-ele">';
 
