@@ -24,6 +24,8 @@
                   <th>Created</th>
                   <th>Status</th>
                   <th>DD Score</th>
+                  <th>First DD Score</th>
+
                 </tr>
               </thead>
               <tbody>
@@ -36,6 +38,8 @@
                   <td>{{listData.last_update | date: 'dd/MM/yyyy' }}</td>
                   <td>{{status(listData.status)}}</td>
                   <td> {{listData.dd_score.toFixed(0)}}</td>
+                  <td>{{listData.first_dd_score.toFixed(0)}}</td>
+
                 </tr>
              
               </tbody>
