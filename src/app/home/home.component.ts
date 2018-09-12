@@ -1103,7 +1103,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
           document.querySelector(".ngx-editor-textarea").innerHTML = buildBody;
 
-          this.lastJobBody = buildBody;
+         // this.lastJobBody = buildBody;
           this.editorClass = "editors";
 
 
@@ -1124,9 +1124,9 @@ export class HomeComponent implements OnInit, OnDestroy {
 
           // $(".ngx-editor-textarea").animate({ scrollTop: $(document).height() }, 0);
 
-          this.homeForm.patchValue({ ad_body: this.completeJobBody });
+          this.homeForm.patchValue({ ad_body: textToBeReplaced });
 
-          this.lastJobBody = this.completeJobBody;
+          //this.lastJobBody = this.completeJobBody;
           this.editorClass = "editors";
           let inputFields = document.getElementsByClassName("ngx-editor-textarea")[0];
           this.placeCaretAtEnd(inputFields);
