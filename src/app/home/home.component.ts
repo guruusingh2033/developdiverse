@@ -152,8 +152,8 @@ export class HomeComponent implements OnInit, OnDestroy {
         if (this.actionState == "update" && this.updateData) {
           this.fetchJobDataById();
           ////debugger;
-          console.log("update entered");
-          console.log(this.ad_body);
+          // console.log("update entered");
+          // console.log(this.ad_body);
 
         }
         else {
@@ -253,10 +253,10 @@ export class HomeComponent implements OnInit, OnDestroy {
       $(".drop").click(function () {
 
         var currentSelected = $(this).text();
-        console.log(currentSelected);
+        // console.log(currentSelected);
         var selectedId = $(this).parent();
-        console.log(selectedId);
-        console.log("find closest button");
+        // console.log(selectedId);
+        // console.log("find closest button");
 
         $(this).closest("span").parent("span").children("button").text(currentSelected);
         $(this).closest("span").parent("span").children("button").css('color', 'black');
@@ -346,7 +346,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   //function loads jquery whenever some analyze change happens
   loadingJquery() {
     var self = this;
-    console.log("loaded jquery....");
+    // console.log("loaded jquery....");
     $(document).ready(function () {
 
       $(".dropdown").hide();
@@ -362,7 +362,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
       $(".drop").click(function () {
         var currentSelected = $(this).text();
-        console.log(currentSelected);
+        // console.log(currentSelected);
         var selectedId = $(this).parent();
         var removeMainDiv = $(this).closest("span").parent("span").attr("id");
         var da = $(this).parent();
@@ -378,9 +378,9 @@ export class HomeComponent implements OnInit, OnDestroy {
         $('.dropdown').hide();
         // prevPositionOfCaret = 0;
         prevPositionOfCaret = getCaretPosition();
-        console.log("last caret position" + prevPositionOfCaret);
+        // console.log("last caret position" + prevPositionOfCaret);
         self.fillLastCaretPosition(prevPositionOfCaret);
-        console.log("last caret positio wn" + prevPositionOfCaret);
+        // console.log("last caret positio wn" + prevPositionOfCaret);
 
       });
 
@@ -455,7 +455,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       .subscribe(
         (jobList: any) => {
           //response
-          console.log(jobList)
+          // console.log(jobList)
           this.spinner.hide();
           this.updatedData = jobList;
           this.statusUpdate();
@@ -905,7 +905,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   // removes only dropdown content tags with text and does not modifies rest html
   getNoHtmlContentBody() {
-    debugger;
+    // debugger;
     var data = document.querySelector(".ngx-editor-textarea").innerHTML;
 
     var getClass = document.getElementsByClassName("dropdown-ex");
@@ -922,7 +922,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     replArr.map((key) => {
       $(key.id).replaceWith(key.value);
     });
-    console.log(document.querySelector(".ngx-editor-textarea").innerHTML);
+    // console.log(document.querySelector(".ngx-editor-textarea").innerHTML);
 
 
 //  Put the filtered html(without drop downs) in a result variable
@@ -937,7 +937,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.placeCaretAtEnd(inputFields);
     // return result
    // setCurrentCursorPosition(this.prevPositionOfCaret);
-    console.log(result);
+    // console.log(result);
     return result;
   }
 
@@ -948,14 +948,14 @@ export class HomeComponent implements OnInit, OnDestroy {
     var selectBoxes = document.querySelectorAll(".form-ele");
    // //debugger;
 
-    console.log(selectBoxes);
+    // console.log(selectBoxes);
     for (var i = 0; i < selectBoxes.length; i++) {
       selectBoxes[i].remove();
       //var getUlAtrr = selectBoxes[i].removeChild(selectBoxes[i].childNodes[0]);
 
     }
     var selectBoxes = document.querySelectorAll(".form-ele");
-    console.log(selectBoxes);
+    // console.log(selectBoxes);
    // //debugger;
 
   }
@@ -989,7 +989,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
     this.clearOptionWithoutSelectedTag();
 
-    console.log(this.lastTypedText);
+    // console.log(this.lastTypedText);
     this.lastTypedText = this.getNoHtmlContentBody();
 
     var jobForm = {
@@ -1001,6 +1001,8 @@ export class HomeComponent implements OnInit, OnDestroy {
       .analyzeJob(jobForm)
       .subscribe(
         (updatedJob: any) => {
+          console.log("Request Body: " + this.lastTypedText);
+          console.log("Response: ");
           console.log(updatedJob);
           this.serviceReply = updatedJob;
           this.percBiasedMaleWords = updatedJob.percentages.perc_biased_male_words.toFixed(0);
@@ -1018,7 +1020,7 @@ export class HomeComponent implements OnInit, OnDestroy {
         },
         err => {
           this.spinner.hide();
-          console.log(err);
+          // console.log(err);
           this.serviceCallStatus = false;
         }
       );
@@ -1050,7 +1052,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     var finalReplacementSetArr = [];
 
     var textToBeReplaced = lastTypedText;
-    console.log(lastTypedText);
+    // console.log(lastTypedText);
     if (lastTypedText != "") {
 
       var testing = lastTypedText;
@@ -1080,7 +1082,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
             // }
           }
-          console.log(finalReplacementSetArr);
+          // console.log(finalReplacementSetArr);
           if (finalReplacementSetArr.length > 0) {
             for (var frsa = 0; frsa < finalReplacementSetArr.length; frsa++) {
               if (finalReplacementSetArr[frsa].key.includes("?")) {
@@ -1103,13 +1105,13 @@ export class HomeComponent implements OnInit, OnDestroy {
 
           document.querySelector(".ngx-editor-textarea").innerHTML = buildBody;
 
-         // this.lastJobBody = buildBody;
+          // this.lastJobBody = buildBody;
           this.editorClass = "editors";
 
 
           let inputFields = document.getElementsByClassName("ngx-editor-textarea")[0];
           this.placeCaretAtEnd(inputFields);
-          console.log("after service" + this.prevPositionOfCaret);
+          // console.log("after service" + this.prevPositionOfCaret);
           //let inField =  document.querySelector(".ngx-editor-textarea");
           //setCaretPosition(inputFields,this.prevPositionOfCaret);
           if (this.isReloadedData) {
@@ -1124,15 +1126,15 @@ export class HomeComponent implements OnInit, OnDestroy {
 
           // $(".ngx-editor-textarea").animate({ scrollTop: $(document).height() }, 0);
 
-          this.homeForm.patchValue({ ad_body: textToBeReplaced });
+          this.homeForm.patchValue({ ad_body: lastTypedText });
 
-          //this.lastJobBody = this.completeJobBody;
+          // this.lastJobBody = this.completeJobBody;
           this.editorClass = "editors";
           let inputFields = document.getElementsByClassName("ngx-editor-textarea")[0];
           this.placeCaretAtEnd(inputFields);
           //setCaretPosition(inputFieldsaa,this.prevPositionOfCaret);
 
-          console.log("biasis analysis empty");
+          // console.log("biasis analysis empty");
           if (this.isReloadedData) {
             $(".ngx-editor-textarea").blur();
           }
@@ -1243,14 +1245,14 @@ export class HomeComponent implements OnInit, OnDestroy {
 
 
     for (var j in secondLevelBiases) {
-      console.log(secondLevelBiases[j]);
-      console.log(j);
+      // console.log(secondLevelBiases[j]);
+      // console.log(j);
       phraseKey = phraseKey.replace(new RegExp(j, "gi"), secondLevelBiases[j]);
     }
 
 
-    console.log(secondLevelBiases);
-    console.log(phraseKey);
+    // console.log(secondLevelBiases);
+    // console.log(phraseKey);
 
     return { key: phraseKey_cp, value: phraseKey };
 
@@ -1334,7 +1336,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     var bodyData = this.getNoHtmlContentBody();
     bodyData = bodyData.replace(/ \./g, '.');
     //debugger;
-    console.log(bodyData);
+    // console.log(bodyData);
     ////debugger;
     var dataForm = {
       "ad_body": bodyData,
@@ -1347,7 +1349,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       this.updateJob(dataForm, this.updateData)
         .then((datax: any) => {
           this.savingStatus = "";
-          console.log(datax);
+          // console.log(datax);
 
           this.redirect(this.updateData, this.selectedJobStatus);
         })
@@ -1442,8 +1444,8 @@ export class HomeComponent implements OnInit, OnDestroy {
     var searchMax = Math.max(lastCharLengthDot, lastCharLengthExc, lastCharLengthQues);
     for (var j = searchMax - 1; j >= 0; j--) {
       if (str.charAt(j) == "!" || str.charAt(j) == "?" || str.charAt(j) == ".") {
-        console.log(j);
-        console.log(str.slice(j + 1, searchMax));
+        // console.log(j);
+        // console.log(str.slice(j + 1, searchMax));
         return str.slice(j + 1, searchMax);
       }
 
@@ -1497,7 +1499,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       .subscribe(
         (sharedEmail: any) => {
           //response
-          console.log(sharedEmail);
+          // console.log(sharedEmail);
           this.statesComplex = sharedEmail.contacts;
         },
         err => {
