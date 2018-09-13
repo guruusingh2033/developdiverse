@@ -113,14 +113,15 @@ export class HomeComponent implements OnInit, OnDestroy {
   // set status flag when model changes
   hasModalChange: boolean = false;
   // sets wait interval
-  waitInterval: number = 8000;
+  waitInterval: number = 5000;
   //sets job editor class dynamically [to make editor readonly or not]
   editorClass: any = "";
   //sets dd score text
   ddScoreText: string = "";
   // sets previous position of caret
   prevPositionOfCaret: number;
-
+  //record button click
+  whetherButtonClicked:boolean=false;
 
   constructor(
     private router: Router,
@@ -226,6 +227,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     //get user data
     this.getUser();
 
+   
     //make fields readonly according to status
 
     this.alerts = [];
@@ -267,16 +269,16 @@ export class HomeComponent implements OnInit, OnDestroy {
 
 
     });
-
+    
     //fetches url params
     this.fetchUrlParams();
-
-
     if (this.updateData) {
       this.actionState = "update";
       this.fetchJobDataById();
-
+  
     }
+
+ console.log(this.selectedJobStatus);
 
     if (this.state == 'editor') {
       this.openScreen = false;
@@ -440,7 +442,8 @@ export class HomeComponent implements OnInit, OnDestroy {
       .subscribe(params => {
 
         this.updateData = params.data;
-        this.selectedJobStatus = params.status;
+//this.selectedJobStatus = params.status;
+console.log("selected job status"+this.selectedJobStatus);
       });
 
   }
@@ -449,13 +452,14 @@ export class HomeComponent implements OnInit, OnDestroy {
   //fetches job data by id
   fetchJobDataById() {
     this.loaderMsg = "Loading..";
-
     this.spinner.show();
     this.jobService.getJobListById(this.updateData)
       .subscribe(
-        (jobList: any) => {
+        (jobList: any) => {        
+            this.selectedJobStatus = jobList.status;
+
           //response
-          // console.log(jobList)
+           console.log(jobList)
           this.spinner.hide();
           this.updatedData = jobList;
           this.statusUpdate();
@@ -466,7 +470,6 @@ export class HomeComponent implements OnInit, OnDestroy {
           this.ddScoreText = jobList.dd_score_text;
           this.percBiasedFemaleWords = jobList.female_phrases_percentage;
           this.analyzeAfterServicePopulate(jobList);
-
         },
         err => {
 
@@ -477,7 +480,8 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   //for hide /show selection of different buttons such as draft/share/finish/approve/
   statusUpdate() {
-
+    console.log("enetered status update");
+    console.log(this.selectedJobStatus);
     if (this.updateData) {
 
       if (this.selectedJobStatus == 0) {
@@ -516,6 +520,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     element.click();
     //   }
     this.titleChange();
+    console.log("view initiale");
 
   }
 
@@ -527,7 +532,9 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   //opens dialog  modal
   openModal(template: TemplateRef<any>) {
+    this.whetherButtonClicked = true;
     this.modalRef = this.modalService.show(template);
+
 
   }
 
@@ -543,7 +550,6 @@ export class HomeComponent implements OnInit, OnDestroy {
           .then((res: any) => {
             if (res.status == true) {
               this.spinner.hide();
-              ;
               this.templateMsg = "A notification has been sent to your Colleague’s email";
               this.closeFirstModal();
               this.modalRef = this.modalService.show(template);
@@ -727,6 +733,8 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   //approves a job
   approve(template) {
+    this.whetherButtonClicked = true;
+
     this.spinner.show();
     // 
     if (this.selectedJobStatus == 1) {
@@ -753,6 +761,9 @@ export class HomeComponent implements OnInit, OnDestroy {
                 //  this.spinner.hide();
                 this.spinner.hide();
                 if (jobList.is_approved == true) {
+                  this.templateMsg = "Job Approved successfully";
+
+                  this.modalRef = this.modalService.show(template);
                   this.router.navigateByUrl('/joblisting');
                 }
                 else {
@@ -781,12 +792,15 @@ export class HomeComponent implements OnInit, OnDestroy {
         })
 
     }
+    this.whetherButtonClicked = false;
 
 
   }
 
   //finishes job and marks the end of job
   finish(template) {
+    this.whetherButtonClicked = true;
+
     this.spinner.show();
     if (this.selectedJobStatus == 2) {
       this.jobService.finish({ jobad_id: this.updateData })
@@ -799,6 +813,9 @@ export class HomeComponent implements OnInit, OnDestroy {
               // this.router.navigateByUrl('/joblisting');
               this.selectedJobStatus = 3;
               this.statusUpdate();
+              this.templateMsg = "Job finished successfully";
+
+              this.modalRef = this.modalService.show(template);
             }
             else {
               this.spinner.hide();
@@ -844,6 +861,9 @@ export class HomeComponent implements OnInit, OnDestroy {
                   // this.router.navigateByUrl('/joblisting');
                   this.selectedJobStatus = 3;
                   this.statusUpdate();
+                  this.templateMsg = "Job finished successfully";
+
+                  this.modalRef = this.modalService.show(template);
                 }
                 else {
                   this.spinner.hide();
@@ -873,6 +893,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
     }
 
+    this.whetherButtonClicked = false;
 
   }
 
@@ -934,7 +955,9 @@ export class HomeComponent implements OnInit, OnDestroy {
     document.querySelector(".ngx-editor-textarea").innerHTML = data;
     //  Position the curson at the end.
     let inputFields = document.getElementsByClassName("ngx-editor-textarea")[0];
+    if(!this.whetherButtonClicked){
     this.placeCaretAtEnd(inputFields);
+    }
     // return result
    // setCurrentCursorPosition(this.prevPositionOfCaret);
     // console.log(result);
@@ -1110,7 +1133,9 @@ export class HomeComponent implements OnInit, OnDestroy {
 
 
           let inputFields = document.getElementsByClassName("ngx-editor-textarea")[0];
+          if(!this.whetherButtonClicked){
           this.placeCaretAtEnd(inputFields);
+          }
           // console.log("after service" + this.prevPositionOfCaret);
           //let inField =  document.querySelector(".ngx-editor-textarea");
           //setCaretPosition(inputFields,this.prevPositionOfCaret);
@@ -1131,7 +1156,9 @@ export class HomeComponent implements OnInit, OnDestroy {
           // this.lastJobBody = this.completeJobBody;
           this.editorClass = "editors";
           let inputFields = document.getElementsByClassName("ngx-editor-textarea")[0];
+          if(!this.whetherButtonClicked){
           this.placeCaretAtEnd(inputFields);
+          }
           //setCaretPosition(inputFieldsaa,this.prevPositionOfCaret);
 
           // console.log("biasis analysis empty");
@@ -1369,6 +1396,7 @@ export class HomeComponent implements OnInit, OnDestroy {
         });
 
     }
+    this.whetherButtonClicked = false;
   }
 
   //shares  a job and returns promise
@@ -1490,6 +1518,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       this.modalRef3.hide();
       this.modalRef3 = null;
     }
+    this.whetherButtonClicked = false;
   }
 
   //fetches approval's email
@@ -1527,7 +1556,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   //use to redirect with dynamic params
   redirect(id, status) {
     this.actionState = "update";
-    this.router.navigateByUrl('/dashboard/editor?data=' + id + '&status=' + status);
+    this.router.navigateByUrl('/dashboard/editor?data=' + id );
 
   }
 }

@@ -99,6 +99,8 @@ export class UserService {
 
          },
          err => {
+          this.purgeAuth();
+          this.router.navigateByUrl('/'); 
          console.log(err);    
           
           //  this.jwtService.destroyToken();

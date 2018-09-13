@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { AlertComponent } from 'ngx-bootstrap/alert/alert.component';
 import { JobService, Job } from '../core';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-joblist-page',
@@ -48,6 +49,12 @@ export class JoblistComponent implements OnInit {
 
         this.joblist = jobList;
         this.joblist = this.joblist.reverse();
+        this.joblist = this.joblist.map((data)=>{
+          data.modifiedAt = moment(data.last_update).format("DD/MM/YYYY");
+          data.statusText = this.status(data.status);
+          return data;  
+        });
+        console.log(this.joblist);
        },
       err => {
         
@@ -57,8 +64,8 @@ export class JoblistComponent implements OnInit {
   }
 
 // helps in redirection
-  redirect(id,status){
-    this.router.navigateByUrl('/dashboard/editor?data='+id+'&status='+status);
+  redirect(id){
+    this.router.navigateByUrl('/dashboard/editor?data='+id);
 
   }
 

@@ -19,12 +19,13 @@
               <thead>
                 <tr>
                   <th>Job ID</th>
-                  <th>Job Title, Department</th>
-                  <th>City, Country</th>
+                  <th>Job Title</th>
+                  <th>Country</th>
                   <th>Created</th>
                   <th>Status</th>
-                  <th>DD Score</th>
                   <th>First DD Score</th>
+                  <th>Last DD Score</th>
+
 
                 </tr>
               </thead>
@@ -32,13 +33,13 @@
                 <tr *ngFor="let listData of joblist| filter:term | paginate: { itemsPerPage: 10, currentPage: p }">
                   <td> {{listData.id}}</td>
                   <td>
-                     <a (click)="redirect(listData.id,listData.status)"> {{listData.ad_title}},{{listData.department}} </a>
+                     <a (click)="redirect(listData.id)"> {{listData.ad_title}} </a>
                   </td>
-                  <td> {{listData.city}},{{listData.country}}</td>
-                  <td>{{listData.last_update | date: 'dd/MM/yyyy' }}</td>
-                  <td>{{status(listData.status)}}</td>
-                  <td> {{listData.dd_score.toFixed(0)}}</td>
+                  <td>{{listData.country}}</td>
+                  <td>{{listData.modifiedAt  }}</td>
+                  <td>{{listData.statusText}}</td>
                   <td>{{listData.first_dd_score.toFixed(0)}}</td>
+                  <td> {{listData.dd_score.toFixed(0)}}</td>
 
                 </tr>
              
