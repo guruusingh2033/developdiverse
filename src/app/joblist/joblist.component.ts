@@ -51,7 +51,12 @@ export class JoblistComponent implements OnInit {
         this.joblist = this.joblist.reverse();
         this.joblist = this.joblist.map((data)=>{
           data.modifiedAt = moment(data.last_update).format("DD/MM/YYYY");
+          delete data.last_update;
+          delete data.ad_body;
+          delete data.city;
+          delete data.department;
           data.statusText = this.status(data.status);
+          delete data.status;
           return data;  
         });
         console.log(this.joblist);
