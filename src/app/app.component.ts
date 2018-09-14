@@ -14,6 +14,12 @@ export class AppComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    
+    var checkIfItemSet =  localStorage.getItem("lastUrl");
+    if(!checkIfItemSet){
+    localStorage.setItem("lastUrl","false");
+    }
+
     this.userService.populate();
    // console.log("get user");
    // console.log(this.userService.getCurrentUser());

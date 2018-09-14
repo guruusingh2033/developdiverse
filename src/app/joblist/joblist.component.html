@@ -21,7 +21,7 @@
                   <th>Job ID</th>
                   <th>Job Title</th>
                   <th>Country</th>
-                  <th>Created</th>
+                  <th>Last Modified</th>
                   <th>Status</th>
                   <th>First DD Score</th>
                   <th>Last DD Score</th>
@@ -36,7 +36,7 @@
                      <a (click)="redirect(listData.id)"> {{listData.ad_title}} </a>
                   </td>
                   <td>{{listData.country}}</td>
-                  <td>{{listData.modifiedAt  }}</td>
+                  <td>{{listData.modifiedAt }}</td>
                   <td>{{listData.statusText}}</td>
                   <td>{{listData.first_dd_score.toFixed(0)}}</td>
                   <td> {{listData.dd_score.toFixed(0)}}</td>

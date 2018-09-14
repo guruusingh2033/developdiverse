@@ -105,7 +105,7 @@ export class AuthComponent implements OnInit {
          // console.log(data); 
           this.spinner.hide();
           var getLastUrlIf  = localStorage.getItem("lastUrl");
-          if(getLastUrlIf != "false"){
+          if(getLastUrlIf != "false"  ){
             localStorage.setItem("lastUrl","false");
 
            this.router.navigateByUrl(getLastUrlIf);

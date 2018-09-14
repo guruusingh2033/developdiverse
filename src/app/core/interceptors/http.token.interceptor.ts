@@ -3,12 +3,13 @@ import { HttpEvent, HttpInterceptor, HttpHandler, HttpRequest,HttpResponse,HttpE
 import { Observable } from 'rxjs';
 import 'rxjs/add/operator/do';
 import {  Router } from '@angular/router';
+import { CookieService } from 'ngx-cookie-service';
 
 import { JwtService, UserService } from '../services';
 
 @Injectable()
 export class HttpTokenInterceptor implements HttpInterceptor {
-  constructor(private jwtService: JwtService,private router:Router,private userService:UserService) {}
+  constructor(private jwtService: JwtService,private router:Router,private userService:UserService,private cookieService:CookieService) {}
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     const headersConfig = {
@@ -32,8 +33,11 @@ export class HttpTokenInterceptor implements HttpInterceptor {
     if (err instanceof HttpErrorResponse) {
        // console.log(err);
       if (err.status === 401 || err.status === 403 ) {
-          this.jwtService.destroyToken();
-         this.userService.purgeAuth();
+         this.jwtService.destroyToken();
+        this.userService.purgeAuth();
+        this.cookieService.deleteAll("/");
+        this.cookieService.delete("jwtToken","/");
+        this.cookieService.set( 'jwtToken','',-1);
 
           this.router.navigateByUrl('/'); 
       }
