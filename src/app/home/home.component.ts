@@ -317,6 +317,13 @@ export class HomeComponent implements OnInit, OnDestroy {
     }
     this.hasModalChange = false;
     this.completeJobBody = document.querySelector(".ngx-editor-textarea").innerHTML;
+    //removes <br> tags from editor,due to unstable behaviour ofditor in firefox
+    if( navigator.userAgent.toLowerCase().indexOf('firefox') > -1 ){
+      var ssubstr =  this.completeJobBody.substring( this.completeJobBody.length - 4);
+      if(ssubstr == "<br>"){
+      this.completeJobBody =   this.completeJobBody.substring(0, this.completeJobBody.length - 4);
+      }
+    }
     //this.completeJobBody = this.completeJobBody.replace(/(<p[^>]+?>|<p>)/img, "").replace(new RegExp('</p>', "gi"), "</br>").replace(new RegExp("&nbsp;", 'g'), '');
     this.completeJobBody = this.completeJobBody.replace(/(<p[^>]+?>|<p>)/img, "").replace(new RegExp('</p>', "gi"), "</br>").replace(new RegExp("&nbsp;", 'g'), ' ');
 
@@ -1123,9 +1130,16 @@ console.log("selected job status"+this.selectedJobStatus);
           $(".ngx-editor-textarea").blur();
 
           var buildBody = this.buildJobContentAfterServiceCall(textToBeReplaced, lastTypedText);
-
           // $(".ngx-editor-textarea").animate({ scrollTop: $(document).height() }, 0);
-
+          if( navigator.userAgent.toLowerCase().indexOf('firefox') > -1 ){
+            if(buildBody){
+            var ssubstr =  buildBody.substring(  buildBody.length - 4);          
+            if(ssubstr == "<br>"){
+              buildBody = buildBody.substring(0, buildBody.length - 4);
+          
+            }
+          }
+          }
           document.querySelector(".ngx-editor-textarea").innerHTML = buildBody;
 
           // this.lastJobBody = buildBody;
@@ -1149,9 +1163,25 @@ console.log("selected job status"+this.selectedJobStatus);
           this.editorClass = "readonly editors";
           $(".ngx-editor-textarea").blur();
 
-          // $(".ngx-editor-textarea").animate({ scrollTop: $(document).height() }, 0);
+          var str;
+          if( navigator.userAgent.toLowerCase().indexOf('firefox') > -1 ){
+             var ssubstr =  lastTypedText.substring(  lastTypedText.length - 4);
+            console.log("substrdatab  "+ssubstr);
+            if(ssubstr == "<br>"){
+             str = lastTypedText.substring(0, lastTypedText.length - 4);
+           // str = this.lastTypedText;
 
-          this.homeForm.patchValue({ ad_body: lastTypedText });
+            }
+            else{
+              str = this.lastTypedText;
+
+            }
+          }
+          else{
+            str = this.lastTypedText;
+          }
+          this.homeForm.patchValue({ ad_body:str });
+
 
           // this.lastJobBody = this.completeJobBody;
           this.editorClass = "editors";
