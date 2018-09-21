@@ -1,3 +1,27 @@
+@media (max-width:991px) {
+    .job-title-table table th {
+        font-size: 16px !important;
+        padding-bottom: 5px;
+        padding-top: 5px;
+        line-height: 17px;
+        vertical-align: top;
+    }
+    .job-title-table table td {
+        font-size: 15px !important;
+        padding: 7px 33px !important;
+    }
+    .ngx-pagination {
+        padding-left: 0 !important;
+    }
+    .content-all .mat-expansion-panel-header {
+        padding: 10px 24px !important;
+        height: auto !important;
+    }
+    .all-pages-height {
+        height: auto !important;
+    }
+}
+
 @media (max-width:767px) {
     .navbar-brand {
         margin-top: 20px !important;
@@ -40,16 +64,19 @@
         padding-right: 0 !important;
     }
     .border-grey {
-        border:none !important;
-        padding-right: 15px  !important;
-        margin: 0  !important;
-        max-width: 100%  !important;;
+        border: none !important;
+    padding-right: 15px !important;
+    margin: 0 !important;
+    max-width: 100% !important;
+    width: 100%;
+    flex: 0 0 100%;
     }
     .ngx-editor-textarea {
-        height: calc(100vh - 521px) !important;
+        height: 200px !important;
+        min-height: 200px !important;
     }
     .home-editor-height {
-        height: calc(100vh - 247px) !important;
+        height: 300px !important;
     }
     .navbar-brand {
         max-width: 220px !important;
@@ -60,6 +87,127 @@
     .job-listing-heading h2 {
         font-size: 24px;
     }
+    .profile .btn-success {
+        margin-bottom: 0 !important;
+    }
+    .pagination {
+        margin-bottom: 0 !important;
+    }
+    .right-sidebar {
+        display: none;
+    }
+    .content-all {
+        margin-bottom: 13px;
+    }
+
+    .sidebar {
+        display: none;
+    }
+    #content {
+        margin-left: 0  !important;
+    }
+    #content {
+        padding: 151px 20px 20px;
+    }
+    button.nav-mobile {
+        position: absolute;
+        top: 22px;
+        right: 75px;
+        z-index: 9;
+        width: 42px;
+        height: 42px;
+        border: none;
+        background: #cf3e23;
+        display: block !important;
+    }
+    button.nav-mobile:foucs {
+        outline: none !important;
+        box-shadow: none;
+    }
+    button:focus {
+        outline: none !important;
+    }
+    button.nav-mobile img {
+        max-width: 100%;
+        height: auto;
+    }
+    .sidebar-menu-mobile {
+        position: absolute;
+        z-index: 9;
+        width: 100%;
+        left: 0;
+        right: 0;
+        background: #2e3c65;
+        top: 80px;
+        padding: 30px 20px;
+        display: block !important;
+    }
+    .sidebar-menu-mobile  ul {
+        display: block;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
+    .sidebar-menu-mobile ul li {
+        display: list-item;
+        text-align: left;
+        padding: 15px 0;
+        color: #fff;
+        font-size: 18px;
+        border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+    .sidebar-menu-mobile ul li a {
+        display: list-item;
+        color: #fff;
+    }
+    .sidebar-menu-mobile ul li img {
+        margin-right: 10px;
+        width: 23px;
+        height: auto;
+        float: left;
+    }
+    .sidebar-menu-mobile ul li:last-child {
+        padding-bottom: 0;
+        border-bottom: none;
+    }
+    .sidebar-menu-mobile ul li:first-child {
+        padding-top: 0;
+    }
+    .mobile-show {
+        display: block !important;
+        background: #fff;
+        padding: 20px;
+        border-radius: 10px;
+        margin-bottom: 15px;
+      }
+      .mobile-show  .right-sidebar {
+        display: block !important;
+    }
+    .graph img {
+        max-width: 340px;
+        width: 100%;
+        margin: auto;
+    }
+    .remember-me {
+        width: 120px !important;
+    }
+    .remember-me input {
+        margin-top: 4px;
+    }
+    .remember-me label {
+        font-size: 14px;
+    }
+.signin-form {
+    padding: 30px 15px !important;
+    margin-top: 30px !important;
+}
+.signin-form .btn-success {
+    margin-bottom: 8px !important;
+}
+.signin-form {
+    margin-top: 82px !important;
+    margin-bottom: 20px;
+}
 }
 
 @media (max-width:575px) {
@@ -81,15 +229,15 @@
     width: 100%   !important;
     float: right;
 }
-.right-sidebar {
-    display: none;
-}
+
 .content-all{
     margin-top: 0 !important;
 }
-.profile h2 {
-    margin-left: -15px;
+.signin-form .btn-primary {
+    width: 100%;
+    margin-top: 5px;
 }
+
 }
 
 
@@ -99,7 +247,6 @@
         width: 100%;
     }
     .navbar {
-        height: auto !important;
         z-index: 999 !important;
     }
     #content{
@@ -107,9 +254,6 @@
     }
     .sidebar {
         padding-top: 17px !important;
-    }
-    .signin-form {
-        margin-top: 146px !important;
     }
     .navbar-brand {
         margin-right: 0  !important;

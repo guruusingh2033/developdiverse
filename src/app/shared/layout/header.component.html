@@ -47,6 +47,17 @@
     </li>
 
   </ul> -->
-
+  <button class="nav-mobile" (click)="toggleCollapse()"><img src="assets/images/list-menu.png"/></button>
+  <div *ngIf="!isCollapsed" class="sidebar-menu-mobile">
+    <ul>
+      <li><a [routerLink]="['/dashboard/editor']"  (click)="toggleCollapse()"><img src="assets/images/file-icon.png"> New</a></li>
+      <li><a (click)="download()"><img src="assets/images/download-icon.png"> Download</a></li>
+      <li><a [routerLink]="['/joblisting']" (click)="toggleCollapse()"><img src="assets/images/list-icon.png"> Job Listing</a></li>
+      <li><a [routerLink]="['/profile']" (click)="toggleCollapse()"><img src="assets/images/user-dashboard.png"> Profile</a></li>
+      <li><a [routerLink]="['/faq']" (click)="toggleCollapse()"><img src="assets/images/info-icon.png">Help</a> </li>
+    </ul>
+  </div>
 
 </nav>
+
+

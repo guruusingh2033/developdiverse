@@ -314,3 +314,6 @@ background: #f641ff;
 .ngx-editor-textarea div {
   display: none;
 }
+.mobile-show {
+  display: none;
+}

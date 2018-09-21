@@ -41,7 +41,6 @@ export class SidebarComponent implements OnInit {
      // console.log(this.jobID); // popular
     });
     if(this.jobID){
-      debugger;
     var job = { "jobad_id": this.jobID}
     // this.jobService.download(job).subscribe(
     //   (jobData) => {

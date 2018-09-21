@@ -131,6 +131,36 @@
 
 
       </div>
+
+      <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12 mobile-show">
+        <div class="right-sidebar">
+          <div class="score-widget">
+            <!-- <h3>
+              <img src="assets/images/dd-logo.png" /> Score</h3> -->
+            <div class="graph">
+              <img class="img-fluid" src="assets/images/graph-img2.png" />
+              <div class="graph-caption">
+                <h2>{{ddScore}}</h2>
+                <h6 *ngIf="ddScore">{{ddScoreText}}</h6>
+              </div>
+            </div>
+          </div>
+          <div class="gender-wordings">
+            <h5>TYPE OF BIASES</h5>
+            <ul>
+              <li><span class="type1">{{percBiasedMaleWords}} %</span> Male</li>
+              <li><span class="type1">{{percBiasedFemaleWords}} %</span> Female</li>
+              <li><span class="type1">{{percBiasedEthinicityWords}} %</span> Ethnicity</li>
+              <li><span class="type1">{{percBiasedAgeWords}} %</span> Age</li>
+            </ul>
+            <!-- <div class="per-count">
+              <span  *ngIf="percBiasedMaleWords" >{{percBiasedMaleWords}}% </span>
+              <img class="img-fluid" src="assets/images/gender-icon.png" />
+              <span *ngIf="percBiasedFemaleWords">{{percBiasedFemaleWords}}%</span>
+            </div> -->
+          </div>
+        </div>
+      </div>
     </form>
 
     </div>

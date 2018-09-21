@@ -79,7 +79,6 @@ export class UserService {
   }
 
   purgeAuth() {
-    debugger;
     this.cookieService.set( 'jwtToken','',-1);
 
     this.jwtService.destroyToken();

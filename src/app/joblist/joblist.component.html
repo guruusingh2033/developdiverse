@@ -11,10 +11,11 @@
 
       <div class="content-all all-pages-height">
         <div class="job-title-table">
-          <div class="table-responsive">
+         
             <div class="form-group">
               <input type="text" [(ngModel)]="term" class="form-control" placeholder="Search..">
               </div>
+              <div class="table-responsive">
             <table class="table">
               <thead>
                 <tr>
@@ -45,11 +46,12 @@
              
               </tbody>
             </table>
+          </div>
             <div class="pagination">
               <pagination-controls (pageChange)="p = $event"></pagination-controls>
             </div>
 
-          </div>
+         
 
 
         </div>

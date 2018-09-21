@@ -638,3 +638,9 @@ padding-bottom: 0 !important;
 .all-pages-height {
   height: calc(100vh - 197px);
 }
+button.nav-mobile {
+  display: none;
+}
+.sidebar-menu-mobile {
+  display: none;
+}

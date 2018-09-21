@@ -56,7 +56,6 @@ export class JobService {
   }
 
   shareJob(job): Observable<any> {
-    debugger;
     return this.apiService
     .post('/share_ad/', job)
     .pipe(map(data => {

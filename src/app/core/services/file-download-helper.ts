@@ -20,7 +20,6 @@ export const saveFile = (blobContent: Blob, fileName: string) => {
 export const getFileNameFromResponseContentDisposition = (res: Response) => {
     const contentDisposition = res.headers.get('content-disposition') || '';
     const matches = /filename=([^;]+)/ig.exec(contentDisposition);
-    debugger;
     const fileName = (matches[1] || 'untitled').trim();
     return "jobad_118.docx";
 };
